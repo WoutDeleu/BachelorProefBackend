@@ -5,8 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table
 public class User {
+    //Tutorial:: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/jpa-primary-key.html
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String firstname;
     private String lastname;
