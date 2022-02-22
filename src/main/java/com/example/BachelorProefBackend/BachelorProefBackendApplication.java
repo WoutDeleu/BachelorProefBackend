@@ -11,5 +11,4 @@ public class BachelorProefBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BachelorProefBackendApplication.class, args);
 	}
-
 }
