@@ -3,6 +3,7 @@ package com.example.BachelorProefBackend.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,16 @@ public class UserController {
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
         userService.addNewUser(user);
+    }
+    @DeleteMapping(path="{userId}")
+    public void deleteUser(@PathVariable("userId") long id) {
+        userService.deleteUser(id);
+    }
+
+    //PUT
+    @Transactional
+    public void updateUser() {
+
     }
 
     @GetMapping

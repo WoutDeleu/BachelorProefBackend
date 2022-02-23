@@ -24,4 +24,9 @@ public class UserService {
     public void addNewUser(User_entity user) {
         userRepository.save(user);
     }
+
+    public void deleteUser(long id) {
+        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exists (" + id+ ")");
+        userRepository.deleteById(id);
+    }
 }
