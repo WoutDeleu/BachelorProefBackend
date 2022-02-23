@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<User_entity> getUsers() {
         return userService.getUsers();
     }
     //Hier: voeg alle gets toe, voor alle verschillende users types

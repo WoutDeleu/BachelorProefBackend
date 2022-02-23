@@ -4,14 +4,17 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class User {
+public class User_entity {
     //Tutorial:: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/jpa-primary-key.html
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
+    @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private long id;
     private String firstname;
     private String lastname;
     private String email;
+    private String telNr;
     private boolean isStudent;
     private boolean isAdministrator;
     private boolean isPromotor;
@@ -19,14 +22,15 @@ public class User {
     private long targetAudienceId;
 
 
-    public User() {
+    public User_entity() {
 
     }
 
-    public User(String firstname, String lastname, String email, boolean isStudent, boolean isAdministrator, boolean isPromotor, boolean isCoordinator) {
+    public User_entity(String firstname, String lastname, String email, String telNr, boolean isStudent, boolean isAdministrator, boolean isPromotor, boolean isCoordinator) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.telNr = telNr;
         this.isStudent = isStudent;
         this.isAdministrator = isAdministrator;
         this.isPromotor = isPromotor;
