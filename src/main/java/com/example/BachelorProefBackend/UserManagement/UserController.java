@@ -26,8 +26,9 @@ public class UserController {
     }
 
     //PUT
-    @Transactional
-    public void updateUser() {
+    @PutMapping(path="{userId}")
+    public void updateUser(@PathVariable("userId") Long userId, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+        userService.updateUser(userId, name, email);
 
     }
 
