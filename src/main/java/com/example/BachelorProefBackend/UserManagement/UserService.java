@@ -20,4 +20,8 @@ public class UserService {
     public List<User_entity> getUsers() {
         return userRepository.findAll();
     }
+
+    public void addNewUser(User_entity user) {
+        userRepository.save(user);
+    }
 }

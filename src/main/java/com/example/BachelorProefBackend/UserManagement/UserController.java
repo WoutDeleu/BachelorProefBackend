@@ -1,9 +1,7 @@
 package com.example.BachelorProefBackend.UserManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +13,11 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping
+    public void addNewUser(@RequestBody User_entity user) {
+        userService.addNewUser(user);
     }
 
     @GetMapping

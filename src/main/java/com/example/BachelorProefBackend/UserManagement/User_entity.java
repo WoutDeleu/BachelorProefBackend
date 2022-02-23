@@ -18,6 +18,7 @@ public class User_entity {
     private boolean isStudent;
     private boolean isAdministrator;
     private boolean isPromotor;
+
     private boolean isCoordinator;
     private long targetAudienceId;
 
@@ -106,5 +107,13 @@ public class User_entity {
 
     public void setTargetAudienceId(long targetAudienceId) {
         this.targetAudienceId = targetAudienceId;
+    }
+
+    public String getTelNr() {
+        return telNr;
+    }
+
+    public void setTelNr(String telNr) {
+        this.telNr = telNr;
     }
 }

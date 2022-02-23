@@ -1,0 +1,14 @@
+Check duplicates DB
+
+POST
+
+{
+   "firstname":"Wout",
+   "lastname":"Deleu",
+   "email":"wout.deleu@hotmail.eu",
+   "telNr":"0496742300",
+   "student":true,
+   "promotor":false,
+   "coordinator":false,
+   "administrator":false
+}
