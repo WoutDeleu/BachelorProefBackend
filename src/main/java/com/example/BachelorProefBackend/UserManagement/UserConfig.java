@@ -20,9 +20,9 @@ public class UserConfig {
             User_entity promotor = new User_entity("Alain", "Vandamme", "alain.vandamme@vandammeplastic.eu", "0453699356", false, false, true, false);
             User_entity coordinator = new User_entity("Michel", "Drets", "michel.drets@vandammeplastic.eu", "0453699356", false, false, false, true);
 
-            User_entity alphamail = new User_entity("Tony", "Wauters", "tony.wauters@kuleuven.be", "0596345698", true, true, true,true);
+            User_entity alphamale = new User_entity("Tony", "Wauters", "tony.wauters@kuleuven.be", "0596345698", true, true, true,true);
 
-            users.saveAll(List.of(student1,student2,administrator,promotor,coordinator, alphamail));
+            users.saveAll(List.of(student1,student2,administrator,promotor,coordinator, alphamale));
         };
     }
 }
