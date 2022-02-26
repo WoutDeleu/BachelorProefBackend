@@ -8,16 +8,16 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User_entity, Long> {
-   @Query("select u from User_entity u where u.isStudent")
+   @Query(value = "select * from User_entity u where u.is_student", nativeQuery = true)
    List<User_entity> getAllStudents();
 
-   @Query("select u from User_entity u where u.isAdministrator")
+   @Query(value = "select * from User_entity u where u.is_administrator", nativeQuery = true)
    List<User_entity> getAllAdministrators();
 
-   @Query("select u from User_entity u where u.isPromotor")
+   @Query(value = "select * from User_entity u where u.is_promotor", nativeQuery = true)
    List<User_entity> getAllPromotors();
 
-   @Query("select u from User_entity u where u.isCoordinator")
+   @Query(value = "select * from User_entity u where u.is_coordinator", nativeQuery = true)
    List<User_entity> getAllCoordinators();
 
 

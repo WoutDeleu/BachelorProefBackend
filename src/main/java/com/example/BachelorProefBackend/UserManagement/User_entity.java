@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class User_entity {
     //Tutorial:: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/jpa-primary-key.html
     @Id
-
     @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private long id;

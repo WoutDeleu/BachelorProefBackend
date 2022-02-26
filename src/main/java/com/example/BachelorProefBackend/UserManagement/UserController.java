@@ -54,7 +54,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    //PUT
+    //Put
     @PutMapping(path="{userId}")
     public void updateUser(@PathVariable("userId") Long userId, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
         userService.updateUser(userId, name, email);
