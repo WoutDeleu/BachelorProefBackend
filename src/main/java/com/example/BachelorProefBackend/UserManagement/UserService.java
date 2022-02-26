@@ -1,10 +1,12 @@
 package com.example.BachelorProefBackend.UserManagement;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,11 +20,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //Getters
     @GetMapping
-    public List<User_entity> getUsers() {
+    public List<User_entity> getAllUsers() {
         return userRepository.findAll();
     }
 
+    @GetMapping
+    public List<User_entity> getUserById(Long user_id) {
+        return userRepository.findAllById(Collections.singleton(user_id));
+    }
+
+    //PUT
     public void addNewUser(User_entity user) {
         userRepository.save(user);
     }
@@ -32,6 +41,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    //Post
     @Transactional
     public void updateUser(Long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
@@ -39,5 +49,21 @@ public class UserService {
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
 
+    }
+
+    public List<User_entity> getAllStudents() {
+        return userRepository.getAllStudents();
+    }
+
+    public List<User_entity> getAllAdministrators() {
+        return userRepository.getAllAdministrators();
+    }
+
+    public List<User_entity> getAllPromotors() {
+        return userRepository.getAllPromotors();
+    }
+
+    public List<User_entity> getAllCoordinators() {
+        return userRepository.getAllCoordinators();
     }
 }

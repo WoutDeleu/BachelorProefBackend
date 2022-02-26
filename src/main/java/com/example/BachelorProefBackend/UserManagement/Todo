@@ -1,10 +1,9 @@
 Check duplicates DB
     e-mail moet uniek zijn
-
 Delete -> efficientere input
 
-POST
 
+POST
 {
    "firstname":"Wout",
    "lastname":"Deleu",

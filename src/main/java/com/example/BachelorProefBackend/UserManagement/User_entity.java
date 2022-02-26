@@ -18,7 +18,6 @@ public class User_entity {
     private boolean isStudent;
     private boolean isAdministrator;
     private boolean isPromotor;
-
     private boolean isCoordinator;
     private long targetAudienceId;
 
