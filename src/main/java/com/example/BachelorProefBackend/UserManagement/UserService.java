@@ -20,7 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //Getters
+    //GET
     @GetMapping
     public List<User_entity> getAllUsers() {
         return userRepository.findAll();
@@ -31,40 +31,39 @@ public class UserService {
     public List<User_entity> getUserById(Long user_id) {
         return userRepository.findAllById(Collections.singleton(user_id));
     }
+    public List<User_entity> getAllStudents() {
+        return userRepository.getAllStudents();
+    }
+    public List<User_entity> getAllAdministrators() {
+        return userRepository.getAllAdministrators();
+    }
+    public List<User_entity> getAllPromotors() {
+        return userRepository.getAllPromotors();
+    }
+    public List<User_entity> getAllCoordinators() {
+        return userRepository.getAllCoordinators();
+    }
+
+
+    //DELETE
+    public void deleteUser(long id) {
+        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id+ ")");
+        userRepository.deleteById(id);
+    }
 
     //PUT
     public void addNewUser(User_entity user) {
         userRepository.save(user);
     }
 
-    public void deleteUser(long id) {
-        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id+ ")");
-        userRepository.deleteById(id);
-    }
-
-    //Post
+    //POST
     @Transactional
     public void updateUser(Long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
-
     }
 
-    public List<User_entity> getAllStudents() {
-        return userRepository.getAllStudents();
-    }
 
-    public List<User_entity> getAllAdministrators() {
-        return userRepository.getAllAdministrators();
-    }
-
-    public List<User_entity> getAllPromotors() {
-        return userRepository.getAllPromotors();
-    }
-
-    public List<User_entity> getAllCoordinators() {
-        return userRepository.getAllCoordinators();
-    }
 }

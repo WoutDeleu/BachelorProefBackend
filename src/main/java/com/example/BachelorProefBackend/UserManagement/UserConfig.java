@@ -22,7 +22,7 @@ public class UserConfig {
 
             User_entity alphamale = new User_entity("Tony", "Wauters", "tony.wauters@kuleuven.be", "0596345698", true, true, true,true);
 
-            users.saveAll(List.of(student1,student2,administrator,promotor,coordinator, alphamale));
+            users.saveAll(List.of(student1,student2,administrator,promotor,coordinator,alphamale));
         };
     }
 }

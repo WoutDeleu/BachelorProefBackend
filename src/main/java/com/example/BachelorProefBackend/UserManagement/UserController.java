@@ -40,6 +40,8 @@ public class UserController {
     public List<User_entity> getAllCoordinators() {
         return userService.getAllCoordinators();
     }
+
+
     //Post
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
