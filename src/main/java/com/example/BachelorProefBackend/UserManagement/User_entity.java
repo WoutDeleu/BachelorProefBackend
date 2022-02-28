@@ -2,7 +2,7 @@ package com.example.BachelorProefBackend.UserManagement;
 
 import javax.persistence.*;
 
-@Entity
+@Entity //Mapping naar database
 @Table
 public class User_entity {
     //Tutorial:: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/jpa-primary-key.html
@@ -113,5 +113,21 @@ public class User_entity {
 
     public void setTelNr(String telNr) {
         this.telNr = telNr;
+    }
+
+    @Override
+    public String toString() {
+        return "User_entity{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", telNr='" + telNr + '\'' +
+                ", isStudent=" + isStudent +
+                ", isAdministrator=" + isAdministrator +
+                ", isPromotor=" + isPromotor +
+                ", isCoordinator=" + isCoordinator +
+                ", targetAudienceId=" + targetAudienceId +
+                '}';
     }
 }

@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Service
+@Service //Specifieke versie van @Component: deze klasse wordt gebruikt als Bean
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +25,7 @@ public class UserService {
     public List<User_entity> getAllUsers() {
         return userRepository.findAll();
     }
+    //Methodes als find, findAll(), delete, ... allemaal beschikbaar doordat repository een interface is.
 
     @GetMapping
     public List<User_entity> getUserById(Long user_id) {

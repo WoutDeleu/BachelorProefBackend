@@ -10,7 +10,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @Autowired
+    @Autowired //instantie van userService automatisch aangemaakt en in deze constructor gestoken (Dependency injection)
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -20,12 +20,10 @@ public class UserController {
     public List<User_entity> getAllUsers() {
         return userService.getAllUsers();
     }
-
     @GetMapping(path="{userId}")
     public List<User_entity> getUserById(@PathVariable("userId") Long user_id) {
         return userService.getUserById(user_id);
     }
-
     @GetMapping(path="student")
     public List<User_entity> getAllStudents() {
         return userService.getAllStudents();
