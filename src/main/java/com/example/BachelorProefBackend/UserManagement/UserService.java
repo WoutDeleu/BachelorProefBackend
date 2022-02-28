@@ -47,18 +47,18 @@ public class UserService {
 
     //DELETE
     public void deleteUser(long id) {
-        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id+ ")");
+        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
         userRepository.deleteById(id);
     }
 
-    //PUT
+    //POST
     public void addNewUser(User_entity user) {
         userRepository.save(user);
     }
 
-    //POST
+    //PUT
     @Transactional
-    public void updateUser(Long id, String firstName, String email) {
+    public void updateUser(long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);

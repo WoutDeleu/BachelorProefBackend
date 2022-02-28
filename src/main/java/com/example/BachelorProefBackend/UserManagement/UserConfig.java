@@ -12,7 +12,7 @@ public class UserConfig {
 
     //add some default users to experiment with
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository users) {
+    CommandLineRunner commandLineRunner1(UserRepository users) {
         return args -> {
             User_entity student1 = new User_entity("Wannes", "Vermeiren", "wannes.vermeiren@hotmail.eu", "0453699356", true, false, false, false);
             User_entity student2 = new User_entity("Toon", "Eeraerts", "toon.eeraerts@hotmail.eu", "0453699356", true, false, false, false);

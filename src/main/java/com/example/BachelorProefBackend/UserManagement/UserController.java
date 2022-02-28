@@ -15,7 +15,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    //Get
+    //GET
     @GetMapping
     public List<User_entity> getAllUsers() {
         return userService.getAllUsers();
@@ -42,23 +42,22 @@ public class UserController {
     }
 
 
-    //Post
+    //POST
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
         userService.addNewUser(user);
     }
 
-    //Delete
+    //DELETE
     @DeleteMapping(path="{userId}")
     public void deleteUser(@PathVariable("userId") long id) {
         userService.deleteUser(id);
     }
 
-    //Put
+    //PUT
     @PutMapping(path="{userId}")
-    public void updateUser(@PathVariable("userId") Long userId, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
-        userService.updateUser(userId, name, email);
-
+    public void updateUser(@PathVariable("userId") long id, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+        userService.updateUser(id, name, email);
     }
 
 

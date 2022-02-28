@@ -1,5 +1,4 @@
 package com.example.BachelorProefBackend.UserManagement;
-
 import javax.persistence.*;
 
 @Entity //Mapping naar database
@@ -21,9 +20,7 @@ public class User_entity {
     private long targetAudienceId;
 
 
-    public User_entity() {
-
-    }
+    public User_entity() { }
 
     public User_entity(String firstname, String lastname, String email, String telNr, boolean isStudent, boolean isAdministrator, boolean isPromotor, boolean isCoordinator) {
         this.firstname = firstname;
@@ -35,82 +32,66 @@ public class User_entity {
         this.isPromotor = isPromotor;
         this.isCoordinator = isCoordinator;
     }
+
+
     public long getId() {
         return id;
+    }
+    public String getFirstname() {
+        return firstname;
+    }
+    public String getLastname() {
+        return lastname;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public boolean isStudent() {
+        return isStudent;
+    }
+    public boolean isAdministrator() {
+        return isAdministrator;
+    }
+    public boolean isPromotor() {
+        return isPromotor;
+    }
+    public boolean isCoordinator() {
+        return isCoordinator;
+    }
+    public long getTargetAudienceId() {
+        return targetAudienceId;
+    }
+    public String getTelNr() {
+        return telNr;
     }
 
     public void setId(long id) {
         this.id = id;
     }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
-
-    public String getLastname() {
-        return lastname;
-    }
-
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public boolean isStudent() {
-        return isStudent;
-    }
-
     public void setStudent(boolean student) {
         isStudent = student;
     }
-
-    public boolean isAdministrator() {
-        return isAdministrator;
-    }
-
     public void setAdministrator(boolean administrator) {
         isAdministrator = administrator;
     }
-
-    public boolean isPromotor() {
-        return isPromotor;
-    }
-
     public void setPromotor(boolean promotor) {
         isPromotor = promotor;
     }
-
-    public boolean isCoordinator() {
-        return isCoordinator;
-    }
-
     public void setCoordinator(boolean coordinator) {
         isCoordinator = coordinator;
     }
-
-    public long getTargetAudienceId() {
-        return targetAudienceId;
-    }
-
     public void setTargetAudienceId(long targetAudienceId) {
         this.targetAudienceId = targetAudienceId;
     }
-
-    public String getTelNr() {
-        return telNr;
-    }
-
     public void setTelNr(String telNr) {
         this.telNr = telNr;
     }
