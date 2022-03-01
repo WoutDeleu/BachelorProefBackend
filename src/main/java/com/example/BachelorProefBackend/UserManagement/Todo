@@ -20,4 +20,5 @@ POST
    "administrator":false
 }
 
+
 DELETE http://localhost:8081/userManagement/users/1
