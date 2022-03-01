@@ -3,7 +3,6 @@ package com.example.BachelorProefBackend.UserManagement;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -44,9 +43,9 @@ public class UserController {
 
     @GetMapping
     @ResponseBody
-    public List<User_entity> getUsers(@RequestParam(required = false) long id, @RequestParam(required = false) String type) {
-        return userService.getUsers(id,type);
-    }
+    //public List<User_entity> getUsers(@RequestParam(required = false) long id, @RequestParam(required = false) String type) {
+    //    return userService.getUsers(id,type);
+    //}
 
     //POST
     @PostMapping

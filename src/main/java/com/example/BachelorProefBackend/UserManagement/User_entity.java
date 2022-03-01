@@ -19,7 +19,6 @@ public class User_entity {
     private boolean isCoordinator;
     private long targetAudienceId;
 
-
     public User_entity() { }
 
     public User_entity(String firstname, String lastname, String email, String telNr, boolean isStudent, boolean isAdministrator, boolean isPromotor, boolean isCoordinator) {
@@ -32,7 +31,6 @@ public class User_entity {
         this.isPromotor = isPromotor;
         this.isCoordinator = isCoordinator;
     }
-
 
     public long getId() {
         return id;
