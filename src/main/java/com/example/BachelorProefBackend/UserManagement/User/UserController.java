@@ -1,4 +1,4 @@
-package com.example.BachelorProefBackend.UserManagement;
+package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.SubjectManagement.SubjectAssignment.SubjectAssignmentService;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="userManagement/users")

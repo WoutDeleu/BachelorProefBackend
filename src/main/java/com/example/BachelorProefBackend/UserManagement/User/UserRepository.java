@@ -1,4 +1,4 @@
-package com.example.BachelorProefBackend.UserManagement;
+package com.example.BachelorProefBackend.UserManagement.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
