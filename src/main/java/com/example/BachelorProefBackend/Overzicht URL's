@@ -12,3 +12,4 @@ userManagement/users/promotor (GET)
 userManagement/users/coordinator (GET)
 userManagement/users/{userId} (GET, DELETE, PUT)
 userManagement/users/queries
+userManagement/users/{userId}/subject (GET)
