@@ -1,0 +1,14 @@
+http://localhost:8081/...
+
+subjectManagement/subjects (GET, POST)
+subjectManagement/subjects/{subjectId} (GET, DELETE, PUT)
+subjectManagement/subjectAssignment (GET, POST)
+subjectManagement/subjectAssignment/{saId} (GET, DELETE, PUT)
+
+userManagement/users (GET, POST)
+userManagement/users/student (GET)
+userManagement/users/administrator (GET)
+userManagement/users/promotor (GET)
+userManagement/users/coordinator (GET)
+userManagement/users/{userId} (GET, DELETE, PUT)
+userManagement/users/queries

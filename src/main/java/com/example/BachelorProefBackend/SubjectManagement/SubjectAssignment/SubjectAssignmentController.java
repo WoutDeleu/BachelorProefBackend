@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="subjectManagment/subjectAssignement")
+@RequestMapping(path="subjectManagement/subjectAssignment")
 public class SubjectAssignmentController {
     private final SubjectAssignmentService saService;
 
