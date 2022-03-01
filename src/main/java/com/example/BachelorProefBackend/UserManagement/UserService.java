@@ -44,6 +44,10 @@ public class UserService {
         return userRepository.getAllCoordinators();
     }
 
+    public List<User_entity> getUsers(long id, String type) {
+        if(id == 0 && type == null)
+    }
+
 
     //DELETE
     public void deleteUser(long id) {
