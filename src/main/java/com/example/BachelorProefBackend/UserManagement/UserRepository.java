@@ -19,7 +19,4 @@ public interface UserRepository extends JpaRepository<User_entity, Long> {
 
    @Query(value = "select * from User_entity u where u.is_coordinator", nativeQuery = true)
    List<User_entity> getAllCoordinators();
-
-
-
 }

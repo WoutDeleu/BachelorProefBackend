@@ -44,12 +44,12 @@ public class UserService {
         return userRepository.getAllCoordinators();
     }
 
-    public List<User_entity> getUsers(Long id, String type) {
-        if(id == 0 && type == null) return userRepository.getAllStudents();
-        else if (type == null) return userRepository.findAllById((Collections.singleton(id)));
-        else if (id == 0) {
-            if(type.equals("student")) return userRepository.getAllStudents();
-            else if(type.equals("administrator")) return userRepository.getAllCoordinators();
+    public List<User_entity> getUsers(String id, String type) {
+        if(id.equals("null") && type.equals("null")) return userRepository.findAll();
+        else if (type.equals("null") && !id.equals("null")) return userRepository.findAllById(Collections.singleton(Long.parseLong(id)));
+        else if (id.equals("null") && !type.equals("null")) {
+            if(type.equals("administrator")) return userRepository.getAllCoordinators();
+            else if(type.equals("student")) return userRepository.getAllStudents();
             else if (type.equals("promotors")) return userRepository.getAllPromotors();
             else if (type.equals("coordinator")) return userRepository.getAllCoordinators();
             else return null;

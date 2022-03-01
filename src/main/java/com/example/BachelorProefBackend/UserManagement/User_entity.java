@@ -8,7 +8,7 @@ public class User_entity {
     @Id
     @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    private long id;
+    private Long id;
     private String firstname;
     private String lastname;
     private String email;
@@ -17,7 +17,7 @@ public class User_entity {
     private boolean isAdministrator;
     private boolean isPromotor;
     private boolean isCoordinator;
-    private long targetAudienceId;
+    private Long targetAudienceId;
 
 
     public User_entity() { }
@@ -34,7 +34,7 @@ public class User_entity {
     }
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public String getFirstname() {
@@ -58,14 +58,14 @@ public class User_entity {
     public boolean isCoordinator() {
         return isCoordinator;
     }
-    public long getTargetAudienceId() {
+    public Long getTargetAudienceId() {
         return targetAudienceId;
     }
     public String getTelNr() {
         return telNr;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public void setFirstname(String firstname) {
@@ -89,7 +89,7 @@ public class User_entity {
     public void setCoordinator(boolean coordinator) {
         isCoordinator = coordinator;
     }
-    public void setTargetAudienceId(long targetAudienceId) {
+    public void setTargetAudienceId(Long targetAudienceId) {
         this.targetAudienceId = targetAudienceId;
     }
     public void setTelNr(String telNr) {
