@@ -1,4 +1,4 @@
-package com.example.BachelorProefBackend.SubjectManagement;
+package com.example.BachelorProefBackend.SubjectManagement.Subject;
 import javax.persistence.*;
 
 @Entity
