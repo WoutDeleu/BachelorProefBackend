@@ -17,10 +17,10 @@ public class UserController {
     }
 
     //GET
-    @GetMapping
-    public List<User_entity> getAllUsers() {
-        return userService.getAllUsers();
-    }
+    //@GetMapping
+    //public List<User_entity> getAllUsers() {
+    //    return userService.getAllUsers();
+    //}
     @GetMapping(path="{userId}")
     public List<User_entity> getUserById(@PathVariable("userId") Long user_id) {
         return userService.getUserById(user_id);
@@ -42,9 +42,10 @@ public class UserController {
         return userService.getAllCoordinators();
     }
 
+    //Mapping based on URL query example
     @GetMapping
     @ResponseBody
-    public List<User_entity> getUsers(@RequestParam(required = false) long id, @RequestParam(required = false) String type) {
+    public List<User_entity> getUsers(@RequestParam(defaultValue = "0") long id, @RequestParam(defaultValue = "null") String type) {
         return userService.getUsers(id,type);
     }
 
@@ -56,15 +57,13 @@ public class UserController {
 
     //DELETE
     @DeleteMapping(path="{userId}")
-    public void deleteUser(@PathVariable("userId") long id) {
+    public void deleteUser(@PathVariable("userId") Long id) {
         userService.deleteUser(id);
     }
 
     //PUT
     @PutMapping(path="{userId}")
-    public void updateUser(@PathVariable("userId") long id, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+    public void updateUser(@PathVariable("userId") Long id, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
         userService.updateUser(id, name, email);
     }
-
-
 }
