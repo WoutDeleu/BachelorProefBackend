@@ -4,7 +4,6 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +27,7 @@ public class UserService {
     //Methodes als find, findAll(), delete, ... allemaal beschikbaar doordat repository een interface is.
 
     @GetMapping
-    public List<User_entity> getUserById(Long user_id) {
+    public List<User_entity> getUserById(long user_id) {
         return userRepository.findAllById(Collections.singleton(user_id));
     }
     public List<User_entity> getAllStudents() {
@@ -61,7 +60,7 @@ public class UserService {
 
 
     //DELETE
-    public void deleteUser(Long id) {
+    public void deleteUser(long id) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
         userRepository.deleteById(id);
     }
@@ -73,7 +72,7 @@ public class UserService {
 
     //PUT
     @Transactional
-    public void updateUser(Long id, String firstName, String email) {
+    public void updateUser(long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);

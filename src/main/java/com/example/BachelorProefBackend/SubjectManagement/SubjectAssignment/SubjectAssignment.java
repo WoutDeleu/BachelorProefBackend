@@ -20,4 +20,36 @@ public class SubjectAssignment {
         this.studentId = studentId;
         this.student2Id = student2Id;
     }
+
+    public long getId() {return id;}
+    public long getSubjectId() {
+        return subjectId;
+    }
+    public long getStudentId() {
+        return studentId;
+    }
+    public long getStudent2Id() {
+        return student2Id;
+    }
+
+    public void setId(long id) {this.id = id;}
+    public void setSubjectId(long subjectId) {
+        this.subjectId = subjectId;
+    }
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
+    }
+    public void setStudent2Id(long student2Id) {
+        this.student2Id = student2Id;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectAssignment{" +
+                "id=" + id +
+                ", subjectId=" + subjectId +
+                ", studentId=" + studentId +
+                ", student2Id=" + student2Id +
+                '}';
+    }
 }

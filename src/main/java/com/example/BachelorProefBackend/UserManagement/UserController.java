@@ -45,7 +45,7 @@ public class UserController {
     //Mapping based on URL query example
     @GetMapping
     @ResponseBody
-    public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
+    public List<User_entity> getUsers(@RequestParam(defaultValue = "0") long id, @RequestParam(defaultValue = "null") String type) {
         return userService.getUsers(id,type);
     }
 
