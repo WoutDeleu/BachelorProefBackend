@@ -1,22 +1,27 @@
 package com.example.BachelorProefBackend.UserManagement;
 
-import org.apache.catalina.User;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.SubjectAssignment.SubjectAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="userManagement/users")
 public class UserController {
     private final UserService userService;
+    private final SubjectAssignmentService saService;
 
     @Autowired //instantie van userService automatisch aangemaakt en in deze constructor gestoken (Dependency injection)
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SubjectAssignmentService saService) {
         this.userService = userService;
+        this.saService = saService;
     }
 
     //GET
+
     //@GetMapping
     //public List<User_entity> getAllUsers() {
     //    return userService.getAllUsers();
@@ -49,6 +54,11 @@ public class UserController {
         return userService.getUsers(id,type);
     }
 
+    @GetMapping(path="{userId}/subject")
+    public List<Subject> getSubjectByUserId(@PathVariable("userId") long id){
+        return saService.getSubjectByUserId(id);
+    }
+
     //POST
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
@@ -57,7 +67,7 @@ public class UserController {
 
     //DELETE
     @DeleteMapping(path="{userId}")
-    public void deleteUser(@PathVariable("userId") Long id) {
+    public void deleteUser(@PathVariable("userId") long id) {
         userService.deleteUser(id);
     }
 
