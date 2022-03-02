@@ -1,5 +1,8 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
+import com.example.BachelorProefBackend.UserManagement.Role.Role;
+import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,13 +12,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Service //Specifieke versie van @Component: deze klasse wordt gebruikt als Bean
+@Transactional
+@Slf4j //logging
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     //GET
@@ -29,6 +36,7 @@ public class UserService {
     public List<User_entity> getUserById(long user_id) {
         return userRepository.findAllById(Collections.singleton(user_id));
     }
+
     public List<User_entity> getAllStudents() {
         return userRepository.getAllStudents();
     }
@@ -68,17 +76,27 @@ public class UserService {
 
     //POST
     public void addNewUser(User_entity user) {
+        log.info("Saving new user {} to the database", user.getFirstname());
         userRepository.save(user);
     }
 
     //PUT
-    @Transactional
     public void updateUser(long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
     }
+
+    //AUTHENTICATION
+    public void addRoleToUser(String email, String roleName){
+        log.info("Adding role {} to user {}", roleName, email);
+        User_entity user = userRepository.findByEmail(email);
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
+    }
+
+
 
 
 }

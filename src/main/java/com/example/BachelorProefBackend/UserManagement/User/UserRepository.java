@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User_entity, Long> {
+   User_entity findByEmail(String email); //email act as username
+
    @Query(value = "select * from User_entity u where u.is_student", nativeQuery = true)
    List<User_entity> getAllStudents();
 
