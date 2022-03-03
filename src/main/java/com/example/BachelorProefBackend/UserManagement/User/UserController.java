@@ -2,7 +2,9 @@ package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.SubjectManagement.SubjectAssignment.SubjectAssignmentService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -76,8 +78,19 @@ public class UserController {
         userService.updateUser(id, name, email);
     }
 
+    //AUTHENTICATION
+    @PostMapping(path="/addRoleToUser")
+    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form){
+        userService.addRoleToUser(form.getEmail(), form.getRoleName());
+        return ResponseEntity.ok().build();
+    }
 
 
 
+}
 
+@Data //getters and setters
+class RoleToUserForm{
+    private String email;
+    private String roleName;
 }

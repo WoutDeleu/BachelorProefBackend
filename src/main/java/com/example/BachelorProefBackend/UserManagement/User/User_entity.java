@@ -7,14 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
-@Entity //Mapping naar database
+@Entity //Mapping to database
 @Table
+/* For the time being not in use, because I don't want any setters of contructors with access to id
 @Data //Getters and setters (Lombok)
 @NoArgsConstructor //Default constructor (Lombok)
 @AllArgsConstructor //Constructor (Lombok)
+ */
 public class User_entity {
-    //Tutorial:: https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/jpa-primary-key.html
+
     @Id
     @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
@@ -34,81 +37,56 @@ public class User_entity {
 
 
 
-//    public User_entity() { }
-//
-//    public User_entity(String firstname, String lastname, String email, String telNr, boolean isStudent, boolean isAdministrator, boolean isPromotor, boolean isCoordinator) {
-//        this.firstname = firstname;
-//        this.lastname = lastname;
-//        this.email = email;
-//        this.telNr = telNr;
-//        this.isStudent = isStudent;
-//        this.isAdministrator = isAdministrator;
-//        this.isPromotor = isPromotor;
-//        this.isCoordinator = isCoordinator;
-//    }
-//
-//
-//    public long getId() {
-//        return id;
-//    }
-//    public String getFirstname() {
-//        return firstname;
-//    }
-//    public String getLastname() {
-//        return lastname;
-//    }
-//    public String getEmail() {
-//        return email;
-//    }
-//    public boolean isStudent() {
-//        return isStudent;
-//    }
-//    public boolean isAdministrator() {
-//        return isAdministrator;
-//    }
-//    public boolean isPromotor() {
-//        return isPromotor;
-//    }
-//    public boolean isCoordinator() {
-//        return isCoordinator;
-//    }
-//    public long getTargetAudienceId() {
-//        return targetAudienceId;
-//    }
-//    public String getTelNr() {
-//        return telNr;
-//    }
-//
-//    public void setId(long id) {
-//        this.id = id;
-//    }
-//    public void setFirstname(String firstname) {
-//        this.firstname = firstname;
-//    }
-//    public void setLastname(String lastname) {
-//        this.lastname = lastname;
-//    }
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//    public void setStudent(boolean student) {
-//        isStudent = student;
-//    }
-//    public void setAdministrator(boolean administrator) {
-//        isAdministrator = administrator;
-//    }
-//    public void setPromotor(boolean promotor) {
-//        isPromotor = promotor;
-//    }
-//    public void setCoordinator(boolean coordinator) {
-//        isCoordinator = coordinator;
-//    }
-//    public void setTargetAudienceId(long targetAudienceId) {
-//        this.targetAudienceId = targetAudienceId;
-//    }
-//    public void setTelNr(String telNr) {
-//        this.telNr = telNr;
-//    }
+    public User_entity() { }
+
+    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, long targetAudienceId) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.telNr = telNr;
+        this.password = password;
+        this.roles = roles;
+        this.targetAudienceId = targetAudienceId;
+    }
+
+    public long getId() {
+        return id;
+    }
+    public String getFirstname() {
+        return firstname;
+    }
+    public String getLastname() {
+        return lastname;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getPassword() {return password;}
+    public Collection<Role> getRoles() {return roles;}
+    public long getTargetAudienceId() {
+        return targetAudienceId;
+    }
+    public String getTelNr() {
+        return telNr;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPassword(String password) {this.password = password;}
+    public void setRoles(Collection<Role> roles) {this.roles = roles;}
+    public void setTargetAudienceId(long targetAudienceId) {
+        this.targetAudienceId = targetAudienceId;
+    }
+    public void setTelNr(String telNr) {
+        this.telNr = telNr;
+    }
 
     @Override
     public String toString() {
@@ -118,10 +96,8 @@ public class User_entity {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", telNr='" + telNr + '\'' +
-//                ", isStudent=" + isStudent +
-//                ", isAdministrator=" + isAdministrator +
-//                ", isPromotor=" + isPromotor +
-//                ", isCoordinator=" + isCoordinator +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 ", targetAudienceId=" + targetAudienceId +
                 '}';
     }
