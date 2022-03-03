@@ -4,25 +4,30 @@ import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service //Specifieke versie van @Component: deze klasse wordt gebruikt als Bean
 @Transactional
 @Slf4j //logging
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //GET
@@ -77,6 +82,7 @@ public class UserService {
     //POST
     public void addNewUser(User_entity user) {
         log.info("Saving new user {} to the database", user.getFirstname());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -96,7 +102,23 @@ public class UserService {
         user.getRoles().add(role);
     }
 
-
+    @Override
+    //Tell spring what users it has available
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User_entity user = userRepository.findByEmail(username);
+        if(user == null){
+            log.error("User not found in the database");
+            throw new UsernameNotFoundException("User not found in the database");
+        }
+        else{
+            log.info("User found in the database: {}", username);
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
 
 
 }

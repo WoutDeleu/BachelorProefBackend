@@ -12,10 +12,10 @@ public class RoleConfig {
     @Bean
     CommandLineRunner commandLineRunner4(RoleRepository roleRepository) {
         return args -> {
-            Role user = new Role("ROLE_USER");
-            Role manager = new Role("ROLE_MANAGER");
+            Role user = new Role("ROLE_STUDENT");
+            Role manager = new Role("ROLE_COORDINATOR");
             Role admin = new Role("ROLE_ADMIN");
-            Role superAdmin = new Role("ROLE_SUPER_ADMIN");
+            Role superAdmin = new Role("ROLE_PROMOTOR");
 
             roleRepository.saveAll(List.of(user, manager, admin, superAdmin));
 
