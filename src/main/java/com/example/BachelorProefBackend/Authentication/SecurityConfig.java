@@ -55,12 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        // TODO maybe?
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception{
+//        // TODO maybe?
+//        return super.authenticationManagerBean();
+//    }
 
 
 

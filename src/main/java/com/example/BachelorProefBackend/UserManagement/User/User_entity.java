@@ -1,6 +1,7 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class User_entity {
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles = new ArrayList<>();
     @ManyToMany
+    @JsonIgnore // No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_preference")
     private Collection<Subject> preferredSubjects = new ArrayList<>();
     @ManyToOne // TwoToOne

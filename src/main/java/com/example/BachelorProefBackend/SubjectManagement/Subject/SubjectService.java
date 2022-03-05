@@ -1,11 +1,14 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +28,12 @@ public class SubjectService {
     @GetMapping
     public Subject getSubjectById(long subject_id) {
         return subjectRepository.findById(subject_id);
+    }
+    @GetMapping
+    public List<User_entity> getAllUsers(long id){
+        if(subjectRepository.existsById(id))
+            return new ArrayList<User_entity>(subjectRepository.findById(id).getStudents());
+        else throw new RuntimeException("Subject not found");
     }
 
     //DELETE

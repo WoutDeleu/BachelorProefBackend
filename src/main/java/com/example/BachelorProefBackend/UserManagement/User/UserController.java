@@ -1,7 +1,6 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
-//import com.example.BachelorProefBackend.SubjectManagement.SubjectAssignment.SubjectAssignmentService;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -44,28 +43,22 @@ public class UserController {
     public List<User_entity> getAllCoordinators() {
         return userService.getAllCoordinators();
     }
-
     //Mapping based on URL query example
     @GetMapping
     @ResponseBody
     public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
         return userService.getUsers(id,type);
     }
-
     @GetMapping(path="student/{userId}/preferredSubjects")
-    public Collection<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
+    public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 
-//    @GetMapping(path="{userId}/subject")
-//    public List<Subject> getSubjectByUserId(@PathVariable("userId") long id){
-//        return saService.getSubjectByUserId(id);
-//    }
+
 
     //POST
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
         userService.addNewUser(user);
     }
-
 
 
     //DELETE

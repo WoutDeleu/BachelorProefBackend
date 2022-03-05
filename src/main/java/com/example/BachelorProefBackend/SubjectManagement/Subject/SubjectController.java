@@ -1,5 +1,6 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,8 @@ public class SubjectController {
     public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
         return subjectService.getSubjectById(subject_id);
     }
+    @GetMapping(path="{subjectId}/students")
+    public List<User_entity> getAllStudents(@PathVariable("subjectId") long id){return subjectService.getAllUsers(id);}
 
     //POST
     @PostMapping

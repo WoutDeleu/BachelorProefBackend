@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User_entity, Long> {
    List<User_entity> findAll();
 
    List<User_entity> findUser_entityByRolesId(long roleId);
-//   void save(User_entity user);
+
 
 }

@@ -6,7 +6,6 @@ import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +36,6 @@ public class UserService implements UserDetailsService {
     public List<User_entity> getAllUsers() {
         return userRepository.findAll();
     }
-    //Methodes als find, findAll(), delete, ... allemaal beschikbaar doordat repository een interface is.
 
     @GetMapping
     public User_entity getUserById(long user_id) {
@@ -71,16 +69,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findUser_entityByRolesId(roleId);
     }
     @GetMapping
-    public Collection<Subject> getPreferredSubjects(long id){
-        if(userRepository.existsById(id)){
-            return userRepository.findById(id).getPreferredSubjects();
-        }
-        else{
-            //TODO exception
-            return null;
-        }
+    public List<Subject> getPreferredSubjects(long id){
+        if(userRepository.existsById(id))
+            return new ArrayList<Subject>(userRepository.findById(id).getPreferredSubjects());
+        else throw new RuntimeException("User not found");
     }
-
+    @GetMapping
     public List<User_entity> getUsers(String id, String type) {
         if(id.equals("null") && type.equals("null")) return userRepository.findAll();
         else if (type.equals("null") && !id.equals("null")) return userRepository.findAllById(Collections.singleton(Long.parseLong(id)));
@@ -121,20 +115,12 @@ public class UserService implements UserDetailsService {
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
     }
-//    @Transactional
+
     public void addNewPreferredSubject(long uid, Subject subject){
-//        User_entity user = getUserById(uid);
-//        //TODO logic to see if this is before the required date
-//        log.info("Added subject {} to user {}", subject.getName(), user.getFirstname());
-//        user.addPreferredSubject(subject);
-//        log.info("11111111"+user);
-//        userRepository.save(user);
-//        log.info("22222222"+user);
+        //TODO logic to see if this is before the required date
         User_entity user = userRepository.findById(uid);
         user.getPreferredSubjects().add(subject);
         log.info("Added subject {} to user {}", subject.getName(), user.getFirstname());
-
-
     }
 
     //AUTHENTICATION

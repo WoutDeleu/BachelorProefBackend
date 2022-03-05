@@ -51,7 +51,7 @@ public class Subject {
     public long getTagId() {
         return tagId;
     }
-//    public Collection<User_entity> getStudents() {return students;}
+    public Collection<User_entity> getStudents() {return students;}
 
     public void setId(long id) {this.id = id;}
     public void setName(String name) {this.name = name;}
@@ -66,7 +66,7 @@ public class Subject {
     public void setTagId(long tagId) {
         this.tagId = tagId;
     }
-//    public void setStudents(Collection<Role> roles) {this.students = students;}
+    public void setStudents(Collection<Role> roles) {this.students = students;}
 
     @Override
     public String toString() {
