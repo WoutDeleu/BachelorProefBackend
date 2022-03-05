@@ -1,13 +1,10 @@
 package com.example.BachelorProefBackend.UserManagement.User;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 @Entity //Mapping to database
 @Table
@@ -27,25 +24,25 @@ public class User_entity {
     private String email;
     private String telNr;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)//load all roles every time we load a user
+    @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name="subject_preference")
+    private Collection<Subject> preferredSubjects = new ArrayList<>();
+    @ManyToOne // TwoToOne
+    private Subject finalSubject;
     private long targetAudienceId;
-//    private boolean isStudent;
-//    private boolean isAdministrator;
-//    private boolean isPromotor;
-//    private boolean isCoordinator;
-
-
 
     public User_entity() { }
 
-    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, long targetAudienceId) {
+    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, Collection<Subject> subjects,long targetAudienceId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.telNr = telNr;
         this.password = password;
         this.roles = roles;
+        this.preferredSubjects = preferredSubjects;
         this.targetAudienceId = targetAudienceId;
     }
 
@@ -63,6 +60,8 @@ public class User_entity {
     }
     public String getPassword() {return password;}
     public Collection<Role> getRoles() {return roles;}
+    public Collection<Subject> getPreferredSubjects() {return preferredSubjects;}
+    public Subject getFinalSubject(){return finalSubject;}
     public long getTargetAudienceId() {
         return targetAudienceId;
     }
@@ -81,11 +80,17 @@ public class User_entity {
     }
     public void setPassword(String password) {this.password = password;}
     public void setRoles(Collection<Role> roles) {this.roles = roles;}
+    public void setPreferredSubjects(Collection<Subject> preferredSubjects) {this.preferredSubjects = preferredSubjects;}
+    public void setFinalSubject(Subject finalSubject){this.finalSubject = finalSubject;}
     public void setTargetAudienceId(long targetAudienceId) {
         this.targetAudienceId = targetAudienceId;
     }
     public void setTelNr(String telNr) {
         this.telNr = telNr;
+    }
+
+    public void addPreferredSubject(Subject subject){
+        preferredSubjects.add(subject);
     }
 
     @Override
@@ -98,6 +103,8 @@ public class User_entity {
                 ", telNr='" + telNr + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
+                ", preferredSubjects=" + preferredSubjects +
+                ", finalSubject=" + finalSubject +
                 ", targetAudienceId=" + targetAudienceId +
                 '}';
     }

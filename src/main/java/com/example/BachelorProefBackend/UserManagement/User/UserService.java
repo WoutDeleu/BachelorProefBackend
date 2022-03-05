@@ -1,5 +1,6 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,8 @@ public class UserService implements UserDetailsService {
     //Methodes als find, findAll(), delete, ... allemaal beschikbaar doordat repository een interface is.
 
     @GetMapping
-    public List<User_entity> getUserById(long user_id) {
-        return userRepository.findAllById(Collections.singleton(user_id));
+    public User_entity getUserById(long user_id) {
+        return userRepository.findById(user_id);
     }
 
     @GetMapping
@@ -48,27 +49,46 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public List<User_entity> getAllStudents() {
-        return userRepository.getAllStudents();
+
+    @GetMapping
+    public List<User_entity> getAllStudents(){
+        long roleId = roleRepository.findByName("ROLE_STUDENT").getId();
+        return userRepository.findUser_entityByRolesId(roleId);
     }
+    @GetMapping
     public List<User_entity> getAllAdministrators() {
-        return userRepository.getAllAdministrators();
+        long roleId = roleRepository.findByName("ROLE_ADMIN").getId();
+        return userRepository.findUser_entityByRolesId(roleId);
     }
+    @GetMapping
     public List<User_entity> getAllPromotors() {
-        return userRepository.getAllPromotors();
+        long roleId = roleRepository.findByName("ROLE_PROMOTOR").getId();
+        return userRepository.findUser_entityByRolesId(roleId);
     }
+    @GetMapping
     public List<User_entity> getAllCoordinators() {
-        return userRepository.getAllCoordinators();
+        long roleId = roleRepository.findByName("ROLE_COORDINATOR").getId();
+        return userRepository.findUser_entityByRolesId(roleId);
+    }
+    @GetMapping
+    public Collection<Subject> getPreferredSubjects(long id){
+        if(userRepository.existsById(id)){
+            return userRepository.findById(id).getPreferredSubjects();
+        }
+        else{
+            //TODO exception
+            return null;
+        }
     }
 
     public List<User_entity> getUsers(String id, String type) {
         if(id.equals("null") && type.equals("null")) return userRepository.findAll();
         else if (type.equals("null") && !id.equals("null")) return userRepository.findAllById(Collections.singleton(Long.parseLong(id)));
         else if (id.equals("null") && !type.equals("null")) {
-            if(type.equals("administrator")) return userRepository.getAllCoordinators();
-            else if(type.equals("student")) return userRepository.getAllStudents();
-            else if (type.equals("promotors")) return userRepository.getAllPromotors();
-            else if (type.equals("coordinator")) return userRepository.getAllCoordinators();
+            if(type.equals("administrator")) return getAllCoordinators();
+            else if(type.equals("student")) return getAllStudents();
+            else if (type.equals("promotors")) return getAllPromotors();
+            else if (type.equals("coordinator")) return getAllCoordinators();
             else return null;
         }
         else {
@@ -92,6 +112,8 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+
+
     //PUT
     public void updateUser(long id, String firstName, String email) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
@@ -99,11 +121,27 @@ public class UserService implements UserDetailsService {
         if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
     }
+//    @Transactional
+    public void addNewPreferredSubject(long uid, Subject subject){
+//        User_entity user = getUserById(uid);
+//        //TODO logic to see if this is before the required date
+//        log.info("Added subject {} to user {}", subject.getName(), user.getFirstname());
+//        user.addPreferredSubject(subject);
+//        log.info("11111111"+user);
+//        userRepository.save(user);
+//        log.info("22222222"+user);
+        User_entity user = userRepository.findById(uid);
+        user.getPreferredSubjects().add(subject);
+        log.info("Added subject {} to user {}", subject.getName(), user.getFirstname());
+
+
+    }
 
     //AUTHENTICATION
     public User_entity getUser(String email){
         return userRepository.findByEmail(email);
     }
+
 
     public void addRoleToUser(String email, String roleName){
         log.info("Adding role {} to user {}", roleName, email);

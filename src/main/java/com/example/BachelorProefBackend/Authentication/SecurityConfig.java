@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -37,16 +36,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/authentication/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        // Order of operations important
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         // Everyone has access
         http.authorizeRequests().antMatchers("/authentication/login/**").permitAll();
         http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers("/subjectManagement/subjects/**").permitAll();
+        http.authorizeRequests().antMatchers( "/userManagement/users/student/**").permitAll(); //service layer checks that student can only access his own data
+
         // Access restricted
-        http.authorizeRequests().antMatchers(GET,"/userManagement/users/**").hasAnyAuthority("ROLE_STUDENT");
-        http.authorizeRequests().antMatchers(POST, "/userManagement/users/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/subjectManagement/subjectAssignment/**").hasAnyAuthority("ROLE_COORDINATOR");
+        http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
+
+
         http.authorizeRequests().anyRequest().authenticated();
-//        http.authorizeRequests().anyRequest().permitAll();
+
         http.addFilter(customAuthenticationFilter);
 
     }

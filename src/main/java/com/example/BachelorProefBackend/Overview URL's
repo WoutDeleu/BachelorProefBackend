@@ -17,6 +17,7 @@ subjectManagement/subjectAssignment/{saId} (GET, DELETE, PUT)
 
 userManagement/users (GET, POST)
 userManagement/users/student (GET)
+userManagement/users/student/{userId}/preferredSubjects (GET)
 userManagement/users/administrator (GET)
 userManagement/users/promotor (GET)
 userManagement/users/coordinator (GET)

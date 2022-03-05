@@ -17,7 +17,7 @@ public class SubjectController {
     @GetMapping
     public List<Subject> getAllSubjects() {return subjectService.getAllSubjects();}
     @GetMapping(path="{subjectId}")
-    public List<Subject> getSubjectById(@PathVariable("subjectId") Long subject_id){
+    public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
         return subjectService.getSubjectById(subject_id);
     }
 

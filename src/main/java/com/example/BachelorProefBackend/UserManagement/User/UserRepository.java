@@ -1,27 +1,18 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User_entity, Long> {
+
+   User_entity findById(long id);
    User_entity findByEmail(String email); //email act as username
 
-   @Query(value = "select * from User_entity u where u.is_student", nativeQuery = true)
-   List<User_entity> getAllStudents();
+   List<User_entity> findAll();
 
-   @Query(value = "select * from User_entity u where u.is_administrator", nativeQuery = true)
-   List<User_entity> getAllAdministrators();
-
-   @Query(value = "select * from User_entity u where u.is_promotor", nativeQuery = true)
-   List<User_entity> getAllPromotors();
-
-   @Query(value = "select * from User_entity u where u.is_coordinator", nativeQuery = true)
-   List<User_entity> getAllCoordinators();
-
-
+   List<User_entity> findUser_entityByRolesId(long roleId);
+//   void save(User_entity user);
 
 }

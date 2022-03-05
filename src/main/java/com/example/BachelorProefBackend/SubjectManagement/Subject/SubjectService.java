@@ -23,8 +23,8 @@ public class SubjectService {
     public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
 
     @GetMapping
-    public List<Subject> getSubjectById(long subject_id) {
-        return subjectRepository.findAllById(Collections.singleton(subject_id));
+    public Subject getSubjectById(long subject_id) {
+        return subjectRepository.findById(subject_id);
     }
 
     //DELETE

@@ -10,7 +10,6 @@ import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,18 +48,18 @@ public class AuthenticationController {
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
                 User_entity user = userService.getUserByEmail(username);
-                // Create new token
-                String access_token = JWT.create()
-                        .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000)) //current time + 10min
-                        .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                        .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+                    // Create new token
+                    String access_token = JWT.create()
+                            .withSubject(user.getEmail())
+                            .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000)) //current time + 10min
+                            .withIssuer(request.getRequestURL().toString())
+                            .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                            .sign(algorithm);
+                    Map<String, String> tokens = new HashMap<>();
+                    tokens.put("access_token", access_token);
+                    tokens.put("refresh_token", refresh_token);
+                    response.setContentType(APPLICATION_JSON_VALUE);
+                    new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             }
             catch (Exception exception){
                 log.error("Error renewing token: {}", exception.getMessage());
