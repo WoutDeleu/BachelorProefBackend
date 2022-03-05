@@ -5,6 +5,7 @@ import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,6 +41,11 @@ public class UserService implements UserDetailsService {
     @GetMapping
     public List<User_entity> getUserById(long user_id) {
         return userRepository.findAllById(Collections.singleton(user_id));
+    }
+
+    @GetMapping
+    public User_entity getUserByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
     public List<User_entity> getAllStudents() {
@@ -95,6 +101,10 @@ public class UserService implements UserDetailsService {
     }
 
     //AUTHENTICATION
+    public User_entity getUser(String email){
+        return userRepository.findByEmail(email);
+    }
+
     public void addRoleToUser(String email, String roleName){
         log.info("Adding role {} to user {}", roleName, email);
         User_entity user = userRepository.findByEmail(email);

@@ -10,6 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration //recognised by Spring as settings
@@ -28,10 +33,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter((authenticationManagerBean()));
+        customAuthenticationFilter.setFilterProcessesUrl("/authentication/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        // Order of operations important
+        http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // Everyone has access
+        http.authorizeRequests().antMatchers("/authentication/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll();
+        // Access restricted
+        http.authorizeRequests().antMatchers(GET,"/userManagement/users/**").hasAnyAuthority("ROLE_STUDENT");
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
+//        http.authorizeRequests().anyRequest().permitAll();
+        http.addFilter(customAuthenticationFilter);
+
     }
 
     @Bean
