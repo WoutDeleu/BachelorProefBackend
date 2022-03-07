@@ -1,14 +1,14 @@
 http://localhost:8081/...
 
 authentication/login (POST)
-    Message nodig met username en password als key-value pair in de body
+    Message required with username en password as key-value pair in the body
     x-www-form-urlencoded
-    geeft access_token en refresh_token terug in body
-    opbouw tokens zie Word document
+    returns access_token and refresh_token in body
+    structure tokens: see Word document
 authentication/token/refresh (GET)
-    In de header: Bearer+spatie+<refresh token>
-    (Altijd deze format voor alle requests)
-    (Zie screenshots van postman in messenger)
+    In the header: Bearer+space+<refresh token>
+    (Always this format for all requests)
+    (See screenshots from Postman in messenger)
 
 subjectManagement/subjects (GET, POST)
 subjectManagement/subjects/{subjectId} (GET, DELETE, PUT)

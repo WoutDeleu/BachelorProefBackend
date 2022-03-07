@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -49,6 +50,7 @@ public class UserService implements UserDetailsService {
 
 
     @GetMapping
+    @CrossOrigin(origins ="http://localhost:3000")
     public List<User_entity> getAllStudents(){
         long roleId = roleRepository.findByName("ROLE_STUDENT").getId();
         return userRepository.findUser_entityByRolesId(roleId);

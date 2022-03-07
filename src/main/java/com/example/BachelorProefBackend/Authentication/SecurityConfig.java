@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter((authenticationManagerBean()));
         customAuthenticationFilter.setFilterProcessesUrl("/authentication/login");
-        http.csrf().disable();
+        //http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -45,22 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers( "/userManagement/users/student/**").permitAll(); //service layer checks that student can only access his own data
 
         // Access restricted
-        http.authorizeRequests().antMatchers("/subjectManagement/subjectAssignment/**").hasAnyAuthority("ROLE_COORDINATOR");
-        http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
+//        http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
+//        http.authorizeRequests().antMatchers("/subjectManagement/subjectAssignment/**").hasAnyAuthority("ROLE_COORDINATOR");
+//
+//
 
-
-        http.authorizeRequests().anyRequest().authenticated();
+//        http.authorizeRequests().anyRequest().authenticated();
 
         http.addFilter(customAuthenticationFilter);
 
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception{
-//        // TODO maybe?
-//        return super.authenticationManagerBean();
-//    }
 
 
 

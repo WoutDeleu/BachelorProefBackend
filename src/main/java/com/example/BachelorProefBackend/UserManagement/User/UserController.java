@@ -46,20 +46,18 @@ public class UserController {
     //Mapping based on URL query example
     @GetMapping
     @ResponseBody
+    @CrossOrigin(origins ="http://localhost:3000")
     public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
         return userService.getUsers(id,type);
     }
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 
-
-
     //POST
     @PostMapping
     public void addNewUser(@RequestBody User_entity user) {
         userService.addNewUser(user);
     }
-
 
     //DELETE
     @DeleteMapping(path="{userId}")

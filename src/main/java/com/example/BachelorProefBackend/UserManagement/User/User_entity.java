@@ -37,7 +37,7 @@ public class User_entity {
 
     public User_entity() { }
 
-    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, Collection<Subject> subjects,long targetAudienceId) {
+    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
