@@ -24,6 +24,6 @@ public class BachelorProefBackendApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-
+	//
 
 }
