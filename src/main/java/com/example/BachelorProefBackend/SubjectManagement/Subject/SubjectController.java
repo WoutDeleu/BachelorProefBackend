@@ -21,8 +21,8 @@ public class SubjectController {
     public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
         return subjectService.getSubjectById(subject_id);
     }
-    @GetMapping(path="{subjectId}/students")
-    public List<User_entity> getAllStudents(@PathVariable("subjectId") long id){return subjectService.getAllUsers(id);}
+//    @GetMapping(path="{subjectId}/students")
+//    public List<User_entity> getAllStudents(@PathVariable("subjectId") long id){return subjectService.getAllUsers(id);}
 
     //POST
     @PostMapping
@@ -36,8 +36,11 @@ public class SubjectController {
 
     //PUT
     @PutMapping(path="{subjectId}")
-    public void updateSubject(@PathVariable("subjectId") long id, @RequestParam(required = false) String name, @RequestParam(required = false) String description) {
-        subjectService.updateSubject(id, name, description);
+    public void updateSubject(@PathVariable("subjectId") long id,
+                              @RequestParam(required = false) String name,
+                              @RequestParam(required = false) String description,
+                              @RequestParam(required = false) int nrOfStudents) {
+        subjectService.updateSubject(id, name, description, nrOfStudents);
     }
 
 }

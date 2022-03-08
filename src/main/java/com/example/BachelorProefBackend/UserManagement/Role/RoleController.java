@@ -1,6 +1,5 @@
 package com.example.BachelorProefBackend.UserManagement.Role;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +24,3 @@ public class RoleController {
     public void addNewRole(@RequestParam String name){roleService.addNewRole(new Role(name));}
 }
 
-//@Data
-//class NewRoleForm{
-//    private String name;
-//    private String temp;
-//}

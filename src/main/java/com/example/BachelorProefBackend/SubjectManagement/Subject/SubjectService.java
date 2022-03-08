@@ -29,12 +29,12 @@ public class SubjectService {
     public Subject getSubjectById(long subject_id) {
         return subjectRepository.findById(subject_id);
     }
-    @GetMapping
-    public List<User_entity> getAllUsers(long id){
-        if(subjectRepository.existsById(id))
-            return new ArrayList<User_entity>(subjectRepository.findById(id).getStudents());
-        else throw new RuntimeException("Subject not found");
-    }
+//    @GetMapping
+//    public List<User_entity> getAllUsers(long id){
+//        if(subjectRepository.existsById(id))
+//            return new ArrayList<User_entity>(subjectRepository.findById(id).getStudents());
+//        else throw new RuntimeException("Subject not found");
+//    }
 
     //DELETE
     public void deleteSubject(long id){
@@ -47,10 +47,13 @@ public class SubjectService {
 
     //PUT
     @Transactional
-    public void updateSubject(long id, String name, String description) {
+    public void updateSubject(long id, String name, String description, int nrOfStudents) {
         if (!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
         if(name != null && name.length()>0 && !Objects.equals(subject.getName(), name)) subject.setName(name);
         if(description != null && description.length()>0 && !Objects.equals(subject.getDescription(), description)) subject.setDescription(description);
+        if(nrOfStudents==0) throw new RuntimeException("Number of students can not be equal to zero");
+        else if (nrOfStudents>2) throw new RuntimeException("Number of students can not be over 2");
+        else subject.setNrOfStudents(nrOfStudents);
     }
 }

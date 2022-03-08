@@ -46,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // Everyone has access
-        http.authorizeRequests().antMatchers("/authentication/login/**").permitAll();
-        http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/userManagement/users").permitAll();
+        http.authorizeRequests().antMatchers("/authentication/login/**").permitAll(); //login
+        http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll(); //refresh
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users").permitAll(); //register
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/**").authenticated();
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects/**").authenticated();
         http.authorizeRequests().antMatchers( "/userManagement/users/student/**").authenticated(); //service layer checks that student can only access his own data
