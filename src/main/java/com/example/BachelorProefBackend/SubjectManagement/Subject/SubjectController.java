@@ -26,7 +26,9 @@ public class SubjectController {
 
     //POST
     @PostMapping
-    public void addNewSubject(@RequestBody Subject subject) {subjectService.addNewSubject(subject);}
+    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents) {
+        subjectService.addNewSubject(new Subject(name, description, nrOfStudents));
+    }
 
     //DELETE
     @DeleteMapping(path="{subjectId}")

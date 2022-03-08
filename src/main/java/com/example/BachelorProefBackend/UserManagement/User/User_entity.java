@@ -37,15 +37,15 @@ public class User_entity {
 
     public User_entity() { }
 
-    public User_entity(String firstname, String lastname, String email, String telNr, String password, Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId) {
+    public User_entity(String firstname, String lastname, String email, String telNr, String password/* Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId*/) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.telNr = telNr;
         this.password = password;
-        this.roles = roles;
-        this.preferredSubjects = preferredSubjects;
-        this.targetAudienceId = targetAudienceId;
+//        this.roles = roles;
+//        this.preferredSubjects = preferredSubjects;
+//        this.targetAudienceId = targetAudienceId;
     }
 
     public long getId() {

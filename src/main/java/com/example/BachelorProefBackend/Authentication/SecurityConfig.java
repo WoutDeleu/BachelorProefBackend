@@ -12,7 +12,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration //recognised by Spring as settings
@@ -46,15 +48,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Everyone has access
         http.authorizeRequests().antMatchers("/authentication/login/**").permitAll();
         http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers("/subjectManagement/subjects/**").permitAll();
-        http.authorizeRequests().antMatchers( "/userManagement/users/student/**").permitAll(); //service layer checks that student can only access his own data
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/**").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects/**").authenticated();
+        http.authorizeRequests().antMatchers( "/userManagement/users/student/**").authenticated(); //service layer checks that student can only access his own data
 
         // Access restricted
-        http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
+        //http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR");
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR");
+        //http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR");
+
         http.authorizeRequests().antMatchers("/subjectManagement/subjectAssignment/**").hasAnyAuthority("ROLE_COORDINATOR");
 
-        http.authorizeRequests().anyRequest().authenticated();
 
+//        http.authorizeRequests().anyRequest().authenticated();
 
         http.addFilter(customAuthenticationFilter);
 

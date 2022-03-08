@@ -55,8 +55,8 @@ public class UserController {
 
     //POST
     @PostMapping
-    public void addNewUser(@RequestBody User_entity user) {
-        userService.addNewUser(user);
+    public void addNewUser(@RequestParam String firstname, String lastname, String email, String telNr, String password) {
+        userService.addNewUser(new User_entity(firstname, lastname, email, telNr, password));
     }
 
     //DELETE

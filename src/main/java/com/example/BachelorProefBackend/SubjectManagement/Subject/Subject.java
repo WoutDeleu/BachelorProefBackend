@@ -27,13 +27,13 @@ public class Subject {
 
     public Subject() { }
 
-    public Subject(String name, String description, int nrOfStudents, long companyId, long targetAudienceId, long tagId, Collection<User_entity> students) {
+    public Subject(String name, String description, int nrOfStudents) {
         this.name = name;
         this.description = description;
         this.nrOfStudents = nrOfStudents;
-        this.companyId = companyId;
-        this.targetAudienceId = targetAudienceId;
-        this.tagId = tagId;
+//        this.companyId = companyId;
+//        this.targetAudienceId = targetAudienceId;
+//        this.tagId = tagId;
     }
 
     public long getId() {return id;}
