@@ -37,4 +37,5 @@ public class SubjectController {
     public void updateSubject(@PathVariable("subjectId") long id, @RequestParam(required = false) String name, @RequestParam(required = false) String description) {
         subjectService.updateSubject(id, name, description);
     }
+
 }

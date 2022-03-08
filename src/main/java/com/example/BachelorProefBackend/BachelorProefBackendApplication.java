@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -25,6 +26,7 @@ public class BachelorProefBackendApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+	// CORS configuration
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -36,6 +38,18 @@ public class BachelorProefBackendApplication {
 						.allowedOrigins("http://localhost:3000");
 			}
 		};
+	}
+
+	// logging
+	@Bean
+	public CommonsRequestLoggingFilter logFilter(){
+		CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+		filter.setIncludeQueryString(true);
+		filter.setIncludePayload(true);
+		filter.setMaxPayloadLength(10000);
+		filter.setIncludeHeaders(true);
+		filter.setAfterMessagePrefix("REQUEST DATA: ");
+		return filter;
 	}
 
 }

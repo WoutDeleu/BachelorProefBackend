@@ -22,7 +22,7 @@ public class RoleController {
 
     //POST
     @PostMapping
-    public void addNewRole(@RequestBody Role role){roleService.addNewRole(role);}
+    public void addNewRole(@RequestParam String name){roleService.addNewRole(new Role(name));}
 }
 
 //@Data
