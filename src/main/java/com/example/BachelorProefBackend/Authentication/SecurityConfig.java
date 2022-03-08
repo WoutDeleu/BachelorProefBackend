@@ -41,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and(); //verwijzing naar bean in main
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+
+
         // Everyone has access
         http.authorizeRequests().antMatchers("/authentication/login/**").permitAll();
         http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll();
@@ -51,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/subjectManagement/subjectAssignment/**").hasAnyAuthority("ROLE_COORDINATOR");
 
-
         http.authorizeRequests().anyRequest().authenticated();
+
 
         http.addFilter(customAuthenticationFilter);
 
