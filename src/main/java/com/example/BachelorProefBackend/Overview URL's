@@ -13,8 +13,7 @@ authentication/token/refresh (GET)
 subjectManagement/subjects (GET, POST)
 subjectManagement/subjects/{subjectId} (GET, DELETE, PUT)
 subjectManagement/subjects/{subjectId}/students
-subjectManagement/subjectAssignment (GET, POST)
-subjectManagement/subjectAssignment/{saId} (GET, DELETE, PUT)
+
 
 userManagement/users (GET, POST)
 userManagement/users/student (GET)

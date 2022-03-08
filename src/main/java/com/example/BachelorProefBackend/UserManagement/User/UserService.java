@@ -111,11 +111,14 @@ public class UserService implements UserDetailsService {
 
 
     //PUT
-    public void updateUser(long id, String firstName, String email) {
+    public void updateUser(long id, String firstname, String lastname, String email, String telNr, String password) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
-        if(firstName != null && firstName.length()>0 && !Objects.equals(user.getFirstname(), firstName)) user.setFirstname(firstName);
-        if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setFirstname(email);
+        if(firstname != null && firstname.length()>0 && !Objects.equals(user.getFirstname(), firstname)) user.setFirstname(firstname);
+        user.setLastname(lastname);
+        if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setEmail(email);
+        user.setTelNr(telNr);
+        user.setPassword(passwordEncoder.encode(password));
     }
 
     public void addNewPreferredSubject(long uid, Subject subject){

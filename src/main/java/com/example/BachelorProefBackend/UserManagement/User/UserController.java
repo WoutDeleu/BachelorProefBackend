@@ -67,28 +67,27 @@ public class UserController {
 
     //PUT
     @PutMapping(path="{userId}")
-    public void updateUser(@PathVariable("userId") long id, @RequestParam(required = false) String name, @RequestParam(required = false) String email) {
-        userService.updateUser(id, name, email);
+    public void updateUser(@PathVariable("userId") long id,
+                           @RequestParam(required = false) String firstname,
+                           @RequestParam(required = false) String lastname,
+                           @RequestParam(required = false) String email,
+                           @RequestParam(required = false) String telNr,
+                           @RequestParam(required = false) String password) {
+        userService.updateUser(id, firstname, lastname, email, telNr, password);
     }
-    @PutMapping(path="student/{userId}/preferredSubjects/{subjectId}")
-    public void addNewPreferredSubject(@PathVariable("userId") long uid, @PathVariable("subjectId") long sid){
-        Subject subject = subjectService.getSubjectById(sid);
-        userService.addNewPreferredSubject(uid, subject);
+    @PostMapping(path="student/addPreferredSubject")
+    public void addNewPreferredSubject(@RequestParam long userId, long subjectId){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        userService.addNewPreferredSubject(userId, subject);
     }
 
     //AUTHENTICATION
     @PostMapping(path="addRoleToUser")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form){
-        userService.addRoleToUser(form.getEmail(), form.getRoleName());
+    public ResponseEntity<?> addRoleToUser(@RequestParam String email, String roleName){
+        userService.addRoleToUser(email, roleName);
         return ResponseEntity.ok().build();
     }
 
 
 
-}
-
-@Data //getters and setters
-class RoleToUserForm{
-    private String email;
-    private String roleName;
 }
