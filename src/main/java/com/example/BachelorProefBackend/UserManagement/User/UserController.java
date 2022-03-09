@@ -2,7 +2,6 @@ package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +54,8 @@ public class UserController {
 
     //POST
     @PostMapping
-    public void addNewUser(@RequestParam String firstname, String lastname, String email, String telNr, String password) {
-        userService.addNewUser(new User_entity(firstname, lastname, email, telNr, password));
+    public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
+        userService.addNewUser(new User_entity(firstName, lastName, email, telNr, password));
     }
 
     //DELETE
