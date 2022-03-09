@@ -20,8 +20,8 @@ public class User_entity {
     @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private long id;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String telNr;
     private String password;
@@ -37,9 +37,9 @@ public class User_entity {
 
     public User_entity() { }
 
-    public User_entity(String firstname, String lastname, String email, String telNr, String password/* Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId*/) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public User_entity(String firstName, String lastName, String email, String telNr, String password/* Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId*/) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.telNr = telNr;
         this.password = password;
@@ -51,11 +51,11 @@ public class User_entity {
     public long getId() {
         return id;
     }
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
     public String getEmail() {
         return email;
@@ -71,11 +71,11 @@ public class User_entity {
         return telNr;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     public void setEmail(String email) {
         this.email = email;
@@ -99,8 +99,8 @@ public class User_entity {
     public String toString() {
         return "User_entity{" +
                 "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstName + '\'' +
+                ", lastname='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", telNr='" + telNr + '\'' +
                 ", password='" + password + '\'' +

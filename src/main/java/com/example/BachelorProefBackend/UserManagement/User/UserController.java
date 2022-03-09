@@ -68,12 +68,12 @@ public class UserController {
     //PUT
     @PutMapping(path="{userId}")
     public void updateUser(@PathVariable("userId") long id,
-                           @RequestParam(required = false) String firstname,
-                           @RequestParam(required = false) String lastname,
+                           @RequestParam(required = false) String firstName,
+                           @RequestParam(required = false) String lastName,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String telNr,
                            @RequestParam(required = false) String password) {
-        userService.updateUser(id, firstname, lastname, email, telNr, password);
+        userService.updateUser(id, firstName, lastName, email, telNr, password);
     }
     @PostMapping(path="student/addPreferredSubject")
     public void addNewPreferredSubject(@RequestParam long userId, long subjectId){

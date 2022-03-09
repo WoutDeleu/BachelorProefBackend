@@ -103,7 +103,7 @@ public class UserService implements UserDetailsService {
 
     //POST
     public void addNewUser(User_entity user) {
-        log.info("Saving new user {} to the database", user.getFirstname());
+        log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -114,8 +114,8 @@ public class UserService implements UserDetailsService {
     public void updateUser(long id, String firstname, String lastname, String email, String telNr, String password) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
-        if(firstname != null && firstname.length()>0 && !Objects.equals(user.getFirstname(), firstname)) user.setFirstname(firstname);
-        user.setLastname(lastname);
+        if(firstname != null && firstname.length()>0 && !Objects.equals(user.getFirstName(), firstname)) user.setFirstName(firstname);
+        user.setLastName(lastname);
         if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setEmail(email);
         user.setTelNr(telNr);
         user.setPassword(passwordEncoder.encode(password));
@@ -125,7 +125,7 @@ public class UserService implements UserDetailsService {
         //TODO logic to see if this is before the required date
         User_entity user = userRepository.findById(uid);
         user.getPreferredSubjects().add(subject);
-        log.info("Added subject {} to user {}", subject.getName(), user.getFirstname());
+        log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
     }
 
     //AUTHENTICATION
