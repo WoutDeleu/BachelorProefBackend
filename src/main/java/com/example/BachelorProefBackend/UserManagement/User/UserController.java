@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +15,6 @@ import java.util.*;
 
 
 @Slf4j
-@Controller
 @RestController
 @RequestMapping(path="userManagement/users")
 public class UserController {
@@ -32,8 +30,10 @@ public class UserController {
     }
 
     //GET
+    @GetMapping
+    public List<User_entity> getAllUsers() {return userService.getAllUsers();}
     @GetMapping(path="{userId}")
-    public User_entity getUserById(@PathVariable("userId") Long user_id) {return userService.getUserById(user_id);}
+    public User_entity getUserById(@PathVariable("userId") long id) {return userService.getUserById(id);}
     @GetMapping(path="student")
     public List<User_entity> getAllStudents() {
         return userService.getAllStudents();
@@ -50,14 +50,15 @@ public class UserController {
     public List<User_entity> getAllCoordinators() {
         return userService.getAllCoordinators();
     }
-    //Mapping based on URL query example
-    @GetMapping
-    @ResponseBody
-    public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
-        return userService.getUsers(id,type);
-    }
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
+//    //Mapping based on URL query example
+//    @GetMapping
+//    @ResponseBody
+//    public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
+//        return userService.getUsers(id,type);
+//    }
+
 
     //POST
     @PostMapping
@@ -96,6 +97,8 @@ public class UserController {
                            @RequestParam(required = false) String password) {
         userService.updateUser(id, firstName, lastName, email, telNr, password);
     }
+
+
     @PostMapping(path="student/addPreferredSubject")
     public void addNewPreferredSubject(@RequestParam long userId, long subjectId){
         Subject subject = subjectService.getSubjectById(subjectId);

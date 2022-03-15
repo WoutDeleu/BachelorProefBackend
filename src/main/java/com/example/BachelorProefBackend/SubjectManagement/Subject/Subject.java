@@ -25,15 +25,13 @@ public class Subject {
     @OneToMany(mappedBy = "finalSubject")
     private Collection<User_entity> finalStudents;
 
+
     public Subject() { }
 
     public Subject(String name, String description, int nrOfStudents) {
         this.name = name;
         this.description = description;
         this.nrOfStudents = nrOfStudents;
-//        this.companyId = companyId;
-//        this.targetAudienceId = targetAudienceId;
-//        this.tagId = tagId;
     }
 
     public long getId() {return id;}

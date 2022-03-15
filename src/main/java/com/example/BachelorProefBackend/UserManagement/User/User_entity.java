@@ -32,20 +32,17 @@ public class User_entity {
     @JoinTable(name="subject_preference")
     private Collection<Subject> preferredSubjects = new ArrayList<>();
     @ManyToOne // TwoToOne
-    private Subject finalSubject;
+    private Subject finalSubject; // Also valid for promotor
     private long targetAudienceId;
 
     public User_entity() { }
 
-    public User_entity(String firstName, String lastName, String email, String telNr, String password/* Collection<Role> roles, Collection<Subject> preferredSubjects,long targetAudienceId*/) {
+    public User_entity(String firstName, String lastName, String email, String telNr, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.telNr = telNr;
         this.password = password;
-//        this.roles = roles;
-//        this.preferredSubjects = preferredSubjects;
-//        this.targetAudienceId = targetAudienceId;
     }
 
     public long getId() {

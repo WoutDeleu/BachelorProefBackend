@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 import javax.transaction.Transactional;
 import java.io.FileReader;
 import java.util.*;
@@ -51,7 +53,6 @@ public class UserService implements UserDetailsService {
 
 
     @GetMapping
-    @CrossOrigin(origins ="http://localhost:3000")
     public List<User_entity> getAllStudents(){
         long roleId = roleRepository.findByName("ROLE_STUDENT").getId();
         return userRepository.findUser_entityByRolesId(roleId);
@@ -93,7 +94,6 @@ public class UserService implements UserDetailsService {
 
 
 
-
     //DELETE
     public void deleteUser(long id) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
@@ -128,15 +128,16 @@ public class UserService implements UserDetailsService {
 
 
 
-    //PUT
+    @PutMapping
+    @Transactional
     public void updateUser(long id, String firstname, String lastname, String email, String telNr, String password) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
-        if(firstname != null && firstname.length()>0 && !Objects.equals(user.getFirstName(), firstname)) user.setFirstName(firstname);
-        user.setLastName(lastname);
-        if(email != null && email.length()>0 && !Objects.equals(user.getEmail(), email)) user.setEmail(email);
-        user.setTelNr(telNr);
-        user.setPassword(passwordEncoder.encode(password));
+        if(firstname != null && firstname.length()>0) user.setFirstName(firstname);
+        if(lastname != null && lastname.length()>0) user.setLastName(lastname);
+        if(email != null && email.length()>0) user.setEmail(email);
+        if(telNr != null && telNr.length()>0) user.setTelNr(telNr);
+        if(password != null && password.length()>0) user.setPassword(passwordEncoder.encode(password));
     }
 
     public void addNewPreferredSubject(long uid, Subject subject){
