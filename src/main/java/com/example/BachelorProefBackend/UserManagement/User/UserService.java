@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import javax.transaction.Transactional;
+import java.io.FileReader;
 import java.util.*;
 
 @Service //Specifieke versie van @Component: deze klasse wordt gebruikt als Bean
@@ -87,9 +88,7 @@ public class UserService implements UserDetailsService {
             else if (type.equals("coordinator")) return getAllCoordinators();
             else return null;
         }
-        else {
-            return null;
-        }
+        else {return null;}
     }
 
 
@@ -106,6 +105,25 @@ public class UserService implements UserDetailsService {
         log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    public void addNewUserBatch(){
+        String line;
+        String [] parts;
+        Scanner sc = null;
+        try{
+            sc = new Scanner(new FileReader("UserBatchInput.csv"));
+            while (sc.hasNextLine()){
+                line = sc.nextLine();
+                if(line.length()>0){
+                    parts = line.split(";");
+                    User_entity user = new User_entity(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                    addNewUser(user);
+                }
+            }
+        }
+        catch (Exception e){System.out.println("Error while reading file: "+e);}
+        finally {if (sc!=null) sc.close();}
     }
 
 
@@ -158,6 +176,8 @@ public class UserService implements UserDetailsService {
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
+
 
 
 }

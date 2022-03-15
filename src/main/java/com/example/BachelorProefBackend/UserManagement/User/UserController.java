@@ -57,6 +57,11 @@ public class UserController {
     public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
         userService.addNewUser(new User_entity(firstName, lastName, email, telNr, password));
     }
+    @PostMapping(path="batch")
+    public void addNewUserBatch(){
+        userService.addNewUserBatch();
+    }
+
 
     //DELETE
     @DeleteMapping(path="{userId}")
