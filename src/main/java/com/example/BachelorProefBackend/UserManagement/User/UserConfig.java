@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 
 @Configuration
@@ -20,13 +21,14 @@ public class UserConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserService userService, SubjectRepository subjectRepository, CompanyService companyService) {
         return args -> {
+            User_entity pieter = new User_entity("Pieter", "Vermeiren", "p.vermeiren@hamann.be", "+32 456 30 81 62", "password");
+            userService.addNewUser(pieter);
             userService.addNewUser(new User_entity("Toon", "Eeraerts", "toon.eeraerts@student.kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUser(new User_entity("Wout", "Deleu", "wout.deleu@student.kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUser(new User_entity("Wannes", "Vermeiren", "wannes.vermeiren@student.kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUser(new User_entity("Tony", "Wauters", "tony.wauters@kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUser(new User_entity("Liesbet", "Van der Perre", "liesbet.vanderperre@kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUser(new User_entity("Admin", " ", "admin@kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new User_entity("Pieter", "Vermeiren", "p.vermeiren@hamann.be", "+32 456 30 81 62", "password"));
 
             userService.addRoleToUser("wout.deleu@student.kuleuven.be", "ROLE_STUDENT");
             userService.addRoleToUser("wannes.vermeiren@student.kuleuven.be", "ROLE_STUDENT");

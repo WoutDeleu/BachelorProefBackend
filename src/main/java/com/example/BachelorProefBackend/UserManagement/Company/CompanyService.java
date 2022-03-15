@@ -1,7 +1,12 @@
 package com.example.BachelorProefBackend.UserManagement.Company;
 
+import com.example.BachelorProefBackend.UserManagement.Role.Role;
+import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
+import com.example.BachelorProefBackend.UserManagement.User.UserService;
+import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +19,19 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserService userService;
+    private final RoleRepository roleRepository;
+
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository){
+    public CompanyService(CompanyRepository companyRepository, UserService userService, RoleRepository roleRepository){
         this.companyRepository = companyRepository;
+        this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping
@@ -34,21 +45,65 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
+    @PostMapping
+    public void addNewContact(long id, User_entity user, Authentication authentication){
+        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        Company company = companyRepository.getById(id);
+        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
+            if(user.getRoles().contains(contact)){
+                log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
+                company.addContact(user);
+            }
+            else{
+                throw new RuntimeException("Only users with contact role can be added.");
+            }
+        }
+        else {
+            throw new RuntimeException("Only contacts can add contacts to their own company");
+        }
+
+    }
+
     @DeleteMapping
-    public void deleteCompany(long id) {
+    public void deleteCompany(long id, Authentication authentication) {
         if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " +id+ ")");
-        companyRepository.deleteById(id);
+        // Only admin and companies have access to the URL
+        User_entity user = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Company company = companyRepository.findById(id);
+        if(user.getRoles().contains(admin) || company.getContacts().contains(user))
+            companyRepository.deleteById(id);
+        else
+            throw new RuntimeException("Companies can only removed by their own contacts.");
+
     }
 
     @PutMapping
-    @Transactional
-    public void updateCompany(long id, String name, String address, String BTWnr, String description) {
+    public void updateCompany(long id, String name, String address, String BTWnr, String description, Authentication authentication) {
+        if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " + id + ")");
+        // Only admin and companies have access to the URL
+        User_entity user = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Company company = companyRepository.findById(id);
+        if(user.getRoles().contains(admin) || company.getContacts().contains(user)){
+            if(name != null && name.length()>0) company.setName(name);
+            if(address != null && address.length()>0) company.setAddress(address);
+            if(BTWnr != null && BTWnr.length()>0) company.setBTWnr(BTWnr);
+            if(description != null && description.length()>0) company.setDescription(description);
+        }
+        else {
+            throw new RuntimeException("Companies can only removed by their own contacts.");
+        }
+
+    }
+
+    @PutMapping
+    public void approveCompany(long id) {
         if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " + id + ")");
         Company company = companyRepository.getById(id);
-        if(name != null && name.length()>0) company.setName(name);
-        if(address != null && address.length()>0) company.setAddress(address);
-        if(BTWnr != null && BTWnr.length()>0) company.setBTWnr(BTWnr);
-        if(description != null && description.length()>0) company.setDescription(description);
+        company.setApproved(true);
     }
 
 

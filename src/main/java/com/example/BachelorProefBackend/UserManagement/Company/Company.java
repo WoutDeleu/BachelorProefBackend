@@ -57,6 +57,9 @@ public class Company {
     public Collection<Subject> getSubjects() {
         return subjects;
     }
+    public boolean isApproved() {
+        return approved;
+    }
 
     public void setName(String name) {this.name = name;}
     public void setAddress(String address) {
@@ -74,6 +77,10 @@ public class Company {
     public void setSubjects(Collection<Subject> subjects) {
         this.subjects = subjects;
     }
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+    public void addContact(User_entity contact){contacts.add(contact);}
 
     @Override
     public String toString() {

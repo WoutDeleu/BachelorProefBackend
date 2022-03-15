@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.*;
 
 
@@ -111,6 +112,10 @@ public class UserController {
         userService.addRoleToUser(email, roleName);
         return ResponseEntity.ok().build();
     }
+
+//    public String currentUserName(Principal principal) {
+//        return principal.getName();
+//    }
 
 
 

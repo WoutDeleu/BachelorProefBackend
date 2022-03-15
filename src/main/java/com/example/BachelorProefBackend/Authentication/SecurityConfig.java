@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //Where Spring has to look for users
+        // Where Spring has to look for users
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/**").hasAuthority("ROLE_ADMIN");
 
+        http.authorizeRequests().antMatchers("/userManagement/company/{companyId}/approve").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/userManagement/company/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_CONTACT");
 
         http.addFilter(customAuthenticationFilter);
