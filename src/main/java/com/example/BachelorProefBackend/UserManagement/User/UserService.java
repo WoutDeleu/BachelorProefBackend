@@ -112,7 +112,7 @@ public class UserService implements UserDetailsService {
         String [] parts;
         Scanner sc = null;
         try{
-            sc = new Scanner(new FileReader("UserBatchInput.csv"));
+            sc = new Scanner(new FileReader("uploads/UserBatchInput.csv"));
             while (sc.hasNextLine()){
                 line = sc.nextLine();
                 if(line.length()>0){

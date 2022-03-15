@@ -2,25 +2,33 @@ package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
+import com.example.BachelorProefBackend.UserManagement.FileStorage.ResponseMessage;
+import com.example.BachelorProefBackend.UserManagement.FileStorage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
 
 @Slf4j
+@Controller
 @RestController
 @RequestMapping(path="userManagement/users")
 public class UserController {
     private final UserService userService;
     private final SubjectService subjectService;
+    private final StorageService storageService;
 
     @Autowired //instantie van userService automatisch aangemaakt en in deze constructor gestoken (Dependency injection)
-    public UserController(UserService userService, SubjectService subjectService) {
+    public UserController(UserService userService, SubjectService subjectService, StorageService storageService) {
         this.userService = userService;
         this.subjectService = subjectService;
+        this.storageService = storageService;
     }
 
     //GET
@@ -45,7 +53,6 @@ public class UserController {
     //Mapping based on URL query example
     @GetMapping
     @ResponseBody
-    @CrossOrigin(origins ="http://localhost:3000")
     public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
         return userService.getUsers(id,type);
     }
@@ -58,8 +65,18 @@ public class UserController {
         userService.addNewUser(new User_entity(firstName, lastName, email, telNr, password));
     }
     @PostMapping(path="batch")
-    public void addNewUserBatch(){
-        userService.addNewUserBatch();
+    public ResponseEntity<ResponseMessage> addNewUserBatch(@RequestParam("file") MultipartFile file){
+        String message = "";
+        try {
+            storageService.save(file);
+            message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            userService.addNewUserBatch(); // Creating users from the file
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+        } catch (Exception e) {
+            message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
     }
 
 
