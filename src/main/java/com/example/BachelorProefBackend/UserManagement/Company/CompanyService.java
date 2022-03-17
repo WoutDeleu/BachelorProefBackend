@@ -1,5 +1,7 @@
 package com.example.BachelorProefBackend.UserManagement.Company;
 
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectRepository;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import com.example.BachelorProefBackend.UserManagement.User.UserService;
@@ -25,19 +27,25 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final SubjectRepository subjectRepository;
 
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, UserService userService, RoleRepository roleRepository){
+    public CompanyService(CompanyRepository companyRepository, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
         this.companyRepository = companyRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @GetMapping
     public List<Company> getAllCompanies() {return companyRepository.findAll();}
+
     @GetMapping
     public Company getCompanyById(long id) {return companyRepository.findById(id);}
+
+    @GetMapping
+    public List<Subject> getCompanySubjectsById(long id) {return subjectRepository.findAllByCompany_Id(id);}
 
     @PostMapping
     public void addNewCompany(Company company) {
@@ -51,7 +59,7 @@ public class CompanyService {
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         Company company = companyRepository.getById(id);
-        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
+        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser) || company.getContacts().isEmpty()){
             if(user.getRoles().contains(contact)){
                 log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
                 company.addContact(user);
@@ -64,6 +72,20 @@ public class CompanyService {
             throw new RuntimeException("Only contacts can add contacts to their own company");
         }
 
+    }
+
+    @PostMapping
+    public void addNewSubject(long id, Subject subject, Authentication authentication){
+        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Company company = companyRepository.getById(id);
+        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
+            log.info("Adding new subject {} to company {}", subject.getName(), company.getName());
+            company.addSubject(subject);
+        }
+        else {
+            throw new RuntimeException("Only contacts can add subjects to their own company");
+        }
     }
 
     @DeleteMapping

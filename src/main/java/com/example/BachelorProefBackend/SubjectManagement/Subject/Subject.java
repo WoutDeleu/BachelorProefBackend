@@ -1,5 +1,6 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 
@@ -17,9 +18,10 @@ public class Subject {
     private String name;
     private String description;
     private int nrOfStudents;
-    private long companyId;
     private long targetAudienceId;
     private long tagId;
+    @ManyToOne
+    private Company company;
     @ManyToMany(mappedBy = "preferredSubjects")
     private Collection<User_entity> students = new ArrayList<>();
     @OneToMany(mappedBy = "finalSubject")
@@ -40,41 +42,40 @@ public class Subject {
         return description;
     }
     public int getNrOfStudents() {return nrOfStudents;}
-    public long getCompanyId() {
-        return companyId;
-    }
     public long getTargetAudienceId() {
         return targetAudienceId;
     }
     public long getTagId() {
         return tagId;
     }
+    public Company getCompany() {return company;}
     public Collection<User_entity> getStudents() {return students;}
 
     public void setId(long id) {this.id = id;}
     public void setName(String name) {this.name = name;}
     public void setDescription(String description) {this.description = description;}
     public void setNrOfStudents(int nrOfStudents) {this.nrOfStudents = nrOfStudents;}
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
     public void setTargetAudienceId(long targetAudienceId) {
         this.targetAudienceId = targetAudienceId;
     }
     public void setTagId(long tagId) {
         this.tagId = tagId;
     }
+    public void setCompany(Company company){this.company = company;}
     public void setStudents(Collection<Role> roles) {this.students = students;}
 
     @Override
     public String toString() {
         return "Subject{" +
                 "id=" + id +
-                ", name='"+name+
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", companyId=" + companyId +
+                ", nrOfStudents=" + nrOfStudents +
                 ", targetAudienceId=" + targetAudienceId +
                 ", tagId=" + tagId +
+                ", company=" + company +
+                ", students=" + students +
+                ", finalStudents=" + finalStudents +
                 '}';
     }
 }

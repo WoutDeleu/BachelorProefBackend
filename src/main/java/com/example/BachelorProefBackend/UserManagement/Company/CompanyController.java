@@ -1,5 +1,7 @@
 package com.example.BachelorProefBackend.UserManagement.Company;
 
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import com.example.BachelorProefBackend.UserManagement.User.UserService;
@@ -20,13 +22,15 @@ public class CompanyController {
     private final CompanyService companyService;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final SubjectService subjectService;
 
 
     @Autowired
-    public CompanyController(CompanyService companyService, UserService userService, RoleRepository roleRepository){
+    public CompanyController(CompanyService companyService, UserService userService, RoleRepository roleRepository, SubjectService subjectService){
         this.companyService = companyService;
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.subjectService = subjectService;
     }
 
     @GetMapping
@@ -34,6 +38,9 @@ public class CompanyController {
 
     @GetMapping(path="{companyId}")
     public Company getCompanyById(@PathVariable("companyId") long id) {return companyService.getCompanyById(id);}
+
+    @GetMapping(path="{companyId}/subjects")
+    public List<Subject> getCompanySubjectsById(@PathVariable("companyId") long id) {return companyService.getCompanySubjectsById(id);}
 
     @PostMapping
     public void addNewCompany(@RequestParam String name, String address, String BTWnr, String description){

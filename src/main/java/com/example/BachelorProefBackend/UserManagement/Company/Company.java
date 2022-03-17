@@ -2,7 +2,9 @@ package com.example.BachelorProefBackend.UserManagement.Company;
 
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
 import com.example.BachelorProefBackend.UserManagement.User.User_entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,15 +19,15 @@ public class Company {
     private long id;
     private String name;
     private String address;
-    //TODO coordinates
     private String BTWnr;
     @OneToMany
     private Collection<User_entity> contacts = new ArrayList<>();
     //Contact is the user from the company who has access to our system
     //Each company must have at least one contact, and they are created at the same time.
     private String description;
-    @OneToMany
-    private Collection<Subject> subjects = new ArrayList<>();
+    @OneToMany(mappedBy = "company")
+    @JsonIgnore
+    private Collection<Subject> subjects;
     private boolean approved; // Companies must be approved by admin
 
     public Company() { }
@@ -81,6 +83,7 @@ public class Company {
         this.approved = approved;
     }
     public void addContact(User_entity contact){contacts.add(contact);}
+    public void addSubject(Subject subject){subjects.add(subject);}
 
     @Override
     public String toString() {
