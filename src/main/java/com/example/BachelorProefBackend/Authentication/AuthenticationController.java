@@ -10,10 +10,8 @@ import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,6 +73,11 @@ public class AuthenticationController {
         else{
             throw new RuntimeException("Refresh token is missing");
         }
+    }
+
+    @GetMapping(path="isRole/{role}")
+    public boolean isRole(@PathVariable("role") String r, Authentication authentication){
+        return userService.isRole(r, authentication);
     }
 
 

@@ -5,6 +5,7 @@ import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -35,7 +37,6 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //GET
     @GetMapping
     public List<User_entity> getAllUsers() {
         return userRepository.findAll();
@@ -51,33 +52,37 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-
     @GetMapping
     public List<User_entity> getAllStudents(){
         long roleId = roleRepository.findByName("ROLE_STUDENT").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
+
     @GetMapping
     public List<User_entity> getAllAdministrators() {
         long roleId = roleRepository.findByName("ROLE_ADMIN").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
+
     @GetMapping
     public List<User_entity> getAllPromotors() {
         long roleId = roleRepository.findByName("ROLE_PROMOTOR").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
+
     @GetMapping
     public List<User_entity> getAllCoordinators() {
         long roleId = roleRepository.findByName("ROLE_COORDINATOR").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
+
     @GetMapping
     public List<Subject> getPreferredSubjects(long id){
         if(userRepository.existsById(id))
             return new ArrayList<Subject>(userRepository.findById(id).getPreferredSubjects());
         else throw new RuntimeException("User not found");
     }
+
     @GetMapping
     public List<User_entity> getUsers(String id, String type) {
         if(id.equals("null") && type.equals("null")) return userRepository.findAll();
@@ -92,9 +97,14 @@ public class UserService implements UserDetailsService {
         else {return null;}
     }
 
+    @GetMapping
+    public boolean isRole(String r, Authentication authentication){
+        User_entity activeUser = getUserByEmail(authentication.getName());
+        Role role = roleRepository.findByName(r);
+        return activeUser.getRoles().contains(role);
+    }
 
-
-    //DELETE
+    @DeleteMapping
     public void deleteUser(long id) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
         userRepository.deleteById(id);
