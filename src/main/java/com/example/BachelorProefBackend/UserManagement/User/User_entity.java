@@ -25,6 +25,7 @@ public class User_entity {
     private String email;
     private String telNr;
     private String password;
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles = new ArrayList<>();
     @ManyToMany
