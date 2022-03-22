@@ -30,7 +30,6 @@ public class UserController {
         this.storageService = storageService;
     }
 
-    //GET
     @GetMapping
     public List<User_entity> getAllUsers() {return userService.getAllUsers();}
     @GetMapping(path="{userId}")
@@ -61,11 +60,11 @@ public class UserController {
 //    }
 
 
-    //POST
     @PostMapping
     public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
         userService.addNewUser(new User_entity(firstName, lastName, email, telNr, password));
     }
+
     @PostMapping(path="batch")
     public ResponseEntity<ResponseMessage> addNewUserBatch(@RequestParam("file") MultipartFile file){
         String message = "";
