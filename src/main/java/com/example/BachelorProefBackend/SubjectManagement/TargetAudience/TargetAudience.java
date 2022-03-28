@@ -2,11 +2,18 @@ package com.example.BachelorProefBackend.SubjectManagement.TargetAudience;
 
 import com.example.BachelorProefBackend.SubjectManagement.Campus.Campus;
 import com.example.BachelorProefBackend.SubjectManagement.Faculty.Faculty;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 
-@Entity
+@Data
 @Table
+@Entity
+@NoArgsConstructor
 public class TargetAudience {
 
     @Id
@@ -17,28 +24,18 @@ public class TargetAudience {
     private Campus campus;
     @ManyToOne
     private Faculty faculty;
+    @ManyToMany
+    @JsonIgnore
+    private Collection<Subject> allSubjects;
 
-    public TargetAudience() { }
+
 
     public TargetAudience(Campus campus, Faculty faculty) {
         this.campus = campus;
         this.faculty = faculty;
     }
 
-    public long getId() {
-        return id;
-    }
-    public Campus getCampus() {
-        return campus;
-    }
-    public Faculty getFaculty() {
-        return faculty;
-    }
 
-    public void setCampus(Campus campus) {
-        this.campus = campus;
-    }
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
-    }
+
+
 }

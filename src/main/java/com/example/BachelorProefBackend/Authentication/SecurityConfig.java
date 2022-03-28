@@ -53,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects/**").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}/subjects").authenticated();
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/targetAudience/**").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/tag/**").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/tag/**").authenticated();
 
         // Access restricted
         http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR");
@@ -63,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/targetAudience/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(PUT, "/subjectManagement/targetAudience/**").hasAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/targetAudience/**").hasAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/tag/**").hasAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/tag/**").hasAuthority("ROLE_ADMIN");
 
         http.authorizeRequests().antMatchers(GET, "/userManagement/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR", "ROLE_PROMOTOR");
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/student").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINATOR", "ROLE_PROMOTOR");
