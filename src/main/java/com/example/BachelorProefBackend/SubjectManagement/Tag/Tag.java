@@ -2,6 +2,7 @@ package com.example.BachelorProefBackend.SubjectManagement.Tag;
 
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +21,8 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_sequence")
     private long id;
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
     private Collection<Subject> allSubjects;
 
     public Tag(String name){

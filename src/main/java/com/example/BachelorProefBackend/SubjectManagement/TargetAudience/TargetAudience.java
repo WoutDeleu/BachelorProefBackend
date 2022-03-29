@@ -24,7 +24,7 @@ public class TargetAudience {
     private Campus campus;
     @ManyToOne
     private Faculty faculty;
-    @ManyToMany
+    @ManyToMany(mappedBy = "targetAudience")
     @JsonIgnore
     private Collection<Subject> allSubjects;
 

@@ -20,6 +20,9 @@ public class TagController {
     @GetMapping
     public List<Tag> getAllTags() {return tagService.getAllTags();}
 
+    @GetMapping(path="{tagId}")
+    public Tag getTagById(@PathVariable("tagId") long id) {return tagService.getTagById(id);}
+
     @PostMapping
     public void addNewTag(@RequestParam String name){
         tagService.addNewTag(new Tag(name));

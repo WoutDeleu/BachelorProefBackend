@@ -28,11 +28,13 @@ public class Subject {
     @ManyToMany(mappedBy = "preferredSubjects")
     private Collection<User_entity> students;
     @OneToMany(mappedBy = "finalSubject")
-    private Collection<User_entity> finalStudents;
+    private Collection<User_entity> finalStudents; //
     @ManyToMany
     private Collection<TargetAudience> targetAudience;
     @ManyToMany
     private Collection<Tag> tags;
+    @ManyToOne
+    private User_entity promotor;
 
 
     public Subject(String name, String description, int nrOfStudents) {
@@ -40,6 +42,8 @@ public class Subject {
         this.description = description;
         this.nrOfStudents = nrOfStudents;
     }
+
+    public void addTag (Tag tag) {tags.add(tag);}
 
 
     @Override
@@ -56,4 +60,5 @@ public class Subject {
                 ", tags=" + tags +
                 '}';
     }
+
 }

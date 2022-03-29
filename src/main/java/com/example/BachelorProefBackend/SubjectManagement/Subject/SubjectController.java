@@ -1,10 +1,14 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.SubjectManagement.Tag.Tag;
+import com.example.BachelorProefBackend.SubjectManagement.Tag.TagService;
 import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Company.CompanyService;
+import com.example.BachelorProefBackend.UserManagement.User.UserService;
 import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +18,19 @@ import java.util.List;
 public class SubjectController {
     private final SubjectService subjectService;
     private final CompanyService companyService;
+    private final UserService userService;
+    private final TagService tagService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService, CompanyService companyService) {
+    public SubjectController(SubjectService subjectService, CompanyService companyService, UserService userService, TagService tagService) {
         this.subjectService = subjectService;
         this.companyService = companyService;
+        this.userService = userService;
+        this.tagService = tagService;
+    }
+
+    public User_entity getUserObject(Authentication authentication){
+        return userService.getUserByEmail(authentication.getName());
     }
 
     @GetMapping
@@ -52,6 +64,18 @@ public class SubjectController {
     public void addCompany(@PathVariable("subjectId") long subjectId, @RequestParam long companyId, Authentication authentication){
         Company company = companyService.getCompanyById(companyId);
         subjectService.addCompany(subjectId, company, authentication);
+    }
+
+    @PutMapping(path="{subjectId}/addPromotor")
+    public void addPromotor(@PathVariable("subjectId") long subjectId, @RequestParam long promotorId, Authentication authentication){
+        User_entity promotor = userService.getUserById(promotorId);
+        subjectService.addPromotor(subjectId, promotor, authentication);
+    }
+
+    @PutMapping(path="{subjectId}/addTag")
+    public void addTag(@PathVariable("subjectId") long subjectId, @RequestParam long tagId, Authentication authentication){
+        Tag tag = tagService.getTagById(tagId);
+        subjectService.addTag(subjectId, tag, getUserObject(authentication));
     }
 
 }

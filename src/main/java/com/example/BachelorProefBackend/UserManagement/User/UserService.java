@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -136,7 +138,6 @@ public class UserService implements UserDetailsService {
 
 
     @PutMapping
-    @Transactional
     public void updateUser(long id, String firstname, String lastname, String email, String telNr, String password) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         User_entity user = userRepository.getById(id);
@@ -147,11 +148,21 @@ public class UserService implements UserDetailsService {
         if(password != null && password.length()>0) user.setPassword(passwordEncoder.encode(password));
     }
 
-    public void addNewPreferredSubject(long uid, Subject subject){
+    @PutMapping
+    public void addNewPreferredSubject(long uid, Subject subject, Authentication authentication){
         //TODO logic to see if this is before the required date
+        User_entity activeUser = getUserByEmail(authentication.getName());
         User_entity user = userRepository.findById(uid);
-        user.getPreferredSubjects().add(subject);
-        log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
+            if(user.getRoles().contains(student)){
+                user.getPreferredSubjects().add(subject);
+                log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
+            }
+            else{throw new RuntimeException("Can only add preferred subjects to student account");}
+        }
+        else{throw new RuntimeException("Student can only access his own account");}
     }
 
     //AUTHENTICATION

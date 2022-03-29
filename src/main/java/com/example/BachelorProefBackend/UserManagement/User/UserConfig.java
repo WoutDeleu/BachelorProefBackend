@@ -1,6 +1,9 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.Subject.SubjectService;
+import com.example.BachelorProefBackend.SubjectManagement.Tag.Tag;
+import com.example.BachelorProefBackend.SubjectManagement.Tag.TagRepository;
 import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Company.CompanyService;
 import com.example.BachelorProefBackend.UserManagement.User.User_entity;
@@ -19,7 +22,7 @@ public class UserConfig {
 
     //add some default users to experiment with
     @Bean
-    CommandLineRunner commandLineRunner(UserService userService, SubjectRepository subjectRepository, CompanyService companyService) {
+    CommandLineRunner commandLineRunner(UserService userService, SubjectRepository subjectRepository, SubjectService subjectService, CompanyService companyService, TagRepository tagRepository) {
         return args -> {
             User_entity pieter = new User_entity("Pieter", "Vermeiren", "p.vermeiren@hamann.be", "+32 456 30 81 62", "password");
             userService.addNewUser(pieter);
@@ -44,9 +47,14 @@ public class UserConfig {
             Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
             subjectRepository.saveAll(List.of(subject1, subject2, subject3));
 
-            userService.addNewPreferredSubject(7, subject1);
-            userService.addNewPreferredSubject(8, subject2);
-            userService.addNewPreferredSubject(6, subject3);
+            Tag tag1 = new Tag("Luchtvaart");
+            Tag tag2 = new Tag("Software engineering");
+            tagRepository.saveAll(List.of(tag1, tag2));
+
+
+//            userService.addNewPreferredSubject(7, subject1);
+//            userService.addNewPreferredSubject(8, subject2);
+//            userService.addNewPreferredSubject(6, subject3);
 
             companyService.addNewCompany(new Company("Hamann","Vantegemstraat 3, 9230", "BE 0873.604.566", "Transportcompany"));
 

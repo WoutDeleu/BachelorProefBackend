@@ -1,5 +1,6 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.SubjectManagement.Tag.Tag;
 import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
@@ -28,12 +29,15 @@ public class SubjectService {
     private final UserService userService;
     private final RoleRepository roleRepository;
 
+
     @Autowired
     public SubjectService(SubjectRepository subjectRepository, UserService userService, RoleRepository roleRepository) {
         this.subjectRepository = subjectRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
     }
+
+
 
 
     @GetMapping
@@ -88,5 +92,39 @@ public class SubjectService {
         }
     }
 
+    @PutMapping
+    public void addPromotor(long subjectId, User_entity promotor, Authentication authentication){
+        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role promotorROLE = roleRepository.findByName("ROLE_PROMOTOR");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        Subject subject = subjectRepository.findById(subjectId);
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator) || activeUser.getFinalSubject().equals(subject) || activeUser.equals(promotor)){
+            if(promotor.getRoles().contains(promotorROLE)){
+                if(subject.getPromotor() != null){
+                    throw new RuntimeException("Subject already has a promotor: "+subject.getPromotor().getFirstName());
+                }
+                else{
+                    log.info("Adding promotor {} to subject {}", promotor.getFirstName(), subject.getName());
+                    subject.setPromotor(promotor);
+                }
+            }
+            else{throw new RuntimeException("Only users with role: promotor can be added");}
+        }
+        else{throw new RuntimeException("Student can only add to his own final subject, Promotor can only add himself");}
+    }
+
+    @PutMapping
+    public void addTag(long subjectId, Tag tag, User_entity activeUser){
+        Subject subject = subjectRepository.findById(subjectId);
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        if(activeUser.getRoles().contains(student) || activeUser.getRoles().contains(contact)){
+            if(!subject.equals(activeUser.getFinalSubject()))
+                throw new RuntimeException("Student and Contact can only add to their finalSubject.");
+        }
+        log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
+        subject.addTag(tag);
+    }
 
 }

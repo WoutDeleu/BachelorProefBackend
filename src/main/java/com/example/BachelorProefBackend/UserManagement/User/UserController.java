@@ -8,10 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
+
 import java.util.*;
 
 
@@ -23,7 +24,7 @@ public class UserController {
     private final SubjectService subjectService;
     private final StorageService storageService;
 
-    @Autowired //instantie van userService automatisch aangemaakt en in deze constructor gestoken (Dependency injection)
+    @Autowired
     public UserController(UserService userService, SubjectService subjectService, StorageService storageService) {
         this.userService = userService;
         this.subjectService = subjectService;
@@ -52,13 +53,6 @@ public class UserController {
     }
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
-//    //Mapping based on URL query example
-//    @GetMapping
-//    @ResponseBody
-//    public List<User_entity> getUsers(@RequestParam(defaultValue = "null") String id, @RequestParam(defaultValue = "null") String type) {
-//        return userService.getUsers(id,type);
-//    }
-
 
     @PostMapping
     public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
@@ -80,14 +74,23 @@ public class UserController {
         }
     }
 
+    @PostMapping(path="student/addPreferredSubject")
+    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, Authentication authentication){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        userService.addNewPreferredSubject(userId, subject, authentication);
+    }
 
-    //DELETE
+    @PostMapping(path="addRoleToUser")
+    public ResponseEntity<?> addRoleToUser(@RequestParam String email, String roleName){
+        userService.addRoleToUser(email, roleName);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping(path="{userId}")
     public void deleteUser(@PathVariable("userId") long id) {
         userService.deleteUser(id);
     }
 
-    //PUT
     @PutMapping(path="{userId}")
     public void updateUser(@PathVariable("userId") long id,
                            @RequestParam(required = false) String firstName,
@@ -99,22 +102,8 @@ public class UserController {
     }
 
 
-    @PostMapping(path="student/addPreferredSubject")
-    public void addNewPreferredSubject(@RequestParam long userId, long subjectId){
-        Subject subject = subjectService.getSubjectById(subjectId);
-        userService.addNewPreferredSubject(userId, subject);
-    }
 
-    //AUTHENTICATION
-    @PostMapping(path="addRoleToUser")
-    public ResponseEntity<?> addRoleToUser(@RequestParam String email, String roleName){
-        userService.addRoleToUser(email, roleName);
-        return ResponseEntity.ok().build();
-    }
 
-//    public String currentUserName(Principal principal) {
-//        return principal.getName();
-//    }
 
 
 

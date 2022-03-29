@@ -20,8 +20,8 @@ public class Company {
     private String name;
     private String address;
     private String BTWnr;
-    @OneToMany
-    private Collection<User_entity> contacts = new ArrayList<>();
+    @OneToMany(mappedBy = "company")
+    private Collection<User_entity> contacts;
     //Contact is the user from the company who has access to our system
     //Each company must have at least one contact, and they are created at the same time.
     private String description;

@@ -1,6 +1,7 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudience;
+import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -26,15 +27,21 @@ public class User_entity {
     private String telNr;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
-    private Collection<Role> roles = new ArrayList<>();
+    private Collection<Role> roles;
     @ManyToMany
     @JsonIgnore //No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_preference")
     private Collection<Subject> preferredSubjects = new ArrayList<>();
     @ManyToOne //TwoToOne
-    private Subject finalSubject; // Also valid for promotor
+    private Subject finalSubject; //For students
     @ManyToOne
     private TargetAudience targetAudience;
+    @OneToMany(mappedBy = "promotor")
+    @JsonIgnore
+    private Collection<Subject> subject; //For promotor
+    @ManyToOne
+    @JsonIgnore
+    private Company company;
 
 
     public User_entity(String firstName, String lastName, String email, String telNr, String password) {

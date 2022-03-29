@@ -2,6 +2,7 @@ package com.example.BachelorProefBackend;
 
 import com.example.BachelorProefBackend.UserManagement.FileStorage.FileStorageService;
 import com.example.BachelorProefBackend.UserManagement.FileStorage.StorageService;
+import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,6 +46,7 @@ public class BachelorProefBackendApplication {
 						.allowedOrigins("http://localhost:3000", "http://localhost:19000");
 			}
 		};
+
 	}
 
 	// logging
@@ -67,5 +69,7 @@ public class BachelorProefBackendApplication {
 		storageService.deleteAll();
 		storageService.init();
 	}
+
+
 
 }
