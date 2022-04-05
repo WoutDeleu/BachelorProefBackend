@@ -9,7 +9,6 @@ import com.example.BachelorProefBackend.UserManagement.User.User_entity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -125,6 +124,7 @@ public class SubjectService {
         }
         log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
         subject.addTag(tag);
+        Role student2 = roleRepository.findByName("ROLE_STUDENT");
     }
 
 }

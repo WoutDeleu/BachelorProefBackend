@@ -18,7 +18,7 @@ public class RoleConfig {
             Role promotor = new Role("ROLE_PROMOTOR");
             Role contact = new Role("ROLE_CONTACT");
 
-            roleRepository.saveAll(List.of( coordinator, admin, promotor, contact));
+            roleRepository.saveAll(List.of(student, coordinator, admin, promotor, contact));
 
         };
     }
