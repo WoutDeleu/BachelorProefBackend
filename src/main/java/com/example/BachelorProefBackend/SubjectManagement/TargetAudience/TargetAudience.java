@@ -1,6 +1,7 @@
 package com.example.BachelorProefBackend.SubjectManagement.TargetAudience;
 
 import com.example.BachelorProefBackend.SubjectManagement.Campus.Campus;
+import com.example.BachelorProefBackend.SubjectManagement.Education.Education;
 import com.example.BachelorProefBackend.SubjectManagement.Faculty.Faculty;
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,15 +25,18 @@ public class TargetAudience {
     private Campus campus;
     @ManyToOne
     private Faculty faculty;
+    @ManyToOne
+    private Education education;
     @ManyToMany(mappedBy = "targetAudience")
     @JsonIgnore
     private Collection<Subject> allSubjects;
 
 
 
-    public TargetAudience(Campus campus, Faculty faculty) {
+    public TargetAudience(Campus campus, Faculty faculty, Education education) {
         this.campus = campus;
         this.faculty = faculty;
+        this.education = education;
     }
 
 

@@ -2,6 +2,8 @@ package com.example.BachelorProefBackend.SubjectManagement.TargetAudience;
 
 import com.example.BachelorProefBackend.SubjectManagement.Campus.Campus;
 import com.example.BachelorProefBackend.SubjectManagement.Campus.CampusRepository;
+import com.example.BachelorProefBackend.SubjectManagement.Education.Education;
+import com.example.BachelorProefBackend.SubjectManagement.Education.EducationRepository;
 import com.example.BachelorProefBackend.SubjectManagement.Faculty.Faculty;
 import com.example.BachelorProefBackend.SubjectManagement.Faculty.FacultyRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,22 +20,25 @@ public class TargetAudienceController {
     private final TargetAudienceService targetAudienceService;
     private final CampusRepository campusRepository;
     private final FacultyRepository facultyRepository;
+    private final EducationRepository educationRepository;
 
     @Autowired
-    public TargetAudienceController (TargetAudienceService targetAudienceService, CampusRepository campusRepository, FacultyRepository facultyRepository){
+    public TargetAudienceController (TargetAudienceService targetAudienceService, CampusRepository campusRepository, FacultyRepository facultyRepository, EducationRepository educationRepository){
         this.targetAudienceService = targetAudienceService;
         this.campusRepository = campusRepository;
         this.facultyRepository = facultyRepository;
+        this.educationRepository = educationRepository;
     }
 
     @GetMapping
     public List<TargetAudience> getAllTargetAudiences() {return targetAudienceService.getAllTargetAudiences();}
 
     @PostMapping
-    public void addNewTargetAudience(@RequestParam long campusId, long facultyId){
+    public void addNewTargetAudience(@RequestParam long campusId, long facultyId, long educationId){
         Campus campus = campusRepository.getById(campusId);
         Faculty faculty = facultyRepository.getById(facultyId);
-        targetAudienceService.addNewTargetAudience(new TargetAudience(campus, faculty));
+        Education education = educationRepository.getById(educationId);
+        targetAudienceService.addNewTargetAudience(new TargetAudience(campus, faculty, education));
     }
 
     @DeleteMapping(path="{targetAudienceId}")
