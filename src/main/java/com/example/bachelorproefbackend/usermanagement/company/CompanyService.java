@@ -46,6 +46,8 @@ public class CompanyService {
     @GetMapping
     public List<Company> getAllCompanies() {return companyRepository.findAll();}
 
+    public List<Company> getAllNonApprovedCompanies() {return companyRepository.findAllNonApproved();}
+
     @GetMapping
     public Company getCompanyById(long id) {return companyRepository.findById(id);}
 

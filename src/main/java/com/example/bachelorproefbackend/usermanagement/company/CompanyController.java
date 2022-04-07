@@ -26,6 +26,9 @@ public class CompanyController {
     @GetMapping
     public List<Company> getAllCompanies() {return companyService.getAllCompanies();}
 
+    @GetMapping(path = "nonApproved")
+    public List<Company> getAllNonApprovedCompanies() {return companyService.getAllNonApprovedCompanies();}
+
     @GetMapping(path="{companyId}")
     public Company getCompanyById(@PathVariable("companyId") long id) {return companyService.getCompanyById(id);}
 

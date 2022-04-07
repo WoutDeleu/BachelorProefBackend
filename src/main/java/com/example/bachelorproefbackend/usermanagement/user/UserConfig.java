@@ -53,7 +53,8 @@ public class UserConfig {
 //            userService.addNewPreferredSubject(8, subject2);
 //            userService.addNewPreferredSubject(6, subject3);
 
-            companyService.addNewCompany(new Company("Hamann","Vantegemstraat 3, 9230", "BE 0873.604.566", "Transportcompany"));
+            companyService.addNewCompany(new Company("Hamann","Vantegemstraat 3, 9230 Wetteren", "BE 0873.604.566", "Transportcompany"));
+            companyService.addNewCompany(new Company("Coolblue", "Borsbeeksebrug 28, 2600 Berchem", "BE 0867.686.774", "Elektronicaverkoop"));
 
         };
     }
