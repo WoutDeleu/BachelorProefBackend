@@ -69,7 +69,6 @@ public class User_entity {
                 ", roles=" + roles +
                 ", preferredSubjects=" + preferredSubjects +
                 ", finalSubject=" + finalSubject +
-                ", targetAudience=" + targetAudience +
                 '}';
     }
 

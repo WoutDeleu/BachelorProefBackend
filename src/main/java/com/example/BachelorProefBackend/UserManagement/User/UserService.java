@@ -1,6 +1,8 @@
 package com.example.BachelorProefBackend.UserManagement.User;
 
 import com.example.BachelorProefBackend.SubjectManagement.Subject.Subject;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudience;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudienceService;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +29,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TargetAudienceService targetAudienceService;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.targetAudienceService = targetAudienceService;
     }
 
     @GetMapping
@@ -165,11 +169,23 @@ public class UserService implements UserDetailsService {
         else{throw new RuntimeException("Student can only access his own account");}
     }
 
-    //AUTHENTICATION
+    @PutMapping
+    public void addTargetAudience (long userId, long facultyId, long educationId, long campusId){
+        User_entity user = userRepository.findById(userId);
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        if(!user.getRoles().contains(student)){
+            throw new RuntimeException("Can only add targetAudience to STUDENT_ROLE");
+        }
+        if(!targetAudienceService.exists(facultyId, educationId, campusId)){
+            throw new RuntimeException("targetAudience does not exist.");
+        }
+        TargetAudience targetAudience = targetAudienceService.getByAllIds(facultyId, educationId, campusId);
+        user.setTargetAudience(targetAudience);
+    }
+
     public User_entity getUser(String email){
         return userRepository.findByEmail(email);
     }
-
 
     public void addRoleToUser(String email, String roleName){
         log.info("Adding role {} to user {}", roleName, email);
@@ -195,6 +211,8 @@ public class UserService implements UserDetailsService {
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
+
 
 
 

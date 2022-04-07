@@ -27,7 +27,7 @@ public class TargetAudience {
     private Faculty faculty;
     @ManyToOne
     private Education education;
-    @ManyToMany(mappedBy = "targetAudience")
+    @ManyToMany(mappedBy = "targetAudiences")
     @JsonIgnore
     private Collection<Subject> allSubjects;
 
@@ -39,7 +39,13 @@ public class TargetAudience {
         this.education = education;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "TargetAudience{" +
+                "id=" + id +
+                ", campus=" + campus +
+                ", faculty=" + faculty +
+                ", education=" + education +
+                '}';
+    }
 }

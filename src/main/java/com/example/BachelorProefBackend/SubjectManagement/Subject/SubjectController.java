@@ -36,6 +36,9 @@ public class SubjectController {
     @GetMapping
     public List<Subject> getAllSubjects() {return subjectService.getAllSubjects();}
 
+    @GetMapping(path="byTargetAudience")
+    public List<Subject> getAllRelatedSubjects(Authentication authentication) {return subjectService.getAllRelatedSubjects(authentication);}
+
     @GetMapping(path="{subjectId}")
     public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
         return subjectService.getSubjectById(subject_id);
@@ -78,4 +81,8 @@ public class SubjectController {
         subjectService.addTag(subjectId, tag, getUserObject(authentication));
     }
 
+    @PutMapping(path="{subjectId}/addTargetAudience")
+    public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam long facultyId, long educationId, long campusId){
+        subjectService.addTargetAudience(subjectId, facultyId, educationId, campusId);
+    }
 }

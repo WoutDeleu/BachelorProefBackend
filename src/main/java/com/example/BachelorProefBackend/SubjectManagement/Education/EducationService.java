@@ -1,7 +1,9 @@
 package com.example.BachelorProefBackend.SubjectManagement.Education;
 
-import com.example.BachelorProefBackend.SubjectManagement.Campus.Campus;
-import com.example.BachelorProefBackend.SubjectManagement.Campus.CampusRepository;
+
+import com.example.BachelorProefBackend.SubjectManagement.Faculty.Faculty;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudience;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudienceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,14 +22,26 @@ import java.util.List;
 public class EducationService {
 
     private final EducationRepository educationRepository;
+    private final TargetAudienceService targetAudienceService;
 
     @Autowired
-    public EducationService(EducationRepository educationRepository){
+    public EducationService(EducationRepository educationRepository, TargetAudienceService targetAudienceService){
         this.educationRepository = educationRepository;
+        this.targetAudienceService = targetAudienceService;
     }
 
     @GetMapping
     public List<Education> getAllEducations() {return educationRepository.findAll();}
+
+    @GetMapping
+    public List<Education> getAllEducationsByFaculty(Faculty faculty){
+        List<TargetAudience> targets = targetAudienceService.getAllByFaculty(faculty);
+        List<Education> result = new ArrayList<>();
+        for (TargetAudience t : targets) {
+            result.add(t.getEducation());
+        }
+        return result;
+    }
 
     @PostMapping
     public void addNewEducation(Education education) {

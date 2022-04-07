@@ -101,6 +101,10 @@ public class UserController {
         userService.updateUser(id, firstName, lastName, email, telNr, password);
     }
 
+    @PutMapping(path="student/addTargetAudience")
+    public void addTargetAudience(@RequestParam long userId, long facultyId, long educationId, long campusId){
+        userService.addTargetAudience(userId, facultyId, educationId, campusId);
+    }
 
 
 

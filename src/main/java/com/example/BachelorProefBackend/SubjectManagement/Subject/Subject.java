@@ -30,7 +30,7 @@ public class Subject {
     @OneToMany(mappedBy = "finalSubject")
     private Collection<User_entity> finalStudents; //
     @ManyToMany
-    private Collection<TargetAudience> targetAudience;
+    private Collection<TargetAudience> targetAudiences;
     @ManyToMany
     private Collection<Tag> tags;
     @ManyToOne
@@ -45,6 +45,8 @@ public class Subject {
 
     public void addTag (Tag tag) {tags.add(tag);}
 
+    public void addTargetAudience (TargetAudience targetAudience) {targetAudiences.add(targetAudience);}
+
 
     @Override
     public String toString() {
@@ -56,7 +58,7 @@ public class Subject {
                 ", company=" + company +
                 ", students=" + students +
                 ", finalStudents=" + finalStudents +
-                ", targetAudience=" + targetAudience +
+                ", targetAudience=" + targetAudiences +
                 ", tags=" + tags +
                 '}';
     }

@@ -1,6 +1,14 @@
 package com.example.BachelorProefBackend.SubjectManagement.Subject;
 
+import com.example.BachelorProefBackend.SubjectManagement.Campus.Campus;
+import com.example.BachelorProefBackend.SubjectManagement.Campus.CampusRepository;
+import com.example.BachelorProefBackend.SubjectManagement.Education.Education;
+import com.example.BachelorProefBackend.SubjectManagement.Education.EducationRepository;
+import com.example.BachelorProefBackend.SubjectManagement.Faculty.Faculty;
+import com.example.BachelorProefBackend.SubjectManagement.Faculty.FacultyRepository;
 import com.example.BachelorProefBackend.SubjectManagement.Tag.Tag;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudience;
+import com.example.BachelorProefBackend.SubjectManagement.TargetAudience.TargetAudienceService;
 import com.example.BachelorProefBackend.UserManagement.Company.Company;
 import com.example.BachelorProefBackend.UserManagement.Role.Role;
 import com.example.BachelorProefBackend.UserManagement.Role.RoleRepository;
@@ -16,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,33 +37,60 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final TargetAudienceService targetAudienceService;
+    private final FacultyRepository facultyRepository;
+    private final EducationRepository educationRepository;
+    private final CampusRepository campusRepository;
 
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, UserService userService, RoleRepository roleRepository) {
+    public SubjectService(SubjectRepository subjectRepository, CampusRepository campusRepository, EducationRepository educationRepository, FacultyRepository facultyRepository, TargetAudienceService targetAudienceService, UserService userService, RoleRepository roleRepository) {
         this.subjectRepository = subjectRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.targetAudienceService = targetAudienceService;
+        this.facultyRepository = facultyRepository;
+        this.educationRepository = educationRepository;
+        this.campusRepository = campusRepository;
     }
 
 
 
 
-    @GetMapping
     public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
 
-    @GetMapping
+
+
+    public List<Subject> getAllRelatedSubjects(Authentication authentication) {
+        // TODO optimaliseerbaar?
+        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        List<Subject> subjects = subjectRepository.findAll();
+        List<Subject> toRemove = new ArrayList<>();
+        if(activeUser.getTargetAudience()==null){
+            throw new RuntimeException("The user must have a targetAudience for this function.");
+        }
+        for (Subject s : subjects){
+            if(!s.getTargetAudiences().contains(activeUser.getTargetAudience()) || s.getTargetAudiences().isEmpty()){
+                toRemove.add(s);
+            }
+        }
+        for (Subject s : toRemove){
+            subjects.remove(s);
+        }
+        return subjects;
+    }
+
     public Subject getSubjectById(long subject_id) {
         return subjectRepository.findById(subject_id);
     }
 
-    @DeleteMapping
+
     public void deleteSubject(long id){
         if(!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: "+id+")");
         subjectRepository.deleteById(id);
     }
 
-    @PostMapping
+
     public void addNewSubject(Subject subject, Authentication authentication){
         User_entity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
@@ -64,7 +101,7 @@ public class SubjectService {
         subjectRepository.save(subject);
     }
 
-    @PutMapping
+
     public void updateSubject(long id, String name, String description, int nrOfStudents) {
         if (!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
@@ -75,7 +112,7 @@ public class SubjectService {
         else subject.setNrOfStudents(nrOfStudents);
     }
 
-    @PutMapping
+
     public void addCompany(long subjectId, Company company, Authentication authentication){
         User_entity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
@@ -91,7 +128,7 @@ public class SubjectService {
         }
     }
 
-    @PutMapping
+
     public void addPromotor(long subjectId, User_entity promotor, Authentication authentication){
         User_entity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
@@ -113,7 +150,7 @@ public class SubjectService {
         else{throw new RuntimeException("Student can only add to his own final subject, Promotor can only add himself");}
     }
 
-    @PutMapping
+
     public void addTag(long subjectId, Tag tag, User_entity activeUser){
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
@@ -124,7 +161,43 @@ public class SubjectService {
         }
         log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
         subject.addTag(tag);
-        Role student2 = roleRepository.findByName("ROLE_STUDENT");
+    }
+
+
+    public void addTargetAudience (long subjectId, long facultyId, long educationId, long campusId){
+        Subject subject = subjectRepository.findById(subjectId);
+        Faculty faculty = facultyRepository.getById(facultyId);
+        List<TargetAudience> targets;
+        if(facultyId==0){
+            throw new RuntimeException("Faculty id cannot be equal to 0");
+        }
+        else if(educationId==0 && campusId==0){
+            // add all the targetAudiences related to the faculty
+            targets = targetAudienceService.getAllByFaculty(faculty);
+        }
+        else if(campusId==0){
+            // add all the targetAudiences related to the education
+            Education education = educationRepository.getById(educationId);
+            targets = targetAudienceService.getAllByEducation(education);
+        }
+        else {
+            // add all the targetAudiences related to the campus AND faculty
+            Campus campus = campusRepository.getById(campusId);
+            targets = targetAudienceService.getAllByCampus(campus);
+            for(TargetAudience t : targets){
+                if(!t.getFaculty().equals(faculty)){
+                    targets.remove(t);
+                }
+            }
+        }
+        for(TargetAudience t : targets){
+            if(targetAudienceService.exists(facultyId, educationId, campusId)){
+                subject.addTargetAudience(t);
+            }
+            else {
+                throw new RuntimeException("TargetAudience does not exist.");
+            }
+        }
     }
 
 }
