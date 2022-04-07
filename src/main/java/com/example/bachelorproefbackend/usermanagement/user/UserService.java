@@ -1,6 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
 import com.example.bachelorproefbackend.authentication.InputNotValidException;
+import com.example.bachelorproefbackend.authentication.NotAllowedException;
 import com.example.bachelorproefbackend.authentication.ResourceNotFoundException;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
@@ -47,8 +48,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    @GetMapping
-    public UserEntity getUserById(long userId) {
+
+    public UserEntity getUserById(long userId, Authentication authentication) {
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(!activeUser.getRoles().contains(admin) && !activeUser.getRoles().contains(coordinator)){
+            if(activeUser.getId()!=userId){
+                throw new NotAllowedException("User can only access his own information");
+            }
+        }
         return userRepository.findById(userId);
     }
 

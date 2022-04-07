@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/authentication/isRole/{role}").authenticated();
         http.authorizeRequests().antMatchers(GET, SUBJECTS).authenticated();
         http.authorizeRequests().antMatchers(POST, SUBJECTS).authenticated();
+        http.authorizeRequests().antMatchers(GET, "userManagement/users/{id}").authenticated();
         http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/addTag").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}/subjects").authenticated();
         http.authorizeRequests().antMatchers(GET, TARGETAUDIENCE).authenticated();

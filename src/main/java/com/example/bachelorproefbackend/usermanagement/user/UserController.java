@@ -32,25 +32,35 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserEntity> getAllUsers() {return userService.getAllUsers();}
+    public List<UserEntity> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     @GetMapping(path="{userId}")
-    public UserEntity getUserById(@PathVariable("userId") long id) {return userService.getUserById(id);}
+    public UserEntity getUserById(@PathVariable("userId") long id, Authentication authentication) {
+        return userService.getUserById(id, authentication);
+    }
+
     @GetMapping(path="student")
     public List<UserEntity> getAllStudents() {
         return userService.getAllStudents();
     }
+
     @GetMapping(path="administrator")
     public List<UserEntity> getAllAdministrators() {
         return userService.getAllAdministrators();
     }
+
     @GetMapping(path="promotor")
     public List<UserEntity> getAllPromotors() {
         return userService.getAllPromotors();
     }
+
     @GetMapping(path="coordinator")
     public List<UserEntity> getAllCoordinators() {
         return userService.getAllCoordinators();
     }
+
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 

@@ -4,6 +4,7 @@ import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyService;
+import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,16 @@ public class SubjectController {
     private final SubjectService subjectService;
     private final CompanyService companyService;
     private final UserService userService;
+    private final UserRepository userRepository;
     private final TagService tagService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService, CompanyService companyService, UserService userService, TagService tagService) {
+    public SubjectController(SubjectService subjectService, CompanyService companyService, UserService userService, TagService tagService, UserRepository userRepository) {
         this.subjectService = subjectService;
         this.companyService = companyService;
         this.userService = userService;
         this.tagService = tagService;
+        this.userRepository = userRepository;
     }
 
     public UserEntity getUserObject(Authentication authentication){
@@ -70,7 +73,7 @@ public class SubjectController {
 
     @PutMapping(path="{subjectId}/addPromotor")
     public void addPromotor(@PathVariable("subjectId") long subjectId, @RequestParam long promotorId, Authentication authentication){
-        UserEntity promotor = userService.getUserById(promotorId);
+        UserEntity promotor = userRepository.findById(promotorId);
         subjectService.addPromotor(subjectId, promotor, authentication);
     }
 

@@ -1,6 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.company;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
+import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +16,12 @@ import java.util.List;
 @RequestMapping(path="userManagement/company")
 public class CompanyController {
     private final CompanyService companyService;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CompanyController(CompanyService companyService, UserService userService){
+    public CompanyController(CompanyService companyService, UserRepository userRepository){
         this.companyService = companyService;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -42,7 +43,7 @@ public class CompanyController {
 
     @PostMapping(path="{companyId}/addContact")
     public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam long userId, Authentication authentication){
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = userRepository.findById(userId);
         companyService.addNewContact(companyId, user, authentication);
     }
 
