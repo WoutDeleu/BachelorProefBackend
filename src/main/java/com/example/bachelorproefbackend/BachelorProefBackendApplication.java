@@ -60,7 +60,7 @@ public class BachelorProefBackendApplication {
 	@Resource
 	FileStorageService storageService;
 	@Bean
-	public void run() throws Exception {
+	public void run()  {
 		storageService.deleteAll();
 		storageService.init();
 	}

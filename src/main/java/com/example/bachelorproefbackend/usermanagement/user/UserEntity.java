@@ -15,7 +15,7 @@ import java.util.Collection;
 @Table
 @Entity
 @NoArgsConstructor
-public class User_entity {
+public class UserEntity {
 
     @Id
     @SequenceGenerator(name="user_sequence", sequenceName = "user_sequence", allocationSize = 1)
@@ -44,7 +44,7 @@ public class User_entity {
     private Company company;
 
 
-    public User_entity(String firstName, String lastName, String email, String telNr, String password) {
+    public UserEntity(String firstName, String lastName, String email, String telNr, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

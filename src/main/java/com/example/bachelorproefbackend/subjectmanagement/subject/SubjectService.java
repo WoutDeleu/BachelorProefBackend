@@ -13,7 +13,7 @@ import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.example.bachelorproefbackend.usermanagement.role.RoleRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -58,7 +58,7 @@ public class SubjectService {
 
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {
         // TODO optimaliseerbaar?
-        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         List<Subject> subjects = subjectRepository.findAll();
         List<Subject> toRemove = new ArrayList<>();
         if(activeUser.getTargetAudience()==null){
@@ -87,7 +87,7 @@ public class SubjectService {
 
 
     public void addNewSubject(Subject subject, Authentication authentication){
-        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         if(activeUser.getRoles().contains(contact)){
             //TODO Find a better solution for this
@@ -109,7 +109,7 @@ public class SubjectService {
 
 
     public void addCompany(long subjectId, Company company, Authentication authentication){
-        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Subject subject = subjectRepository.findById(subjectId);
         if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
@@ -124,8 +124,8 @@ public class SubjectService {
     }
 
 
-    public void addPromotor(long subjectId, User_entity promotor, Authentication authentication){
-        User_entity activeUser = userService.getUserByEmail(authentication.getName());
+    public void addPromotor(long subjectId, UserEntity promotor, Authentication authentication){
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role promotorROLE = roleRepository.findByName("ROLE_PROMOTOR");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
@@ -146,7 +146,7 @@ public class SubjectService {
     }
 
 
-    public void addTag(long subjectId, Tag tag, User_entity activeUser){
+    public void addTag(long subjectId, Tag tag, UserEntity activeUser){
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");

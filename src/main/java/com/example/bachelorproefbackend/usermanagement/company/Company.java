@@ -2,7 +2,7 @@ package com.example.bachelorproefbackend.usermanagement.company;
 
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -17,9 +17,9 @@ public class Company {
     private long id;
     private String name;
     private String address;
-    private String BTWnr;
+    private String btwNr;
     @OneToMany(mappedBy = "company")
-    private Collection<User_entity> contacts;
+    private Collection<UserEntity> contacts;
     //Contact is the user from the company who has access to our system
     //Each company must have at least one contact, and they are created at the same time.
     private String description;
@@ -30,10 +30,10 @@ public class Company {
 
     public Company() { }
 
-    public Company(String name, String address, String BTWnr, String description) {
+    public Company(String name, String address, String btwNr, String description) {
         this.name = name;
         this.address = address;
-        this.BTWnr = BTWnr;
+        this.btwNr = btwNr;
         this.description = description;
         approved = false;
     }
@@ -45,10 +45,10 @@ public class Company {
     public String getAddress() {
         return address;
     }
-    public String getBTWnr() {
-        return BTWnr;
+    public String getBtwNr() {
+        return btwNr;
     }
-    public Collection<User_entity> getContacts() {
+    public Collection<UserEntity> getContacts() {
         return contacts;
     }
     public String getDescription() {
@@ -65,10 +65,10 @@ public class Company {
     public void setAddress(String address) {
         this.address = address;
     }
-    public void setBTWnr(String BTWnr) {
-        this.BTWnr = BTWnr;
+    public void setBtwNr(String btwNr) {
+        this.btwNr = btwNr;
     }
-    public void setContacts(Collection<User_entity> contacts) {
+    public void setContacts(Collection<UserEntity> contacts) {
         this.contacts = contacts;
     }
     public void setDescription(String description) {
@@ -80,7 +80,7 @@ public class Company {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
-    public void addContact(User_entity contact){contacts.add(contact);}
+    public void addContact(UserEntity contact){contacts.add(contact);}
     public void addSubject(Subject subject){subjects.add(subject);}
 
     @Override
@@ -89,7 +89,7 @@ public class Company {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", BTWnr=" + BTWnr +
+                ", BTWnr=" + btwNr +
                 ", contacts=" + contacts +
                 ", description='" + description + '\'' +
                 ", subjects=" + subjects +

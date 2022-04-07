@@ -32,23 +32,23 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User_entity> getAllUsers() {return userService.getAllUsers();}
+    public List<UserEntity> getAllUsers() {return userService.getAllUsers();}
     @GetMapping(path="{userId}")
-    public User_entity getUserById(@PathVariable("userId") long id) {return userService.getUserById(id);}
+    public UserEntity getUserById(@PathVariable("userId") long id) {return userService.getUserById(id);}
     @GetMapping(path="student")
-    public List<User_entity> getAllStudents() {
+    public List<UserEntity> getAllStudents() {
         return userService.getAllStudents();
     }
     @GetMapping(path="administrator")
-    public List<User_entity> getAllAdministrators() {
+    public List<UserEntity> getAllAdministrators() {
         return userService.getAllAdministrators();
     }
     @GetMapping(path="promotor")
-    public List<User_entity> getAllPromotors() {
+    public List<UserEntity> getAllPromotors() {
         return userService.getAllPromotors();
     }
     @GetMapping(path="coordinator")
-    public List<User_entity> getAllCoordinators() {
+    public List<UserEntity> getAllCoordinators() {
         return userService.getAllCoordinators();
     }
     @GetMapping(path="student/{userId}/preferredSubjects")
@@ -56,7 +56,7 @@ public class UserController {
 
     @PostMapping
     public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
-        userService.addNewUser(new User_entity(firstName, lastName, email, telNr, password));
+        userService.addNewUser(new UserEntity(firstName, lastName, email, telNr, password));
     }
 
     @PostMapping(path="batch")

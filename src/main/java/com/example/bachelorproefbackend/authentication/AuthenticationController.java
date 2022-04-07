@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class AuthenticationController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
                 String username = decodedJWT.getSubject();
-                User_entity user = userService.getUserByEmail(username);
+                UserEntity user = userService.getUserByEmail(username);
                     // Create new token
                     String accessToken = JWT.create()
                             .withSubject(user.getEmail())
@@ -71,7 +71,7 @@ public class AuthenticationController {
             }
         }
         else{
-            throw new RuntimeException("Refresh token is missing");
+            throw new ResourceNotFoundException("Refresh token is missing");
         }
     }
 

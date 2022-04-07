@@ -3,7 +3,7 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,15 +26,15 @@ public class Subject {
     @ManyToOne
     private Company company;
     @ManyToMany(mappedBy = "preferredSubjects")
-    private Collection<User_entity> students;
+    private Collection<UserEntity> students;
     @OneToMany(mappedBy = "finalSubject")
-    private Collection<User_entity> finalStudents; //
+    private Collection<UserEntity> finalStudents; //
     @ManyToMany
     private Collection<TargetAudience> targetAudiences;
     @ManyToMany
     private Collection<Tag> tags;
     @ManyToOne
-    private User_entity promotor;
+    private UserEntity promotor;
 
 
     public Subject(String name, String description, int nrOfStudents) {

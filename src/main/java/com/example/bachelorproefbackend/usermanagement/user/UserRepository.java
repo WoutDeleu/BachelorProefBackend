@@ -5,14 +5,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User_entity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-   User_entity findById(long id);
-   User_entity findByEmail(String email); //email act as username
+   UserEntity findById(long id);
+   UserEntity findByEmail(String email); //email act as username
 
-   List<User_entity> findAll();
+   List<UserEntity> findAll();
 
-   List<User_entity> findUser_entityByRolesId(long roleId);
+   List<UserEntity> findUser_entityByRolesId(long roleId);
 
 
 

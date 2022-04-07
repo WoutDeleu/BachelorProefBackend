@@ -1,10 +1,8 @@
 package com.example.bachelorproefbackend.usermanagement.company;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
-import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectService;
-import com.example.bachelorproefbackend.usermanagement.role.RoleRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,16 +16,11 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
     private final UserService userService;
-    private final RoleRepository roleRepository;
-    private final SubjectService subjectService;
-
 
     @Autowired
-    public CompanyController(CompanyService companyService, UserService userService, RoleRepository roleRepository, SubjectService subjectService){
+    public CompanyController(CompanyService companyService, UserService userService){
         this.companyService = companyService;
         this.userService = userService;
-        this.roleRepository = roleRepository;
-        this.subjectService = subjectService;
     }
 
     @GetMapping
@@ -40,13 +33,13 @@ public class CompanyController {
     public List<Subject> getCompanySubjectsById(@PathVariable("companyId") long id) {return companyService.getCompanySubjectsById(id);}
 
     @PostMapping
-    public void addNewCompany(@RequestParam String name, String address, String BTWnr, String description){
-        companyService.addNewCompany(new Company(name, address, BTWnr, description));
+    public void addNewCompany(@RequestParam String name, String address, String btwNr, String description){
+        companyService.addNewCompany(new Company(name, address, btwNr, description));
     }
 
     @PostMapping(path="{companyId}/addContact")
     public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam long userId, Authentication authentication){
-        User_entity user = userService.getUserById(userId);
+        UserEntity user = userService.getUserById(userId);
         companyService.addNewContact(companyId, user, authentication);
     }
 
@@ -59,10 +52,10 @@ public class CompanyController {
     public void updateCompany(@PathVariable("companyId") long id,
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String address,
-                              @RequestParam(required = false) String BTWnr,
+                              @RequestParam(required = false) String btwNr,
                               @RequestParam(required = false) String description,
                               Authentication authentication) {
-        companyService.updateCompany(id, name, address, BTWnr, description, authentication);
+        companyService.updateCompany(id, name, address, btwNr, description, authentication);
     }
 
     @PutMapping(path="{companyId}/approve")

@@ -5,7 +5,7 @@ import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyService;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
-import com.example.bachelorproefbackend.usermanagement.user.User_entity;
+import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class SubjectController {
         this.tagService = tagService;
     }
 
-    public User_entity getUserObject(Authentication authentication){
+    public UserEntity getUserObject(Authentication authentication){
         return userService.getUserByEmail(authentication.getName());
     }
 
@@ -70,7 +70,7 @@ public class SubjectController {
 
     @PutMapping(path="{subjectId}/addPromotor")
     public void addPromotor(@PathVariable("subjectId") long subjectId, @RequestParam long promotorId, Authentication authentication){
-        User_entity promotor = userService.getUserById(promotorId);
+        UserEntity promotor = userService.getUserById(promotorId);
         subjectService.addPromotor(subjectId, promotor, authentication);
     }
 
