@@ -4,7 +4,7 @@
     <persistence-units>
       <persistence-unit name="Default">
         <packages>
-          <package value="com.example.BachelorProefBackend" />
+          <package value="com.example.bachelorproefbackend" />
         </packages>
       </persistence-unit>
     </persistence-units>
