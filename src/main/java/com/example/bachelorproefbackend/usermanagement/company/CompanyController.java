@@ -62,8 +62,8 @@ public class CompanyController {
         companyService.updateCompany(id, name, address, btwNr, description, authentication);
     }
 
-    @PutMapping(path="{companyId}/approve")
-    public void approveCompany(@PathVariable("companyId") long id) {
-        companyService.approveCompany(id);
+    @PutMapping(path="{companyId}/setApproved")
+    public void approveCompany(@PathVariable("companyId") long id, @RequestParam boolean approved) {
+        companyService.setApproved(id, approved);
     }
 }

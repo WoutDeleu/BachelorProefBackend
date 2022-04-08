@@ -38,6 +38,9 @@ public class SubjectController {
     @GetMapping
     public List<Subject> getAllSubjects() {return subjectService.getAllSubjects();}
 
+    @GetMapping(path = "nonApproved")
+    public List<Subject> getAllNonApprovedSubjects() {return subjectService.getAllNonApprovedSubjects();}
+
     @GetMapping(path="byTargetAudience")
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {return subjectService.getAllRelatedSubjects(authentication);}
 
@@ -45,9 +48,6 @@ public class SubjectController {
     public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
         return subjectService.getSubjectById(subject_id);
     }
-//    @GetMapping(path="{subjectId}/students")
-//    public List<User_entity> getAllStudents(@PathVariable("subjectId") long id){return subjectService.getAllUsers(id);}
-
 
     @PostMapping
     public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, Authentication authentication) {
@@ -63,6 +63,11 @@ public class SubjectController {
                               @RequestParam(required = false) String description,
                               @RequestParam(required = false) int nrOfStudents) {
         subjectService.updateSubject(id, name, description, nrOfStudents);
+    }
+
+    @PutMapping(path="{subjectId}/setApproved")
+    public void updateSubject(@PathVariable("subjectId") long id, @RequestParam boolean approved){
+        subjectService.setApproved(id, approved);
     }
 
     @PutMapping(path="{subjectId}/addCompany")

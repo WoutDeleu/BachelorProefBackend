@@ -129,10 +129,10 @@ public class CompanyService {
     }
 
     @PutMapping
-    public void approveCompany(long id) {
-        if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " + id + ")");
+    public void setApproved(long id, boolean approved) {
+        if(!companyRepository.existsById(id)) throw new InputNotValidException("Company does not exist (id: " + id + ")");
         Company company = companyRepository.getById(id);
-        company.setApproved(true);
+        company.setApproved(approved);
     }
 
 

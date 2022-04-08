@@ -41,6 +41,11 @@ public class UserController {
         return userService.getUserById(id, authentication);
     }
 
+    @GetMapping(path="{userId}/preferredSubjects")
+    public Collection<Subject> getPreferredSubjectsByUserById(@PathVariable("userId") long id, Authentication authentication) {
+        return userService.getPreferredSubjectsByUserId(id, authentication);
+    }
+
     @GetMapping(path="student")
     public List<UserEntity> getAllStudents() {
         return userService.getAllStudents();
@@ -116,6 +121,11 @@ public class UserController {
         userService.addTargetAudience(userId, facultyId, educationId, campusId);
     }
 
+    @PutMapping(path="student/addFinalSubject")
+    public void addFinalSubject(@RequestParam long userId, long subjectId){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        userService.addFinalSubject(userId, subject);
+    }
 
 
 

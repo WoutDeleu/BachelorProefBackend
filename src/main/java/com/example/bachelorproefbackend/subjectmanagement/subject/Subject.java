@@ -35,17 +35,19 @@ public class Subject {
     private Collection<Tag> tags;
     @ManyToOne
     private UserEntity promotor;
+    private boolean approved; // Subjects from students or companies must be approved by coordinator or admin
 
 
     public Subject(String name, String description, int nrOfStudents) {
         this.name = name;
         this.description = description;
         this.nrOfStudents = nrOfStudents;
+        approved = false;
     }
 
     public void addTag (Tag tag) {tags.add(tag);}
-
     public void addTargetAudience (TargetAudience targetAudience) {targetAudiences.add(targetAudience);}
+    public void addFinalStudent (UserEntity student) {finalStudents.add(student);}
 
 
     @Override

@@ -61,6 +61,18 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId);
     }
 
+    public Collection<Subject> getPreferredSubjectsByUserId(long userId, Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(!activeUser.getRoles().contains(admin) && !activeUser.getRoles().contains(coordinator)){
+            if(activeUser.getId()!=userId){
+                throw new NotAllowedException("User can only access his own information");
+            }
+        }
+        return userRepository.findById(userId).getPreferredSubjects();
+    }
+
     @GetMapping
     public UserEntity getUserByEmail(String email){
         return userRepository.findByEmail(email);
@@ -203,6 +215,21 @@ public class UserService implements UserDetailsService {
         UserEntity user = userRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+    }
+
+
+    public void addFinalSubject(long userId, Subject subject){
+        //TODO logic to see if this is before the required date
+        UserEntity user = userRepository.findById(userId);
+        Role student = roleRepository.findByName(STUDENT);
+        if(!(subject.getFinalStudents().size() < subject.getNrOfStudents())){
+            throw new InputNotValidException("Subject already has maximum amount of students");
+        }
+        if(!user.getRoles().contains(student)){
+            throw new InputNotValidException("Can only add final subject to students.");
+        }
+        user.setFinalSubject(subject);
+        subject.addFinalStudent(user);
     }
 
     @Override

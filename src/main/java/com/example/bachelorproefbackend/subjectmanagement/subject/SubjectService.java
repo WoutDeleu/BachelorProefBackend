@@ -1,5 +1,7 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
+import com.example.bachelorproefbackend.authentication.InputNotValidException;
+import com.example.bachelorproefbackend.authentication.NotAllowedException;
 import com.example.bachelorproefbackend.subjectmanagement.campus.Campus;
 import com.example.bachelorproefbackend.subjectmanagement.campus.CampusRepository;
 import com.example.bachelorproefbackend.subjectmanagement.education.Education;
@@ -54,6 +56,8 @@ public class SubjectService {
 
     public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
 
+    public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllNonApproved();}
+
 
 
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {
@@ -62,7 +66,7 @@ public class SubjectService {
         List<Subject> subjects = subjectRepository.findAll();
         List<Subject> toRemove = new ArrayList<>();
         if(activeUser.getTargetAudience()==null){
-            throw new RuntimeException("The user must have a targetAudience for this function.");
+            throw new InputNotValidException("The user must have a targetAudience for this function.");
         }
         for (Subject s : subjects){
             if(!s.getTargetAudiences().contains(activeUser.getTargetAudience()) || s.getTargetAudiences().isEmpty()){
@@ -75,8 +79,8 @@ public class SubjectService {
         return subjects;
     }
 
-    public Subject getSubjectById(long subject_id) {
-        return subjectRepository.findById(subject_id);
+    public Subject getSubjectById(long subjectId) {
+        return subjectRepository.findById(subjectId);
     }
 
 
@@ -90,8 +94,7 @@ public class SubjectService {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         if(activeUser.getRoles().contains(contact)){
-            //TODO Find a better solution for this
-            subject.setCompany(activeUser.getFinalSubject().getCompany());
+            subject.setCompany(activeUser.getCompany());
         }
         subjectRepository.save(subject);
     }
@@ -102,8 +105,8 @@ public class SubjectService {
         Subject subject = subjectRepository.getById(id);
         if(name != null && name.length()>0 && !Objects.equals(subject.getName(), name)) subject.setName(name);
         if(description != null && description.length()>0 && !Objects.equals(subject.getDescription(), description)) subject.setDescription(description);
-        if(nrOfStudents==0) throw new RuntimeException("Number of students can not be equal to zero");
-        else if (nrOfStudents>2) throw new RuntimeException("Number of students can not be over 2");
+        if(nrOfStudents==0) throw new InputNotValidException("Number of students can not be equal to zero");
+        else if (nrOfStudents>2) throw new InputNotValidException("Number of students can not be over 2");
         else subject.setNrOfStudents(nrOfStudents);
     }
 
@@ -115,7 +118,7 @@ public class SubjectService {
         if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
             log.info("Adding company {} to subject {}", company.getName(), subject.getName());
             if(subject.getCompany() != null){
-                throw new RuntimeException("Subject already has a company: "+subject.getCompany().getName());
+                throw new InputNotValidException("Subject already has a company: "+subject.getCompany().getName());
             }
             else{
                 subject.setCompany(company);
@@ -133,16 +136,16 @@ public class SubjectService {
         if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator) || activeUser.getFinalSubject().equals(subject) || activeUser.equals(promotor)){
             if(promotor.getRoles().contains(promotorROLE)){
                 if(subject.getPromotor() != null){
-                    throw new RuntimeException("Subject already has a promotor: "+subject.getPromotor().getFirstName());
+                    throw new InputNotValidException("Subject already has a promotor: "+subject.getPromotor().getFirstName());
                 }
                 else{
                     log.info("Adding promotor {} to subject {}", promotor.getFirstName(), subject.getName());
                     subject.setPromotor(promotor);
                 }
             }
-            else{throw new RuntimeException("Only users with role: promotor can be added");}
+            else{throw new InputNotValidException("Only users with role: promotor can be added");}
         }
-        else{throw new RuntimeException("Student can only add to his own final subject, Promotor can only add himself");}
+        else{throw new NotAllowedException("Student can only add to his own final subject, Promotor can only add himself");}
     }
 
 
@@ -150,9 +153,8 @@ public class SubjectService {
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
-        if(activeUser.getRoles().contains(student) || activeUser.getRoles().contains(contact)){
-            if(!subject.equals(activeUser.getFinalSubject()))
-                throw new RuntimeException("Student and Contact can only add to their finalSubject.");
+        if((activeUser.getRoles().contains(student) || activeUser.getRoles().contains(contact)) && !subject.equals(activeUser.getFinalSubject())){
+            throw new NotAllowedException("Student and Contact can only add to their finalSubject.");
         }
         log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
         subject.addTag(tag);
@@ -164,7 +166,7 @@ public class SubjectService {
         Faculty faculty = facultyRepository.getById(facultyId);
         List<TargetAudience> targets;
         if(facultyId==0){
-            throw new RuntimeException("Faculty id cannot be equal to 0");
+            throw new InputNotValidException("Faculty id cannot be equal to 0");
         }
         else if(educationId==0 && campusId==0){
             // add all the targetAudiences related to the faculty
@@ -190,9 +192,15 @@ public class SubjectService {
                 subject.addTargetAudience(t);
             }
             else {
-                throw new RuntimeException("TargetAudience does not exist.");
+                throw new InputNotValidException("TargetAudience does not exist.");
             }
         }
+    }
+
+    public void setApproved(long id, boolean approved){
+        if(!subjectRepository.existsById(id)) throw new InputNotValidException("Subject does not exist (id: " + id + ")");
+        Subject subject = subjectRepository.getById(id);
+        subject.setApproved(approved);
     }
 
 }

@@ -33,12 +33,13 @@ public class UserEntity {
     @JoinTable(name="subject_preference")
     private Collection<Subject> preferredSubjects = new ArrayList<>();
     @ManyToOne //TwoToOne
+    @JsonIgnore
     private Subject finalSubject; //For students
     @ManyToOne
     private TargetAudience targetAudience;
     @OneToMany(mappedBy = "promotor")
     @JsonIgnore
-    private Collection<Subject> subject; //For promotor
+    private Collection<Subject> subjects; //For promotor
     @ManyToOne
     @JsonIgnore
     private Company company;
