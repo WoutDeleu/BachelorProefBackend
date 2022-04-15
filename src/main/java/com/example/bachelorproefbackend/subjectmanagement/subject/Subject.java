@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
@@ -37,6 +38,17 @@ public class Subject {
     private UserEntity promotor;
     private boolean approved; // Subjects from students or companies must be approved by coordinator or admin
 
+
+    public Subject(String name, String description, int nrOfStudents, Tag [] tags) {
+        this.name = name;
+        this.description = description;
+        this.nrOfStudents = nrOfStudents;
+        this.tags = new ArrayList<>();
+        for(int i = 0; i<tags.length; i++){
+            this.tags.add(tags[i]);
+        }
+        approved = false;
+    }
 
     public Subject(String name, String description, int nrOfStudents) {
         this.name = name;

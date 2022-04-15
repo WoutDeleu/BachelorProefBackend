@@ -50,8 +50,13 @@ public class SubjectController {
     }
 
     @PostMapping
-    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, Authentication authentication) {
-        subjectService.addNewSubject(new Subject(name, description, nrOfStudents), authentication);
+    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, int [] tagIds, Authentication authentication) {
+        Tag [] tags = new Tag[tagIds.length];
+        for(int i = 0; i<tagIds.length; i++){
+            Tag tag = tagService.getTagById(tagIds[i]);
+            tags[i] = tag;
+        }
+        subjectService.addNewSubject(new Subject(name, description, nrOfStudents, tags), authentication);
     }
 
     @DeleteMapping(path="{subjectId}")

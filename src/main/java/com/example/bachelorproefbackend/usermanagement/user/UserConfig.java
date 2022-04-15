@@ -39,14 +39,17 @@ public class UserConfig {
             userService.addRoleToUser("admin@kuleuven.be", "ROLE_ADMIN");
             userService.addRoleToUser("p.vermeiren@hamann.be", "ROLE_CONTACT");
 
+            Tag tag1 = new Tag("Luchtvaart");
+            Tag tag2 = new Tag("Software engineering");
+            tagRepository.saveAll(List.of(tag1, tag2));
+
+
             Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
             Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
             Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
             subjectRepository.saveAll(List.of(subject1, subject2, subject3));
 
-            Tag tag1 = new Tag("Luchtvaart");
-            Tag tag2 = new Tag("Software engineering");
-            tagRepository.saveAll(List.of(tag1, tag2));
+
 
 
 //            userService.addNewPreferredSubject(7, subject1);
