@@ -8,7 +8,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(path="subjectManagement/faculty")
+@RequestMapping(path="subjectManagement/faculties")
 public class FacultyController {
     private final FacultyService facultyService;
 

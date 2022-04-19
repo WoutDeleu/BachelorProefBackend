@@ -28,9 +28,13 @@ public class CampusController {
     @GetMapping
     public List<Campus> getAllCampuses() {return campusService.getAllCampuses();}
 
-    @GetMapping(path="byFaculty/{facultyId}")
-    public List<Campus> getAllCampusesByFaculty(@PathVariable ("facultyId") long id){
-        Faculty faculty = facultyRepository.getById(id);
+    @GetMapping(path="byFaculties")
+    public List<Campus> getAllCampusesByFaculty(@RequestParam long [] facultyIds){
+        Faculty [] faculties = new Faculty[facultyIds.length];
+        for(int i = 0; i<facultyIds.length; i++){
+            Faculty faculty = facultyRepository.getById(facultyIds[i]);
+            faculties[i] = faculty;
+        }
         return campusService.getAllCampusesByFaculty(faculty);
     }
 
