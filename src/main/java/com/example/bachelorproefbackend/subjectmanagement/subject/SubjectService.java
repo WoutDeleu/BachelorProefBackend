@@ -162,43 +162,56 @@ public class SubjectService {
     }
 
 
-    public void addTargetAudience (long subjectId, long [] facultyIds, long [] educationIds, long [] campusIds){
-        List<TargetAudience> targets = new ArrayList<>();
-
-        if(facultyIds[0]==0) {
-            throw new InputNotValidException("Faculty id cannot be equal to 0");
-        }
-        else if(educationIds[0]==0 && campusIds[0]==0){
-            // add all the targetAudiences related to the faculties
-            for (long fid : facultyIds){
-                targets = targetAudienceService.getAllByFacultyId(fid);
+    public void addTargetAudience (long subjectId, long [] facultyIds, long [] educationIds, long [] campusIds, Authentication authentication){
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
+        Subject subject = subjectRepository.getById(subjectId);
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        // Only coordinator and admin can access all subjects, others only their own
+        if(activeUser.getRoles().contains(admin) // admin
+                || activeUser.getRoles().contains(coordinator) // coordinator
+                || activeUser.getFinalSubject().equals(subject) // student
+                || activeUser.getSubjects().contains(subject) //promotor
+                || activeUser.getCompany().equals(subject.getCompany()) // contact
+         ){
+            List<TargetAudience> targets = new ArrayList<>();
+            if(facultyIds[0]==0) {
+                throw new InputNotValidException("Faculty id cannot be equal to 0");
             }
-        }
-        else if(campusIds[0]==0){
-            // add all the targetAudiences related to the education
-            for (long eid : educationIds){
-                targets = targetAudienceService.getAllByEducationId(eid);
-            }
-        }
-        else {
-            // add all the targetAudiences related to the campus AND faculty
-            for (long cid : campusIds) {
-                targets = targetAudienceService.getAllByCampusId(cid);
-                ArrayList<Faculty> faculties = new ArrayList<>();
-                for (long fid : facultyIds) {
-                    Faculty faculty = facultyRepository.getById(fid);
-                    faculties.add(faculty);
+            else if(educationIds[0]==0 && campusIds[0]==0){
+                // add all the targetAudiences related to the faculties
+                for (long fid : facultyIds){
+                    targets = targetAudienceService.getAllByFacultyId(fid);
                 }
-                for (TargetAudience t : targets) {
-                    if (!faculties.contains(t.getFaculty())) {
-                        targets.remove(t);
+            }
+            else if(campusIds[0]==0){
+                // add all the targetAudiences related to the education
+                for (long eid : educationIds){
+                    targets = targetAudienceService.getAllByEducationId(eid);
+                }
+            }
+            else {
+                // add all the targetAudiences related to the campus AND faculty
+                for (long cid : campusIds) {
+                    targets = targetAudienceService.getAllByCampusId(cid);
+                    ArrayList<Faculty> faculties = new ArrayList<>();
+                    for (long fid : facultyIds) {
+                        Faculty faculty = facultyRepository.getById(fid);
+                        faculties.add(faculty);
+                    }
+                    for (TargetAudience t : targets) {
+                        if (!faculties.contains(t.getFaculty())) {
+                            targets.remove(t);
+                        }
                     }
                 }
             }
+            for (TargetAudience t : targets) {
+                subject.addTargetAudience(t);
+            }
         }
-        Subject subject = subjectRepository.getById(subjectId);
-        for (TargetAudience t : targets) {
-            subject.addTargetAudience(t);
+        else {
+            throw new NotAllowedException("Student, promotor and contact can only add to their own subject.");
         }
     }
 
