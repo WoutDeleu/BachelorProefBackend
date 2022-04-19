@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
+import java.lang.annotation.Target;
 import java.util.List;
 
 @Slf4j
@@ -35,17 +36,16 @@ public class TargetAudienceService {
     @GetMapping
     public List<TargetAudience> getAllTargetAudiences() {return targetAudienceRepository.findAll();}
 
-    @GetMapping
     public List<TargetAudience> getAllByFaculty(Faculty faculty){return targetAudienceRepository.findAllByFaculty(faculty);}
+    public List<TargetAudience> getAllByFacultyId(long facultyId){return targetAudienceRepository.findAllByFacultyId(facultyId);}
 
-    @GetMapping
     public List<TargetAudience> getAllByEducation(Education education){return targetAudienceRepository.findAllByEducation(education);}
+    public List<TargetAudience> getAllByEducationId(long educationId){return targetAudienceRepository.findAllByEducationId(educationId);}
 
-    @GetMapping
     public List<TargetAudience> getAllByCampus(Campus campus){return targetAudienceRepository.findAllByCampus(campus);}
+    public List<TargetAudience> getAllByCampusId(long campusId){return targetAudienceRepository.findAllByCampusId(campusId);}
 
-    @GetMapping
-    public List<TargetAudience> getAllByCampusId(long id){return targetAudienceRepository.findAllByCampusId(id);}
+
 
     @PostMapping
     public void addNewTargetAudience(TargetAudience targetAudience) {

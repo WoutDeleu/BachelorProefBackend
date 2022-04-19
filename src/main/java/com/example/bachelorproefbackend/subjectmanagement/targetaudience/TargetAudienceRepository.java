@@ -12,11 +12,15 @@ import java.util.List;
 @Repository
 public interface TargetAudienceRepository extends JpaRepository<TargetAudience, Long> {
     List<TargetAudience> findAllByFaculty(Faculty faculty);
+    List<TargetAudience> findAllByFacultyId(long facultyId);
 
     List<TargetAudience> findAllByEducation(Education education);
+    List<TargetAudience> findAllByEducationId(long educationId);
 
     List<TargetAudience> findAllByCampus(Campus campus);
+    List<TargetAudience> findAllByCampusId(long campusId);
 
-    List<TargetAudience> findAllByCampusId(long id);
+
+
 
 }

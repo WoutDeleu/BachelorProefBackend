@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -161,39 +162,43 @@ public class SubjectService {
     }
 
 
-    public void addTargetAudience (long subjectId, long facultyId, long educationId, long campusId){
-        Subject subject = subjectRepository.findById(subjectId);
-        Faculty faculty = facultyRepository.getById(facultyId);
-        List<TargetAudience> targets;
-        if(facultyId==0){
+    public void addTargetAudience (long subjectId, long [] facultyIds, long [] educationIds, long [] campusIds){
+        List<TargetAudience> targets = new ArrayList<>();
+
+        if(facultyIds[0]==0) {
             throw new InputNotValidException("Faculty id cannot be equal to 0");
         }
-        else if(educationId==0 && campusId==0){
-            // add all the targetAudiences related to the faculty
-            targets = targetAudienceService.getAllByFaculty(faculty);
+        else if(educationIds[0]==0 && campusIds[0]==0){
+            // add all the targetAudiences related to the faculties
+            for (long fid : facultyIds){
+                targets = targetAudienceService.getAllByFacultyId(fid);
+            }
         }
-        else if(campusId==0){
+        else if(campusIds[0]==0){
             // add all the targetAudiences related to the education
-            Education education = educationRepository.getById(educationId);
-            targets = targetAudienceService.getAllByEducation(education);
+            for (long eid : educationIds){
+                targets = targetAudienceService.getAllByEducationId(eid);
+            }
         }
         else {
             // add all the targetAudiences related to the campus AND faculty
-            Campus campus = campusRepository.getById(campusId);
-            targets = targetAudienceService.getAllByCampus(campus);
-            for(TargetAudience t : targets){
-                if(!t.getFaculty().equals(faculty)){
-                    targets.remove(t);
+            for (long cid : campusIds) {
+                targets = targetAudienceService.getAllByCampusId(cid);
+                ArrayList<Faculty> faculties = new ArrayList<>();
+                for (long fid : facultyIds) {
+                    Faculty faculty = facultyRepository.getById(fid);
+                    faculties.add(faculty);
+                }
+                for (TargetAudience t : targets) {
+                    if (!faculties.contains(t.getFaculty())) {
+                        targets.remove(t);
+                    }
                 }
             }
         }
-        for(TargetAudience t : targets){
-            if(targetAudienceService.exists(facultyId, educationId, campusId)){
-                subject.addTargetAudience(t);
-            }
-            else {
-                throw new InputNotValidException("TargetAudience does not exist.");
-            }
+        Subject subject = subjectRepository.getById(subjectId);
+        for (TargetAudience t : targets) {
+            subject.addTargetAudience(t);
         }
     }
 
