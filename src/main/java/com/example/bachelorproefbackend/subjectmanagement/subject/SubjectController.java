@@ -1,16 +1,24 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
+import com.example.bachelorproefbackend.authentication.InputNotValidException;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyService;
+import com.example.bachelorproefbackend.usermanagement.filestorage.FileStorageService;
+import com.example.bachelorproefbackend.usermanagement.filestorage.ResponseMessage;
 import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @RestController
@@ -21,14 +29,16 @@ public class SubjectController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final FileStorageService storageService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService, CompanyService companyService, UserService userService, TagService tagService, UserRepository userRepository) {
+    public SubjectController(SubjectService subjectService, FileStorageService storageService, CompanyService companyService, UserService userService, TagService tagService, UserRepository userRepository) {
         this.subjectService = subjectService;
         this.companyService = companyService;
         this.userService = userService;
         this.tagService = tagService;
         this.userRepository = userRepository;
+        this.storageService = storageService;
     }
 
     public UserEntity getUserObject(Authentication authentication){
@@ -57,6 +67,27 @@ public class SubjectController {
             tags[i] = tag;
         }
         subjectService.addNewSubject(new Subject(name, description, nrOfStudents, tags), authentication);
+    }
+
+    @PostMapping(path="uploadPdf")
+    public ResponseEntity<ResponseMessage> addPdfToSubject(@RequestParam("file") MultipartFile file, long subjectId){
+        String message = "";
+        try {
+            Subject subject = subjectService.getSubjectById(subjectId);
+            if(subject != null){
+                storageService.savePdf(file, subjectId); // allows only pdf
+                message = "Uploaded the pdf successfully: " + file.getOriginalFilename();
+                subject.setHasPdf(true);
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            }
+            else{
+                throw new InputNotValidException("Subject does not exist.");
+            }
+
+        } catch (Exception e) {
+            message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
     }
 
     @DeleteMapping(path="{subjectId}")

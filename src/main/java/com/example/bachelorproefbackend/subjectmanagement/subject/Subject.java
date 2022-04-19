@@ -37,6 +37,7 @@ public class Subject {
     @ManyToOne
     private UserEntity promotor;
     private boolean approved; // Subjects from students or companies must be approved by coordinator or admin
+    private boolean hasPdf;
 
 
     public Subject(String name, String description, int nrOfStudents, Tag [] tags) {

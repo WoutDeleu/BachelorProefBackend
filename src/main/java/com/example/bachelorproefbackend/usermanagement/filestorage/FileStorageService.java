@@ -1,5 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.filestorage;
 
+import com.example.bachelorproefbackend.authentication.InputNotValidException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,6 +16,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 public class FileStorageService implements StorageService{
     private final Path root = Paths.get("uploads");
     @Override
@@ -32,6 +35,19 @@ public class FileStorageService implements StorageService{
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
+
+    public void savePdf(MultipartFile file, long subjectId) {
+        try {
+            if(!file.getContentType().equals("application/pdf")){
+                throw new InputNotValidException("Can only upload pdf filetype");
+            }
+            log.info(file.getContentType());
+            Files.copy(file.getInputStream(), this.root.resolve("PdfSubject"+subjectId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        }
+    }
+
     @Override
     public Resource load(String filename) {
         try {
