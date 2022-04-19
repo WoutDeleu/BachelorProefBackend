@@ -34,11 +34,13 @@ public class CampusService {
     public List<Campus> getAllCampuses() {return campusRepository.findAll();}
 
     @GetMapping
-    public List<Campus> getAllCampusesByFaculty(Faculty faculty){
-        List<TargetAudience> targets = targetAudienceService.getAllByFaculty(faculty);
+    public List<Campus> getAllCampusesByFaculties(Faculty [] faculties){
         List<Campus> result = new ArrayList<>();
-        for (TargetAudience t : targets) {
-            result.add(t.getCampus());
+        for (Faculty f : faculties){
+            List<TargetAudience> targets = targetAudienceService.getAllByFaculty(f);
+            for (TargetAudience t : targets) {
+                result.add(t.getCampus());
+            }
         }
         return result;
     }

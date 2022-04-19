@@ -29,13 +29,13 @@ public class CampusController {
     public List<Campus> getAllCampuses() {return campusService.getAllCampuses();}
 
     @GetMapping(path="byFaculties")
-    public List<Campus> getAllCampusesByFaculty(@RequestParam long [] facultyIds){
+    public List<Campus> getAllCampusesByFaculties(@RequestParam long [] facultyIds){
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){
             Faculty faculty = facultyRepository.getById(facultyIds[i]);
             faculties[i] = faculty;
         }
-        return campusService.getAllCampusesByFaculty(faculty);
+        return campusService.getAllCampusesByFaculties(faculties);
     }
 
     @GetMapping(path="byEducation/{educationId}")
