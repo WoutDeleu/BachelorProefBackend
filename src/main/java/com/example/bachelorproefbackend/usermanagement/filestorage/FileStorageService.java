@@ -43,7 +43,6 @@ public class FileStorageService implements StorageService{
             if(!file.getContentType().equals("application/pdf")){
                 throw new InputNotValidException("Can only upload pdf filetype");
             }
-            log.info(file.getContentType());
             Files.copy(file.getInputStream(), this.root.resolve("PdfSubject"+subjectId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());

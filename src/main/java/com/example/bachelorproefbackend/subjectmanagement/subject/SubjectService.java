@@ -2,10 +2,6 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.authentication.InputNotValidException;
 import com.example.bachelorproefbackend.authentication.NotAllowedException;
-import com.example.bachelorproefbackend.subjectmanagement.campus.Campus;
-import com.example.bachelorproefbackend.subjectmanagement.campus.CampusRepository;
-import com.example.bachelorproefbackend.subjectmanagement.education.Education;
-import com.example.bachelorproefbackend.subjectmanagement.education.EducationRepository;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
@@ -22,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,19 +32,16 @@ public class SubjectService {
     private final RoleRepository roleRepository;
     private final TargetAudienceService targetAudienceService;
     private final FacultyRepository facultyRepository;
-    private final EducationRepository educationRepository;
-    private final CampusRepository campusRepository;
+
 
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, CampusRepository campusRepository, EducationRepository educationRepository, FacultyRepository facultyRepository, TargetAudienceService targetAudienceService, UserService userService, RoleRepository roleRepository) {
+    public SubjectService(SubjectRepository subjectRepository, FacultyRepository facultyRepository, TargetAudienceService targetAudienceService, UserService userService, RoleRepository roleRepository) {
         this.subjectRepository = subjectRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.targetAudienceService = targetAudienceService;
         this.facultyRepository = facultyRepository;
-        this.educationRepository = educationRepository;
-        this.campusRepository = campusRepository;
     }
 
 
@@ -126,7 +118,6 @@ public class SubjectService {
             }
         }
     }
-
 
     public void addPromotor(long subjectId, UserEntity promotor, Authentication authentication){
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());

@@ -11,14 +11,18 @@ import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.swing.text.Document;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -60,8 +64,14 @@ public class SubjectController {
     }
 
     @GetMapping(path="{subjectId}/pdf")
-    public Resource getSubjectPdf(@PathVariable("subjectId") Long subjectId){
-        return storageService.load("PdfSubject"+subjectId);
+    public File getSubjectPdf(@PathVariable("subjectId") Long subjectId){
+        try  {
+            File resource = new ClassPathResource("uploads/PdfSubject2.pdf").getFile();
+            return resource;
+        }
+        catch (IOException e){
+            throw new IllegalStateException("weet ik veel"+e);
+        }
     }
 
     @PostMapping
