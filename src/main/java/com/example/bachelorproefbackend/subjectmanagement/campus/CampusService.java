@@ -46,11 +46,13 @@ public class CampusService {
     }
 
     @GetMapping
-    public List<Campus> getAllCampusesByEducation(Education education){
-        List<TargetAudience> targets = targetAudienceService.getAllByEducation(education);
+    public List<Campus> getAllCampusesByEducations(Education [] educations){
         List<Campus> result = new ArrayList<>();
-        for (TargetAudience t : targets) {
-            result.add(t.getCampus());
+        for (Education e : educations){
+            List<TargetAudience> targets = targetAudienceService.getAllByEducation(e);
+            for (TargetAudience t : targets) {
+                result.add(t.getCampus());
+            }
         }
         return result;
     }
