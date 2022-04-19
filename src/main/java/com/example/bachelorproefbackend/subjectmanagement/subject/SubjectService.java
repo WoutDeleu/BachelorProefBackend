@@ -53,7 +53,6 @@ public class SubjectService {
 
 
 
-
     public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
 
     public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllNonApproved();}
@@ -82,6 +81,7 @@ public class SubjectService {
     public Subject getSubjectById(long subjectId) {
         return subjectRepository.findById(subjectId);
     }
+
 
 
     public void deleteSubject(long id){

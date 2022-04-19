@@ -11,14 +11,14 @@ import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.swing.text.Document;
 import java.util.List;
 
 @RestController
@@ -55,12 +55,17 @@ public class SubjectController {
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {return subjectService.getAllRelatedSubjects(authentication);}
 
     @GetMapping(path="{subjectId}")
-    public Subject getSubjectById(@PathVariable("subjectId") Long subject_id){
-        return subjectService.getSubjectById(subject_id);
+    public Subject getSubjectById(@PathVariable("subjectId") Long subjectId){
+        return subjectService.getSubjectById(subjectId);
+    }
+
+    @GetMapping(path="{subjectId}/pdf")
+    public Resource getSubjectPdf(@PathVariable("subjectId") Long subjectId){
+        return storageService.load("PdfSubject"+subjectId);
     }
 
     @PostMapping
-    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, int [] tagIds, Authentication authentication) {
+    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, long [] tagIds, Authentication authentication) {
         Tag [] tags = new Tag[tagIds.length];
         for(int i = 0; i<tagIds.length; i++){
             Tag tag = tagService.getTagById(tagIds[i]);
@@ -83,7 +88,6 @@ public class SubjectController {
             else{
                 throw new InputNotValidException("Subject does not exist.");
             }
-
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e;
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
@@ -128,4 +132,5 @@ public class SubjectController {
     public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam long facultyId, long educationId, long campusId){
         subjectService.addTargetAudience(subjectId, facultyId, educationId, campusId);
     }
+
 }

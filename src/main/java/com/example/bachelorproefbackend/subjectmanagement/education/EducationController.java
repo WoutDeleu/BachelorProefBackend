@@ -2,6 +2,7 @@ package com.example.bachelorproefbackend.subjectmanagement.education;
 
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
+import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,14 @@ public class EducationController {
     @GetMapping
     public List<Education> getAllEducations() {return educationService.getAllEducations();}
 
-    @GetMapping(path="byFaculty/{facultyId}")
-    public List<Education> getAllEducationsByFaculty(@PathVariable("facultyId") long id) {
-        Faculty faculty = facultyRepository.getById(id);
-        return educationService.getAllEducationsByFaculty(faculty);
+    @GetMapping(path="byFaculties")
+    public List<Education> getAllEducationsByFaculties(@RequestParam long [] facultyIds) {
+        Faculty [] faculties = new Faculty[facultyIds.length];
+        for(int i = 0; i<facultyIds.length; i++){
+            Faculty faculty = facultyRepository.getById(facultyIds[i]);
+            faculties[i] = faculty;
+        }
+        return educationService.getAllEducationsByFaculties(faculties);
     }
 
     @PostMapping

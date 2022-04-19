@@ -34,11 +34,13 @@ public class EducationService {
     public List<Education> getAllEducations() {return educationRepository.findAll();}
 
     @GetMapping
-    public List<Education> getAllEducationsByFaculty(Faculty faculty){
-        List<TargetAudience> targets = targetAudienceService.getAllByFaculty(faculty);
+    public List<Education> getAllEducationsByFaculties(Faculty [] faculties){
         List<Education> result = new ArrayList<>();
-        for (TargetAudience t : targets) {
-            result.add(t.getEducation());
+        for (Faculty f : faculties){
+            List<TargetAudience> targets = targetAudienceService.getAllByFaculty(f);
+            for (TargetAudience t : targets) {
+                result.add(t.getEducation());
+            }
         }
         return result;
     }

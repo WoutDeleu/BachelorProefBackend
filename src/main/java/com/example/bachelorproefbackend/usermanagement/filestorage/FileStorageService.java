@@ -15,6 +15,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.Document;
+
 @Service
 @Slf4j
 public class FileStorageService implements StorageService{
@@ -53,6 +55,7 @@ public class FileStorageService implements StorageService{
         try {
             Path file = root.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
+            log.info("bestaat het? {}", resource.exists());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
@@ -66,6 +69,7 @@ public class FileStorageService implements StorageService{
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(root.toFile());
     }
+
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -74,4 +78,6 @@ public class FileStorageService implements StorageService{
             throw new RuntimeException("Could not load the files!");
         }
     }
+
+
 }
