@@ -26,10 +26,10 @@ public class EducationController {
     public List<Education> getAllEducations() {return educationService.getAllEducations();}
 
     @GetMapping(path="byFaculties")
-    public List<Education> getAllEducationsByFaculties(@RequestParam long [] facultyIds) {
+    public List<Education> getAllEducationsByFaculties(@RequestParam int [] facultyIds) {
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){
-            Faculty faculty = facultyRepository.getById(facultyIds[i]);
+            Faculty faculty = facultyRepository.getById((long) facultyIds[i]);
             faculties[i] = faculty;
         }
         return educationService.getAllEducationsByFaculties(faculties);

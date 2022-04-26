@@ -1,7 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.company;
 
-import com.example.bachelorproefbackend.authentication.InputNotValidException;
-import com.example.bachelorproefbackend.authentication.NotAllowedException;
+import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
+import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectRepository;
 import com.example.bachelorproefbackend.usermanagement.role.Role;

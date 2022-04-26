@@ -1,8 +1,9 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
-import com.example.bachelorproefbackend.authentication.InputNotValidException;
-import com.example.bachelorproefbackend.authentication.NotAllowedException;
-import com.example.bachelorproefbackend.authentication.ResourceNotFoundException;
+import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
+import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
+import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
+import com.example.bachelorproefbackend.configuration.timing.Timing;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
@@ -199,7 +200,9 @@ public class UserService implements UserDetailsService {
 
     @PutMapping
     public void addNewPreferredSubject(long uid, Subject subject, Authentication authentication){
-        //TODO logic to see if this is before the required date
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity activeUser = getUserByEmail(authentication.getName());
         UserEntity user = userRepository.findById(uid);
         Role student = roleRepository.findByName(STUDENT);
@@ -241,7 +244,9 @@ public class UserService implements UserDetailsService {
 
 
     public void addFinalSubject(long userId, Subject subject){
-        //TODO logic to see if this is before the required date
+        if(!Timing.getInstance().isBeforeDeadlineFinalAllocation()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndFinalAllocation());
+        }
         UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);
         if(!(subject.getFinalStudents().size() < subject.getNrOfStudents())){

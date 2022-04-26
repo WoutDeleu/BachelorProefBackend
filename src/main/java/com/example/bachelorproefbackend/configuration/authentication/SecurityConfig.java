@@ -1,4 +1,4 @@
-package com.example.bachelorproefbackend.authentication;
+package com.example.bachelorproefbackend.configuration.authentication;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

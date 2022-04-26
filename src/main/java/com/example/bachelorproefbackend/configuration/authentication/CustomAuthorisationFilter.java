@@ -1,4 +1,4 @@
-package com.example.bachelorproefbackend.authentication;
+package com.example.bachelorproefbackend.configuration.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -40,6 +40,7 @@ public class CustomAuthorisationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
                 try {
+                    // Token for role
                     String token = authorizationHeader.substring("Bearer ".length()); //removing bearer from the string
                     Algorithm algorithm = Algorithm.HMAC256("randomSecretString".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
@@ -54,6 +55,9 @@ public class CustomAuthorisationFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken); //Let spring determine access
                     filterChain.doFilter(request, response);
+
+                    // Timing
+
                 }
                 catch (Exception exception){
                     log.error("Error logging in: {}", exception.getMessage());

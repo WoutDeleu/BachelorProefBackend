@@ -1,4 +1,4 @@
-package com.example.bachelorproefbackend.authentication;
+package com.example.bachelorproefbackend.configuration.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

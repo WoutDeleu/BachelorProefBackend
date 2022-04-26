@@ -1,6 +1,6 @@
 package com.example.bachelorproefbackend.usermanagement.filestorage;
 
-import com.example.bachelorproefbackend.authentication.InputNotValidException;
+import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
@@ -14,8 +14,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.swing.text.Document;
 
 @Service
 @Slf4j

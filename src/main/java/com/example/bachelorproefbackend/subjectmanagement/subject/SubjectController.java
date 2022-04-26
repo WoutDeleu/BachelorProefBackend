@@ -1,6 +1,6 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
-import com.example.bachelorproefbackend.authentication.InputNotValidException;
+import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagRepository;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
@@ -13,15 +13,12 @@ import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.swing.text.Document;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

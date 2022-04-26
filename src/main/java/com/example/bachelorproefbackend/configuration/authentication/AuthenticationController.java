@@ -1,9 +1,10 @@
-package com.example.bachelorproefbackend.authentication;
+package com.example.bachelorproefbackend.configuration.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
