@@ -2,6 +2,7 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.authentication.InputNotValidException;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
+import com.example.bachelorproefbackend.subjectmanagement.tag.TagRepository;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyService;
@@ -33,16 +34,18 @@ public class SubjectController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final TagRepository tagRepository;
     private final FileStorageService storageService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService, FileStorageService storageService, CompanyService companyService, UserService userService, TagService tagService, UserRepository userRepository) {
+    public SubjectController(SubjectService subjectService, TagRepository tagRepository, FileStorageService storageService, CompanyService companyService, UserService userService, TagService tagService, UserRepository userRepository) {
         this.subjectService = subjectService;
         this.companyService = companyService;
         this.userService = userService;
         this.tagService = tagService;
         this.userRepository = userRepository;
         this.storageService = storageService;
+        this.tagRepository = tagRepository;
     }
 
     public UserEntity getUserObject(Authentication authentication){
@@ -138,9 +141,17 @@ public class SubjectController {
     }
 
     @PutMapping(path="{subjectId}/addTag")
-    public void addTag(@PathVariable("subjectId") long subjectId, @RequestParam long tagId, Authentication authentication){
-        Tag tag = tagService.getTagById(tagId);
-        subjectService.addTag(subjectId, tag, getUserObject(authentication));
+    public void addTag(@PathVariable("subjectId") long subjectId, @RequestParam String [] tagNames, Authentication authentication){
+        Tag [] tags = new Tag[tagNames.length];
+        for(int i = 0; i<tagNames.length; i++){
+            Tag t = null;
+            if(tagRepository.existsTagByName(tagNames[i]))
+                t = tagRepository.getTagByName(tagNames[i]);
+            else
+                t = new Tag(tagNames[i]);
+            tags[i] = t;
+        }
+        subjectService.addTag(subjectId, tags, getUserObject(authentication));
     }
 
     @PutMapping(path="{subjectId}/addTargetAudience")

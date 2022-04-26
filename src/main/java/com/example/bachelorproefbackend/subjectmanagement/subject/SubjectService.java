@@ -142,15 +142,18 @@ public class SubjectService {
     }
 
 
-    public void addTag(long subjectId, Tag tag, UserEntity activeUser){
+    public void addTag(long subjectId, Tag [] tags, UserEntity activeUser){
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         if((activeUser.getRoles().contains(student) || activeUser.getRoles().contains(contact)) && !subject.equals(activeUser.getFinalSubject())){
             throw new NotAllowedException("Student and Contact can only add to their finalSubject.");
         }
-        log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
-        subject.addTag(tag);
+        for (Tag tag : tags){
+            log.info("Adding tag {} to subject {}", tag.getName(), subject.getName());
+            subject.addTag(tag);
+        }
+
     }
 
 
