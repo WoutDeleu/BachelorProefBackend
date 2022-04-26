@@ -62,7 +62,6 @@ public class Subject {
     public void addTargetAudience (TargetAudience targetAudience) {targetAudiences.add(targetAudience);}
     public void addFinalStudent (UserEntity student) {finalStudents.add(student);}
 
-
     @Override
     public String toString() {
         return "Subject{" +

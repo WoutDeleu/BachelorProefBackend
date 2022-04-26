@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
+import com.example.bachelorproefbackend.usermanagement.role.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -13,6 +14,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
    List<UserEntity> findAll();
 
    List<UserEntity> findUser_entityByRolesId(long roleId);
+
+
+   int countUserEntitiesByRolesContaining(Role role);
+   int countUserEntitiesByFinalSubjectIsNotNull();
 
 
 

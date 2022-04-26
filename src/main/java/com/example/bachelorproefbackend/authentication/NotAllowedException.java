@@ -17,4 +17,5 @@ public class NotAllowedException extends RuntimeException {
     public NotAllowedException(Throwable cause) {
         super(cause);
     }
+
 }

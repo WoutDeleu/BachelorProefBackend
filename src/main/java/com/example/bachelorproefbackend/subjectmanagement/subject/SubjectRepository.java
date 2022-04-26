@@ -10,9 +10,17 @@ import java.util.List;
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
     Subject findById(long id);
+
     List<Subject> findAllByCompany_Id(long id);
 
-    @Query(value="SELECT s FROM Subject s WHERE s.approved = false")
-    List<Subject> findAllNonApproved();
+    List<Subject> findAllByApproved(boolean bool);
+
+    int countSubjectsByApproved(boolean bool);
+
+//    @Query(value="SELECT s FROM Subject s WHERE s.approved = false")
+//    List<Subject> findAllNonApproved();
+
+//    @Query(value="SELECT COUNT (s) FROM Subject s WHERE s.approved = false")
+//    int countAllNonApproved();
 
 }

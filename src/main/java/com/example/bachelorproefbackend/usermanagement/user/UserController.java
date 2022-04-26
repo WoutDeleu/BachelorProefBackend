@@ -69,6 +69,11 @@ public class UserController {
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 
+    @GetMapping(path="stats")
+    public UserData getUserData() {
+        return userService.getUserData();
+    }
+
     @PostMapping
     public void addNewUser(@RequestParam String firstName, String lastName, String email, String telNr, String password) {
         userService.addNewUser(new UserEntity(firstName, lastName, email, telNr, password));

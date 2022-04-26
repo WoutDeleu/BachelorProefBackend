@@ -44,13 +44,9 @@ public class SubjectService {
         this.facultyRepository = facultyRepository;
     }
 
-
-
     public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
 
-    public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllNonApproved();}
-
-
+    public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllByApproved(false);}
 
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {
         // TODO optimaliseerbaar?
@@ -75,7 +71,12 @@ public class SubjectService {
         return subjectRepository.findById(subjectId);
     }
 
-
+    public SubjectData getSubjectData() {
+        SubjectData result = new SubjectData();
+        result.setTotalAmount((int) subjectRepository.count());
+        result.setNrOfNonApproved(subjectRepository.countSubjectsByApproved(false));
+        return result;
+    }
 
     public void deleteSubject(long id){
         if(!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: "+id+")");

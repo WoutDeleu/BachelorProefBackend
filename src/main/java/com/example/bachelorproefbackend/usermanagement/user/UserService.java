@@ -6,6 +6,7 @@ import com.example.bachelorproefbackend.authentication.ResourceNotFoundException
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
+import com.example.bachelorproefbackend.usermanagement.company.CompanyRepository;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.example.bachelorproefbackend.usermanagement.role.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +33,15 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
+    private final CompanyRepository companyRepository;
     private static final String STUDENT = "ROLE_STUDENT";
 
 
     @Autowired
-    public UserService(UserRepository userRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
     }
@@ -128,6 +131,25 @@ public class UserService implements UserDetailsService {
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role role = roleRepository.findByName(r);
         return activeUser.getRoles().contains(role);
+    }
+
+    public UserData getUserData() {
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        UserData result = new UserData();
+        result.setTotalAmount((int) userRepository.count());
+        result.setNrOfAdmins(userRepository.countUserEntitiesByRolesContaining(admin));
+        result.setNrOfCoordinators(userRepository.countUserEntitiesByRolesContaining(coordinator));
+        result.setNrOfPromotors(userRepository.countUserEntitiesByRolesContaining(promotor));
+        result.setNrOfStudents(userRepository.countUserEntitiesByRolesContaining(student));
+        result.setNrOfContacts(userRepository.countUserEntitiesByRolesContaining(contact));
+        result.setNrOfCompanies((int) companyRepository.count());
+        result.setNrOfNonApprovedCompanies(companyRepository.countCompaniesByApproved(false));
+        result.setNrOfStudentsWithFinalSubject(userRepository.countUserEntitiesByFinalSubjectIsNotNull());
+        return result;
     }
 
     @DeleteMapping

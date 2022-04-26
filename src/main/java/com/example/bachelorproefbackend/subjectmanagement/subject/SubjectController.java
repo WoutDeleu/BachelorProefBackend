@@ -63,6 +63,11 @@ public class SubjectController {
         return subjectService.getSubjectById(subjectId);
     }
 
+    @GetMapping(path = "stats")
+    public SubjectData getSubjectData() {
+        return subjectService.getSubjectData();
+    }
+
     @GetMapping(path="{subjectId}/pdf")
     public File getSubjectPdf(@PathVariable("subjectId") Long subjectId){
         try  {
