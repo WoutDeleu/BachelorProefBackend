@@ -88,7 +88,11 @@ public class SubjectController {
         else{
             tags = new Tag[tagNames.length];
             for(int i = 0; i<tagNames.length; i++){
-                Tag tag = tagService.getTagByName(tagNames[i]);
+                Tag tag;
+                if(tagService.existsTagByName(tagNames[i]))
+                    tag = tagService.getTagByName(tagNames[i]);
+                else
+                    tag = new Tag(tagNames[i]);
                 tags[i] = tag;
             }
         }

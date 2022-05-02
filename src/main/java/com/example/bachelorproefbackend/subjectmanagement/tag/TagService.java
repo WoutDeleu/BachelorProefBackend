@@ -26,6 +26,8 @@ public class TagService {
     @GetMapping
     public Tag getTagById(long id) {return tagRepository.getById(id);}
 
+    public boolean existsTagByName(String name) {return tagRepository.existsTagByName(name);}
+
     public Tag getTagByName(String name) {return tagRepository.getTagByName(name);}
 
     @PostMapping
