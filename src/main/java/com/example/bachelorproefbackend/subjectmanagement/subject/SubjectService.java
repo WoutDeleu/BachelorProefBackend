@@ -84,16 +84,18 @@ public class SubjectService {
     }
 
 
-    public void addNewSubject(Subject subject, Authentication authentication){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+    public long addNewSubject(Subject subject, Authentication authentication){
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         if(activeUser.getRoles().contains(contact)){
             subject.setCompany(activeUser.getCompany());
         }
         subjectRepository.save(subject);
+        return subject.getId();
     }
 
 

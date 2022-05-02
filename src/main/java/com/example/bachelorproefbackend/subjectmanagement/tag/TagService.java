@@ -26,6 +26,8 @@ public class TagService {
     @GetMapping
     public Tag getTagById(long id) {return tagRepository.getById(id);}
 
+    public Tag getTagByName(String name) {return tagRepository.getTagByName(name);}
+
     @PostMapping
     public void addNewTag(Tag tag) {
         tagRepository.save(tag);

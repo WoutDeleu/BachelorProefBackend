@@ -80,13 +80,19 @@ public class SubjectController {
     }
 
     @PostMapping
-    public void addNewSubject(@RequestParam String name, String description, int nrOfStudents, long [] tagIds, Authentication authentication) {
-        Tag [] tags = new Tag[tagIds.length];
-        for(int i = 0; i<tagIds.length; i++){
-            Tag tag = tagService.getTagById(tagIds[i]);
-            tags[i] = tag;
+    public long addNewSubject(@RequestParam String name, String description, int nrOfStudents, String [] tagNames, Authentication authentication) {
+        Tag [] tags;
+        if(tagNames==null){
+            tags = new Tag[0];
         }
-        subjectService.addNewSubject(new Subject(name, description, nrOfStudents, tags), authentication);
+        else{
+            tags = new Tag[tagNames.length];
+            for(int i = 0; i<tagNames.length; i++){
+                Tag tag = tagService.getTagByName(tagNames[i]);
+                tags[i] = tag;
+            }
+        }
+        return subjectService.addNewSubject(new Subject(name, description, nrOfStudents, tags), authentication);
     }
 
     @PostMapping(path="uploadPdf")
