@@ -25,7 +25,7 @@ public class EducationController {
     @GetMapping
     public List<Education> getAllEducations() {return educationService.getAllEducations();}
 
-    @GetMapping(path="byFaculties")
+    @PostMapping(path="byFaculties")
     public List<Education> getAllEducationsByFaculties(@RequestParam int [] facultyIds) {
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){

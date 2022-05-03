@@ -175,9 +175,10 @@ public class SubjectService {
 
 
     public void addTargetAudience (long subjectId, long [] facultyIds, long [] educationIds, long [] campusIds, Authentication authentication){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        //TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");

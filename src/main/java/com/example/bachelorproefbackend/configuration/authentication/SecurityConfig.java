@@ -53,9 +53,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and(); //Reference to bean in main
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        http.authorizeRequests().antMatchers(POST,"authentication/login").authenticated();
+        http.authorizeRequests().antMatchers(GET, "authentication/token/refresh").authenticated();
+        http.authorizeRequests().antMatchers(GET, "authentication/isRole/{role}").authenticated();
+
+        http.authorizeRequests().antMatchers(GET, "timing").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "timing").hasAuthority(ADMIN);
+
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/byTargetAudience").authenticated();
+        http.authorizeRequests().antMatchers(POST, "subjectManagement/subjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/{id}").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addPromotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR, CONTACT);
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addTag").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addTargetAudience").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addCompany").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/stats").hasAnyAuthority(ADMIN, COORDINATOR);
+
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
 
 
 
+        /* old
         // Everyone has access
         http.authorizeRequests().antMatchers("/authentication/login/**").permitAll(); //login
         http.authorizeRequests().antMatchers("/authentication/token/refresh/**").permitAll(); //refresh
@@ -106,6 +134,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/userManagement/company/{companyId}/approve").hasAnyAuthority(ADMIN);
         http.authorizeRequests().antMatchers("/userManagement/company/**").hasAnyAuthority(ADMIN, CONTACT);
 
+
+         */
         http.addFilter(customAuthenticationFilter);
 
     }

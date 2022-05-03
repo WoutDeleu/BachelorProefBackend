@@ -151,7 +151,7 @@ public class SubjectController {
     public void addTag(@PathVariable("subjectId") long subjectId, @RequestParam String [] tagNames, Authentication authentication){
         Tag [] tags = new Tag[tagNames.length];
         for(int i = 0; i<tagNames.length; i++){
-            Tag t = null;
+            Tag t;
             if(tagRepository.existsTagByName(tagNames[i]))
                 t = tagRepository.getTagByName(tagNames[i]);
             else
@@ -162,8 +162,8 @@ public class SubjectController {
     }
 
     @PutMapping(path="{subjectId}/addTargetAudience")
-    public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam long [] facultyId, long [] educationId, long [] campusId, Authentication authentication){
-        subjectService.addTargetAudience(subjectId, facultyId, educationId, campusId, authentication);
+    public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam long [] facultyIds, long [] educationIds, long [] campusIds, Authentication authentication){
+        subjectService.addTargetAudience(subjectId, facultyIds, educationIds, campusIds, authentication);
     }
 
 }

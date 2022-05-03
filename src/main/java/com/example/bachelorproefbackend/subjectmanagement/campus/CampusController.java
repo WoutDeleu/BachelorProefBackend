@@ -28,7 +28,7 @@ public class CampusController {
     @GetMapping
     public List<Campus> getAllCampuses() {return campusService.getAllCampuses();}
 
-    @GetMapping(path="byFaculties")
+    @PostMapping(path="byFaculties")
     public List<Campus> getAllCampusesByFaculties(@RequestParam long [] facultyIds){
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){
@@ -38,7 +38,7 @@ public class CampusController {
         return campusService.getAllCampusesByFaculties(faculties);
     }
 
-    @GetMapping(path="byEducations")
+    @PostMapping(path="byEducations")
     public List<Campus> getAllCampusesByEducations(@RequestParam long [] educationIds){
         Education [] educations = new Education[educationIds.length];
         for(int i = 0; i<educationIds.length; i++){
