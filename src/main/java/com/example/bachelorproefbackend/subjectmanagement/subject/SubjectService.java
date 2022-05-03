@@ -174,7 +174,7 @@ public class SubjectService {
     }
 
 
-    public void addTargetAudience (long subjectId, long [] facultyIds, long [] educationIds, long [] campusIds, Authentication authentication){
+    public void addTargetAudience (long subjectId, int [] facultyIds, int [] educationIds, int [] campusIds, Authentication authentication){
         //TODO enable
 //        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
 //            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());

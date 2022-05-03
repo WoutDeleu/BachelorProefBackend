@@ -162,7 +162,7 @@ public class SubjectController {
     }
 
     @PutMapping(path="{subjectId}/addTargetAudience")
-    public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam long [] facultyIds, long [] educationIds, long [] campusIds, Authentication authentication){
+    public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam int [] facultyIds, int [] educationIds, int [] campusIds, Authentication authentication){
         subjectService.addTargetAudience(subjectId, facultyIds, educationIds, campusIds, authentication);
     }
 
