@@ -31,13 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String PROMOTOR = "ROLE_PROMOTOR";
     public static final String STUDENT = "ROLE_STUDENT";
     public static final String CONTACT = "ROLE_CONTACT";
-    public static final String SUBJECTS = "/subjectManagement/subjects/**";
-    public static final String TARGETAUDIENCE = "/subjectManagement/targetAudience/**";
-    public static final String TAG = "/subjectManagement/tag/**";
-    public static final String USERS = "/userManagement/users/**";
-
-
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,81 +47,81 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and(); //Reference to bean in main
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeRequests().antMatchers(POST,"authentication/login").authenticated();
-        http.authorizeRequests().antMatchers(GET, "authentication/token/refresh").authenticated();
-        http.authorizeRequests().antMatchers(GET, "authentication/isRole/{role}").authenticated();
+        http.authorizeRequests().antMatchers(POST,"/authentication/login").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/authentication/token/refresh").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/authentication/isRole/{role}").authenticated();
 
-        http.authorizeRequests().antMatchers(GET, "timing").authenticated();
-        http.authorizeRequests().antMatchers(PUT, "timing").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/timing").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "/timing").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects").authenticated();
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/byTargetAudience").authenticated();
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/subjects").authenticated();
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/{id}").authenticated();
-        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addPromotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR, CONTACT);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addTag").authenticated();
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addTargetAudience").authenticated();
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/addCompany").hasAnyAuthority(ADMIN, STUDENT);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/subjects/{id}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/subjects/stats").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/byTargetAudience").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/{id}").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addPromotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR, CONTACT);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addTag").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addTargetAudience").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addCompany").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/stats").hasAnyAuthority(ADMIN, COORDINATOR);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/campus").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/campus").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/campus").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/campus").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/campus").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/tag").authenticated();
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/tag").authenticated();
-        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/tag/{tagId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/tag/{tagId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/tag").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/tag").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/tag/{tagId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/tag/{tagId}").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/faculty").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/faculty").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/faculty/{facultyId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/faculty/{facultyId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/faculty").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/faculty").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/faculty/{facultyId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/faculty/{facultyId}").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/education").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/education").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/education/{educationId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/education/{educationId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/education/byFaculties").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/education").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/education").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/education/{educationId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/education/{educationId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/education/byFaculties").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "subjectManagement/targetAudience").authenticated();
-        http.authorizeRequests().antMatchers(POST, "subjectManagement/targetAudience").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(DELETE, "subjectManagement/targetAudience/{targetAudienceId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "subjectManagement/targetAudience/{targetAudienceId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/targetAudience").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/targetAudience").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/targetAudience/{targetAudienceId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/targetAudience/{targetAudienceId}").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "userManagement/users").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
-        http.authorizeRequests().antMatchers(POST, "userManagement/users").authenticated();
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/{userId}").authenticated();
-        http.authorizeRequests().antMatchers(DELETE, "userManagement/users/{userId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(PUT, "userManagement/users/{userId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/student").authenticated();
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/administrator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/promotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/coordinator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/contact").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
-        http.authorizeRequests().antMatchers(PUT, "userManagement/users/student/addTargetAudience").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "userManagement/users/student/addPreferredSubject").hasAnyAuthority(ADMIN, STUDENT);
-        http.authorizeRequests().antMatchers(PUT, "userManagement/users/student/addFinalSubject").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "userManagement/users/student/addRoleToUser").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "userManagement/users/student/batch").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(GET, "userManagement/users/stats").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/{userId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/users/{userId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/student").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/administrator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/promotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/coordinator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/contact").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addTargetAudience").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addPreferredSubject").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addFinalSubject").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addRoleToUser").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/batch").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/stats").hasAnyAuthority(ADMIN, COORDINATOR);
 
-        http.authorizeRequests().antMatchers(GET, "userManagement/company").authenticated();
-        http.authorizeRequests().antMatchers(GET, "userManagement/company/nonApproved").hasAnyAuthority(ADMIN, CONTACT);
-        http.authorizeRequests().antMatchers(POST, "userManagement/company").authenticated();
-        http.authorizeRequests().antMatchers(GET, "userManagement/company/{companyId}").authenticated();
-        http.authorizeRequests().antMatchers(DELETE, "userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
-        http.authorizeRequests().antMatchers(PUT, "userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
-        http.authorizeRequests().antMatchers(PUT, "userManagement/company/{companyId}/setApproved").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(POST, "userManagement/company/{companyId}/addContact").hasAnyAuthority(ADMIN, CONTACT);
-        http.authorizeRequests().antMatchers(GET, "userManagement/company/{companyId}/subjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/company").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/company/nonApproved").hasAnyAuthority(ADMIN, CONTACT);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/company").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "/userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/company/{companyId}/setApproved").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/company/{companyId}/addContact").hasAnyAuthority(ADMIN, CONTACT);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}/subjects").authenticated();
 
 
         http.addFilter(customAuthenticationFilter);
