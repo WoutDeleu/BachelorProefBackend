@@ -179,6 +179,7 @@ public class SubjectService {
 //        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
 //            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
 //        }
+        log.info("voorbij timing check");
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
@@ -190,23 +191,27 @@ public class SubjectService {
                 || activeUser.getSubjects().contains(subject) //promotor
                 || activeUser.getCompany().equals(subject.getCompany()) // contact
          ){
+            log.info("voorbij permission check");
             List<TargetAudience> targets = new ArrayList<>();
             if(facultyIds[0]==0) {
                 throw new InputNotValidException("Faculty id cannot be equal to 0");
             }
             else if(educationIds[0]==0 && campusIds[0]==0){
+                log.info("add all the targetAudiences related to the faculties");
                 // add all the targetAudiences related to the faculties
                 for (long fid : facultyIds){
                     targets = targetAudienceService.getAllByFacultyId(fid);
                 }
             }
             else if(campusIds[0]==0){
+                log.info("add all the targetAudiences related to the education");
                 // add all the targetAudiences related to the education
                 for (long eid : educationIds){
                     targets = targetAudienceService.getAllByEducationId(eid);
                 }
             }
             else {
+                log.info("add all the targetAudiences related to the campus AND faculty");
                 // add all the targetAudiences related to the campus AND faculty
                 for (long cid : campusIds) {
                     targets = targetAudienceService.getAllByCampusId(cid);
@@ -224,6 +229,7 @@ public class SubjectService {
             }
             for (TargetAudience t : targets) {
                 subject.addTargetAudience(t);
+                log.info("targets added");
             }
         }
         else {
