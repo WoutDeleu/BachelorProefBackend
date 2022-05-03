@@ -11,6 +11,7 @@ import com.example.bachelorproefbackend.usermanagement.filestorage.ResponseMessa
 import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(path="subjectManagement/subjects")
 public class SubjectController {
@@ -163,7 +165,10 @@ public class SubjectController {
 
     @PutMapping(path="{subjectId}/addTargetAudience")
     public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam int [] facultyIds, int [] educationIds, int [] campusIds, Authentication authentication){
+        log.info("The eagle has landed.");
         subjectService.addTargetAudience(subjectId, facultyIds, educationIds, campusIds, authentication);
     }
+
+
 
 }
