@@ -23,7 +23,7 @@ public class TargetAudienceConfig {
             facultyService.addNewFaculty(recht);
             facultyService.addNewFaculty(geneeskunde);
 
-            Education indIngEICT = new Education("Master in de industriële wetenschappen: Elektronica-ICT");
+            Education indIngEI = new Education("Master in de industriële wetenschappen: Elektronica-ICT");
             Education indIngCH = new Education("Master in de industriële wetenschappen: Chemie");
             Education indIngBC = new Education("Master in de industriële wetenschappen: Bio-chemie");
             Education indIngEM = new Education("Master in de industriële wetenschappen: Elektromechanica");
@@ -40,7 +40,7 @@ public class TargetAudienceConfig {
             Education crimi = new Education("Master in de criminologische wetenschappen");
             Education edumaat = new Education("Educatieve master in de maatschappijwetenschappen");
 
-            educationService.addNewEducation(indIngEICT);
+            educationService.addNewEducation(indIngEI);
             educationService.addNewEducation(indIngCH);
             educationService.addNewEducation(indIngBK);
             educationService.addNewEducation(indIngBC);
@@ -79,13 +79,13 @@ public class TargetAudienceConfig {
             campusService.addNewCampus(kulak);
             campusService.addNewCampus(rechtenCampus);
 
-            targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngEICT));
+            targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngEI));
             targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngEM));
             targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngCH));
             targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngBC));
             targetAudienceService.addNewTargetAudience(new TargetAudience(deNayer, inding, indIngCH));
 
-            targetAudienceService.addNewTargetAudience(new TargetAudience(technologiecampus, inding, indIngEICT));
+            targetAudienceService.addNewTargetAudience(new TargetAudience(technologiecampus, inding, indIngEI));
             targetAudienceService.addNewTargetAudience(new TargetAudience(technologiecampus, inding, indIngBC));
             targetAudienceService.addNewTargetAudience(new TargetAudience(technologiecampus, inding, indIngBK));
             targetAudienceService.addNewTargetAudience(new TargetAudience(technologiecampus, inding, indIngCH));
@@ -94,12 +94,12 @@ public class TargetAudienceConfig {
 
             targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngBK));
             targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngEM));
-            targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngEICT));
+            targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngEI));
             targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngEN));
             targetAudienceService.addNewTargetAudience(new TargetAudience(brugge, inding, indIngKV));
 
             targetAudienceService.addNewTargetAudience(new TargetAudience(geel, inding, indIngEM));
-            targetAudienceService.addNewTargetAudience(new TargetAudience(geel, inding, indIngEICT));
+            targetAudienceService.addNewTargetAudience(new TargetAudience(geel, inding, indIngEI));
             targetAudienceService.addNewTargetAudience(new TargetAudience(geel, inding, indIngEN));
 
 
