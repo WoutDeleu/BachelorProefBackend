@@ -47,11 +47,9 @@ public class UserService implements UserDetailsService {
         this.targetAudienceService = targetAudienceService;
     }
 
-    @GetMapping
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
-
 
     public UserEntity getUserById(long userId, Authentication authentication) {
         UserEntity activeUser = getUserByEmail(authentication.getName());
@@ -77,32 +75,32 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).getPreferredSubjects();
     }
 
-    @GetMapping
     public UserEntity getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
 
-    @GetMapping
     public List<UserEntity> getAllStudents(){
         long roleId = roleRepository.findByName(STUDENT).getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
 
-    @GetMapping
     public List<UserEntity> getAllAdministrators() {
         long roleId = roleRepository.findByName("ROLE_ADMIN").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
 
-    @GetMapping
     public List<UserEntity> getAllPromotors() {
         long roleId = roleRepository.findByName("ROLE_PROMOTOR").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
 
-    @GetMapping
     public List<UserEntity> getAllCoordinators() {
         long roleId = roleRepository.findByName("ROLE_COORDINATOR").getId();
+        return userRepository.findUser_entityByRolesId(roleId);
+    }
+
+    public List<UserEntity> getAllContacts() {
+        long roleId = roleRepository.findByName("ROLE_CONTACT").getId();
         return userRepository.findUser_entityByRolesId(roleId);
     }
 

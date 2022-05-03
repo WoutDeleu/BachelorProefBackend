@@ -66,6 +66,11 @@ public class UserController {
         return userService.getAllCoordinators();
     }
 
+    @GetMapping(path="contact")
+    public List<UserEntity> getAllContacts() {
+        return userService.getAllContacts();
+    }
+
     @GetMapping(path="student/{userId}/preferredSubjects")
     public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 
