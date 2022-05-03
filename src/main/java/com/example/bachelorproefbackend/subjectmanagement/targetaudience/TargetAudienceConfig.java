@@ -43,6 +43,8 @@ public class TargetAudienceConfig {
             educationService.addNewEducation(indIngEICT);
             educationService.addNewEducation(indIngCH);
             educationService.addNewEducation(indIngBK);
+            educationService.addNewEducation(indIngBC);
+            educationService.addNewEducation(indIngKV);
             educationService.addNewEducation(indIngEM);
             educationService.addNewEducation(indIngEN);
 
@@ -74,6 +76,7 @@ public class TargetAudienceConfig {
             campusService.addNewCampus(groepT);
 
             campusService.addNewCampus(gasthuisberg);
+            campusService.addNewCampus(kulak);
             campusService.addNewCampus(rechtenCampus);
 
             targetAudienceService.addNewTargetAudience(new TargetAudience(groepT, inding, indIngEICT));
