@@ -70,7 +70,7 @@ public class BachelorProefBackendApplication {
 		storageService.deleteAll();
 		storageService.init();
 	}
-//
+
 //	//https
 //	@Bean
 //	public ServletWebServerFactory servletContainer() {
