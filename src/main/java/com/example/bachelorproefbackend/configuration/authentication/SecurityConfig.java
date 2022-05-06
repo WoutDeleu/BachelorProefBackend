@@ -47,9 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and(); //Reference to bean in main
         http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeRequests().antMatchers(POST,"/authentication/login").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/authentication/token/refresh").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/authentication/isRole/{role}").authenticated();
+        http.authorizeRequests().antMatchers(POST,"/authentication/login").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/authentication/token/refresh").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/authentication/isRole/{role}").permitAll();
 
         http.authorizeRequests().antMatchers(GET, "/timing").authenticated();
         http.authorizeRequests().antMatchers(PUT, "/timing").hasAuthority(ADMIN);

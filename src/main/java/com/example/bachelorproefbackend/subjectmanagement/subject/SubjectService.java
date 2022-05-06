@@ -173,7 +173,6 @@ public class SubjectService {
 
     }
 
-
     public void addTargetAudience (long subjectId, int [] facultyIds, int [] educationIds, int [] campusIds, Authentication authentication){
         //TODO enable
 //        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
