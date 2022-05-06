@@ -10,7 +10,7 @@ public class RoleConfig {
 
     //add some default users to experiment with
     @Bean
-    CommandLineRunner commandLineRunner4(RoleRepository roleRepository) {
+    CommandLineRunner commandLineRunner4(RoleRepository roleRepository, RoleService roleService) {
         return args -> {
             Role student = new Role("ROLE_STUDENT");
             Role coordinator = new Role("ROLE_COORDINATOR");
@@ -18,7 +18,13 @@ public class RoleConfig {
             Role promotor = new Role("ROLE_PROMOTOR");
             Role contact = new Role("ROLE_CONTACT");
 
-            roleRepository.saveAll(List.of(student, coordinator, admin, promotor, contact));
+//            roleRepository.saveAll(List.of(student, coordinator, admin, promotor, contact));
+            roleService.addNewRole(student);
+            roleService.addNewRole(coordinator);
+            roleService.addNewRole(admin);
+            roleService.addNewRole(promotor);
+            roleService.addNewRole(contact);
+
 
         };
     }
