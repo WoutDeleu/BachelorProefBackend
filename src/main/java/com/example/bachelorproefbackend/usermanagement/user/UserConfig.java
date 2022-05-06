@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectRepository;
 
@@ -46,16 +47,13 @@ public class UserConfig {
             tagService.addNewTag(tag1);
             tagService.addNewTag(tag2);
 
-//
-//            Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
-//            Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
-//            Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
-////            subjectRepository.saveAll(List.of(subject1, subject2, subject3));
-//            subjectService.addNewSubject(subject1);
-//            subjectService.addNewSubject(subject1);
-//            subjectService.addNewSubject(subject1);
 
-
+            Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
+            Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
+            Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
+            subjectRepository.save(subject1);
+            subjectRepository.save(subject2);
+            subjectRepository.save(subject3);
 
 
 //            userService.addNewPreferredSubject(7, subject1);
