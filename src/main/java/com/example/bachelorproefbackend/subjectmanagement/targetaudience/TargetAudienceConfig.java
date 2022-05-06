@@ -16,20 +16,20 @@ public class TargetAudienceConfig {
     @Bean
     CommandLineRunner commandLineRunner1(CampusService campusService, FacultyService facultyService, TargetAudienceService targetAudienceService, EducationService educationService){
         return args -> {
-            Faculty inding = new Faculty("Industriële Ingenieurswetenschappen");
+            Faculty inding = new Faculty("Industriele Ingenieurswetenschappen");
             Faculty geneeskunde = new Faculty("Geneeskunde");
             Faculty recht = new Faculty("Rechtsgeleerdheid en Criminologische wetenschappen");
             facultyService.addNewFaculty(inding);
             facultyService.addNewFaculty(recht);
             facultyService.addNewFaculty(geneeskunde);
 
-            Education indIngEI = new Education("Master in de industriële wetenschappen: Elektronica-ICT");
-            Education indIngCH = new Education("Master in de industriële wetenschappen: Chemie");
-            Education indIngBC = new Education("Master in de industriële wetenschappen: Bio-chemie");
-            Education indIngEM = new Education("Master in de industriële wetenschappen: Elektromechanica");
-            Education indIngBK = new Education("Master in de industriële wetenschappen: Bouwkunde");
-            Education indIngEN = new Education("Master in de industriële wetenschappen: Energie");
-            Education indIngKV = new Education("Master in de industriële wetenschappen: Kunststofverwerking");
+            Education indIngEI = new Education("Master in de industriele wetenschappen: Elektronica-ICT");
+            Education indIngCH = new Education("Master in de industriele wetenschappen: Chemie");
+            Education indIngBC = new Education("Master in de industriele wetenschappen: Bio-chemie");
+            Education indIngEM = new Education("Master in de industriele wetenschappen: Elektromechanica");
+            Education indIngBK = new Education("Master in de industriele wetenschappen: Bouwkunde");
+            Education indIngEN = new Education("Master in de industriele wetenschappen: Energie");
+            Education indIngKV = new Education("Master in de industriele wetenschappen: Kunststofverwerking");
 
             Education bioinf = new Education("Bio-informatica");
             Education geneeskundeEducation = new Education("Geneeskunde");

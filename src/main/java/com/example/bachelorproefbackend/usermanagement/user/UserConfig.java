@@ -11,8 +11,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectRepository;
 
@@ -43,7 +41,6 @@ public class UserConfig {
 
             Tag tag1 = new Tag("Luchtvaart");
             Tag tag2 = new Tag("Software engineering");
-//            tagRepository.saveAll(List.of(tag1, tag2));
             tagService.addNewTag(tag1);
             tagService.addNewTag(tag2);
 
@@ -54,11 +51,6 @@ public class UserConfig {
             subjectRepository.save(subject1);
             subjectRepository.save(subject2);
             subjectRepository.save(subject3);
-
-
-//            userService.addNewPreferredSubject(7, subject1);
-//            userService.addNewPreferredSubject(8, subject2);
-//            userService.addNewPreferredSubject(6, subject3);
 
             companyService.addNewCompany(new Company("Hamann","Vantegemstraat 3, 9230 Wetteren", "BE 0873.604.566", "Transportcompany"));
             companyService.addNewCompany(new Company("Coolblue", "Borsbeeksebrug 28, 2600 Berchem", "BE 0867.686.774", "Elektronicaverkoop"));

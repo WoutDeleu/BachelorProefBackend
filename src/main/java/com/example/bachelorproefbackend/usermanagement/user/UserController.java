@@ -86,7 +86,7 @@ public class UserController {
 
     @PostMapping(path="batch")
     public ResponseEntity<ResponseMessage> addNewUserBatch(@RequestParam("file") MultipartFile file){
-        String message = "";
+        String message;
         try {
             storageService.save(file);
             message = "Uploaded the file successfully: " + file.getOriginalFilename();

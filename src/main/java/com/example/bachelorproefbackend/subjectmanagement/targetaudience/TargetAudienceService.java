@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -69,13 +70,14 @@ public class TargetAudienceService {
         Education education = educationRepository.getById(educationId);
         Faculty faculty = facultyRepository.getById(facultyId);
         List<TargetAudience> targets = getAllByCampusId(campusId);
+        List<TargetAudience> targetsToRemove = new ArrayList<>();
         for (TargetAudience t : targets){
-            if(!t.getFaculty().equals(faculty)){
-                targets.remove(t);
+            if((!t.getFaculty().equals(faculty)) || (!t.getEducation().equals(education))){
+                targetsToRemove.add(t);
             }
-            if(!t.getEducation().equals(education)){
-                targets.remove(t);
-            }
+        }
+        for (TargetAudience t : targetsToRemove){
+            targets.remove(t);
         }
         return targets.size()>0;
     }
@@ -84,13 +86,14 @@ public class TargetAudienceService {
         Education education = educationRepository.getById(educationId);
         Faculty faculty = facultyRepository.getById(facultyId);
         List<TargetAudience> targets = getAllByCampusId(campusId);
+        List<TargetAudience> targetsToRemove = new ArrayList<>();
         for (TargetAudience t : targets){
-            if(!t.getFaculty().equals(faculty)){
-                targets.remove(t);
+            if((!t.getFaculty().equals(faculty)) || (!t.getEducation().equals(education))){
+                targetsToRemove.add(t);
             }
-            if(!t.getEducation().equals(education)){
-                targets.remove(t);
-            }
+        }
+        for (TargetAudience t : targetsToRemove){
+            targets.remove(t);
         }
         return targets.get(0);
     }

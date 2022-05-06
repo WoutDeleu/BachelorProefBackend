@@ -4,6 +4,12 @@ import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidEx
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
 import com.example.bachelorproefbackend.configuration.timing.Timing;
+import com.example.bachelorproefbackend.subjectmanagement.campus.Campus;
+import com.example.bachelorproefbackend.subjectmanagement.campus.CampusRepository;
+import com.example.bachelorproefbackend.subjectmanagement.education.Education;
+import com.example.bachelorproefbackend.subjectmanagement.education.EducationRepository;
+import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
+import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
@@ -32,6 +38,9 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final FacultyRepository facultyRepository;
+    private final EducationRepository educationRepository;
+    private final CampusRepository campusRepository;
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
@@ -39,9 +48,12 @@ public class UserService implements UserDetailsService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.facultyRepository = facultyRepository;
+        this.educationRepository = educationRepository;
+        this.campusRepository = campusRepository;
         this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
@@ -104,14 +116,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findUser_entityByRolesId(roleId);
     }
 
-    @GetMapping
     public List<Subject> getPreferredSubjects(long id){
         if(userRepository.existsById(id))
             return new ArrayList<>(userRepository.findById(id).getPreferredSubjects());
         else throw new RuntimeException("User not found");
     }
 
-    @GetMapping
     public List<UserEntity> getUsers(String id, String type) {
         if(id.equals("null") && type.equals("null")) return userRepository.findAll();
         else if (type.equals("null") && !id.equals("null")) return userRepository.findAllById(Collections.singleton(Long.parseLong(id)));
@@ -125,7 +135,6 @@ public class UserService implements UserDetailsService {
         else {return null;}
     }
 
-    @GetMapping
     public boolean isRole(String r, Authentication authentication){
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role role = roleRepository.findByName(r);
@@ -151,13 +160,11 @@ public class UserService implements UserDetailsService {
         return result;
     }
 
-    @DeleteMapping
     public void deleteUser(long id) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
         userRepository.deleteById(id);
     }
 
-    @PostMapping
     public void addNewUser(UserEntity user) {
         log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -165,6 +172,15 @@ public class UserService implements UserDetailsService {
     }
 
     public void addNewUserBatch(){
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        Role [] roles = {admin, coordinator, promotor, student, contact};
+        log.info("LALALALA");
+        log.info(roles[0].toString());
+        log.info(roles[1].toString());
         String line;
         String [] parts;
         Scanner sc = null;
@@ -172,10 +188,41 @@ public class UserService implements UserDetailsService {
             sc = new Scanner(new FileReader("uploads/UserBatchInput.csv"));
             while (sc.hasNextLine()){
                 line = sc.nextLine();
-                if(line.length()>0){
+                if(line.length()>0) {
                     parts = line.split(";");
-                    UserEntity user = new UserEntity(parts[0], parts[1], parts[2], parts[3], parts[4]);
-                    addNewUser(user);
+                    // Adding user
+                    UserEntity user;
+                    if(!userRepository.existsByEmail(parts[2])) {
+                        user = new UserEntity(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                        addNewUser(user);
+                    }
+                    else {
+                        user = getUserByEmail(parts[2]);
+                    }
+
+                    // Adding roles
+                    for (int i = 0; i < 5; i++) {
+                        if (Boolean.parseBoolean(parts[i + 5])) {
+                            user.addRole(roles[i]);
+                        }
+                    }
+
+                    // Adding TargetAudience
+                    if (parts.length > 10) {
+                        Faculty faculty = facultyRepository.findByName(parts[10]);
+                        Education education = educationRepository.findByName(parts[11]);
+                        Campus campus = campusRepository.findByName(parts[12]);
+                        if (faculty != null) {
+                            long facultyId = faculty.getId();
+                            long educationId;
+                            long campusId;
+                            if (education == null) educationId = 0;
+                            else educationId = education.getId();
+                            if (campus == null) campusId = 0;
+                            else campusId = campus.getId();
+                            addTargetAudience(user.getId(), facultyId, educationId, campusId);
+                        }
+                    }
                 }
             }
         }
@@ -215,7 +262,6 @@ public class UserService implements UserDetailsService {
         else{throw new RuntimeException("Student can only access his own account");}
     }
 
-    @PutMapping
     public void addTargetAudience (long userId, long facultyId, long educationId, long campusId){
         UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);

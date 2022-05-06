@@ -57,6 +57,11 @@ public class UserEntity {
         preferredSubjects.add(subject);
     }
 
+    public void addRole(Role role) {
+        if(roles==null) roles = new ArrayList<>(5);
+        if(!roles.contains(role)) roles.add(role);
+    }
+
 
     @Override
     public String toString() {
