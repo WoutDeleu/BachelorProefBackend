@@ -23,20 +23,16 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
-    @GetMapping
     public List<Faculty> getAllFaculties() {return facultyRepository.findAll();}
 
-    @PostMapping
     public void addNewFaculty(Faculty faculty) {
         facultyRepository.save(faculty);
     }
 
-    @DeleteMapping
     public void deleteFaculty(long id){
         facultyRepository.deleteById(id);
     }
 
-    @PutMapping
     public void updateFaculty(long id, String name){
         if(!facultyRepository.existsById(id)) throw new IllegalStateException("Faculty does not exist (id: "+id+")");
         Faculty faculty = facultyRepository.getById(id);

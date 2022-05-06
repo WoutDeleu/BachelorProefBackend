@@ -33,8 +33,6 @@ public class CompanyService {
     private static final String ADMIN = "ROLE_ADMIN";
 
 
-
-
     @Autowired
     public CompanyService(CompanyRepository companyRepository, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
         this.companyRepository = companyRepository;
@@ -43,24 +41,21 @@ public class CompanyService {
         this.subjectRepository = subjectRepository;
     }
 
-    @GetMapping
     public List<Company> getAllCompanies() {return companyRepository.findAll();}
 
     public List<Company> getAllNonApprovedCompanies() {return companyRepository.findAllNonApproved();}
 
-    @GetMapping
+    public List<Company> getAllApprovedCompanies() {return companyRepository.findAllApproved();}
+
     public Company getCompanyById(long id) {return companyRepository.findById(id);}
 
-    @GetMapping
     public List<Subject> getCompanySubjectsById(long id) {return subjectRepository.findAllByCompany_Id(id);}
 
-    @PostMapping
     public void addNewCompany(Company company) {
         log.info("Saving new company {} to the database", company.getName());
         companyRepository.save(company);
     }
 
-    @PostMapping
     public void addNewContact(long id, UserEntity user, Authentication authentication){
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName(ADMIN);
@@ -81,7 +76,6 @@ public class CompanyService {
 
     }
 
-    @PostMapping
     public void addNewSubject(long id, Subject subject, Authentication authentication){
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName(ADMIN);
@@ -95,7 +89,6 @@ public class CompanyService {
         }
     }
 
-    @DeleteMapping
     public void deleteCompany(long id, Authentication authentication) {
         if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " +id+ ")");
         // Only admin and companies have access to the URL
@@ -109,7 +102,6 @@ public class CompanyService {
 
     }
 
-    @PutMapping
     public void updateCompany(long id, String name, String address, String btwNr, String description, Authentication authentication) {
         if(!companyRepository.existsById(id)) throw new IllegalStateException("Company does not exist (id: " + id + ")");
         // Only admin and companies have access to the URL
@@ -128,7 +120,6 @@ public class CompanyService {
 
     }
 
-    @PutMapping
     public void setApproved(long id, boolean approved) {
         if(!companyRepository.existsById(id)) throw new InputNotValidException("Company does not exist (id: " + id + ")");
         Company company = companyRepository.getById(id);

@@ -171,7 +171,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void addNewUserBatch(){
+    public void addNewUserBatch(Authentication authentication){
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
@@ -220,7 +220,7 @@ public class UserService implements UserDetailsService {
                             else educationId = education.getId();
                             if (campus == null) campusId = 0;
                             else campusId = campus.getId();
-                            addTargetAudience(user.getId(), facultyId, educationId, campusId);
+                            addTargetAudience(user.getId(), facultyId, educationId, campusId, authentication);
                         }
                     }
                 }
@@ -230,9 +230,6 @@ public class UserService implements UserDetailsService {
         finally {if (sc!=null) sc.close();}
     }
 
-
-
-    @PutMapping
     public void updateUser(long id, String firstname, String lastname, String email, String telNr, String password) {
         if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         UserEntity user = userRepository.getById(id);
@@ -243,7 +240,6 @@ public class UserService implements UserDetailsService {
         if(password != null && password.length()>0) user.setPassword(passwordEncoder.encode(password));
     }
 
-    @PutMapping
     public void addNewPreferredSubject(long uid, Subject subject, Authentication authentication){
         if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
             throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
@@ -262,17 +258,24 @@ public class UserService implements UserDetailsService {
         else{throw new RuntimeException("Student can only access his own account");}
     }
 
-    public void addTargetAudience (long userId, long facultyId, long educationId, long campusId){
+    public void addTargetAudience (long userId, long facultyId, long educationId, long campusId, Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
         UserEntity user = userRepository.findById(userId);
-        Role student = roleRepository.findByName(STUDENT);
-        if(!user.getRoles().contains(student)){
-            throw new InputNotValidException("Can only add targetAudience to STUDENT_ROLE");
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        if(activeUser.getRoles().contains(admin) || user.equals(activeUser)) {
+            Role student = roleRepository.findByName(STUDENT);
+            if (!user.getRoles().contains(student)) {
+                throw new InputNotValidException("Can only add targetAudience to STUDENT_ROLE");
+            }
+            if (!targetAudienceService.exists(facultyId, educationId, campusId)) {
+                throw new ResourceNotFoundException("targetAudience does not exist.");
+            }
+            TargetAudience targetAudience = targetAudienceService.getByAllIds(facultyId, educationId, campusId);
+            user.setTargetAudience(targetAudience);
         }
-        if(!targetAudienceService.exists(facultyId, educationId, campusId)){
-            throw new ResourceNotFoundException("targetAudience does not exist.");
+        else {
+            throw new NotAllowedException("Students can only access their own TargetAudience.");
         }
-        TargetAudience targetAudience = targetAudienceService.getByAllIds(facultyId, educationId, campusId);
-        user.setTargetAudience(targetAudience);
     }
 
     public UserEntity getUser(String email){

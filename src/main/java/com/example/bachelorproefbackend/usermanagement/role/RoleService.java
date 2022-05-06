@@ -19,10 +19,8 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    //GET
     public List<Role> getAllRoles(){return roleRepository.findAll();}
 
-    //POST
     public void addNewRole(Role role){
         log.info("Saving new role {} to the database", role.getName());
         roleRepository.save(role);

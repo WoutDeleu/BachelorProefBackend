@@ -34,7 +34,6 @@ public class TargetAudienceService {
         this.educationRepository = educationRepository;
     }
 
-    @GetMapping
     public List<TargetAudience> getAllTargetAudiences() {return targetAudienceRepository.findAll();}
 
     public List<TargetAudience> getAllByFaculty(Faculty faculty){return targetAudienceRepository.findAllByFaculty(faculty);}
@@ -46,19 +45,14 @@ public class TargetAudienceService {
     public List<TargetAudience> getAllByCampus(Campus campus){return targetAudienceRepository.findAllByCampus(campus);}
     public List<TargetAudience> getAllByCampusId(long campusId){return targetAudienceRepository.findAllByCampusId(campusId);}
 
-
-
-    @PostMapping
     public void addNewTargetAudience(TargetAudience targetAudience) {
         targetAudienceRepository.save(targetAudience);
     }
 
-    @DeleteMapping
     public void deleteTargetAudience(long id){
         targetAudienceRepository.deleteById(id);
     }
 
-    @PutMapping
     public void updateTargetAudience(long id, Campus campus, Faculty faculty){
         if(!targetAudienceRepository.existsById(id)) throw new IllegalStateException("TargetAudience does not exist (id: "+id+")");
         TargetAudience targetAudience = targetAudienceRepository.getById(id);

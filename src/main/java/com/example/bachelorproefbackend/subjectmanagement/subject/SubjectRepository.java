@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
+import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     List<Subject> findAllByCompany_Id(long id);
 
     List<Subject> findAllByApproved(boolean bool);
+
+    List<Subject> findAllByTargetAudiencesContains(TargetAudience targetAudience);
 
     int countSubjectsByApproved(boolean bool);
 

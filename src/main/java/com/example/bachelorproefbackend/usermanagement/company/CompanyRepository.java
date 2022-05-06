@@ -14,6 +14,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value="SELECT c FROM Company c WHERE c.approved = false")
     List<Company> findAllNonApproved();
 
+    @Query(value="SELECT c FROM Company c WHERE c.approved = true")
+    List<Company> findAllApproved();
+
     int countCompaniesByApproved(boolean bool);
 
 

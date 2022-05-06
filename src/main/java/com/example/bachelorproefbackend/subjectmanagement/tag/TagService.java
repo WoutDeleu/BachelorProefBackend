@@ -20,27 +20,22 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    @GetMapping
     public List<Tag> getAllTags() {return tagRepository.findAll();}
 
-    @GetMapping
     public Tag getTagById(long id) {return tagRepository.getById(id);}
 
     public boolean existsTagByName(String name) {return tagRepository.existsTagByName(name);}
 
     public Tag getTagByName(String name) {return tagRepository.getTagByName(name);}
 
-    @PostMapping
     public void addNewTag(Tag tag) {
         tagRepository.save(tag);
     }
 
-    @DeleteMapping
     public void deleteTag(long id){
         tagRepository.deleteById(id);
     }
 
-    @PutMapping
     public void updateTag(long id, String name){
         if(!tagRepository.existsById(id)) throw new IllegalStateException("Tag does not exist (id: "+id+")");
         Tag tag = tagRepository.getById(id);

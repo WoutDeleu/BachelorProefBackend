@@ -30,10 +30,8 @@ public class EducationService {
         this.targetAudienceService = targetAudienceService;
     }
 
-    @GetMapping
     public List<Education> getAllEducations() {return educationRepository.findAll();}
 
-    @GetMapping
     public List<Education> getAllEducationsByFaculties(Faculty [] faculties){
         List<Education> result = new ArrayList<>();
         for (Faculty f : faculties){
@@ -45,17 +43,14 @@ public class EducationService {
         return result;
     }
 
-    @PostMapping
     public void addNewEducation(Education education) {
         educationRepository.save(education);
     }
 
-    @DeleteMapping
     public void deleteEducation(long id){
         educationRepository.deleteById(id);
     }
 
-    @PutMapping
     public void updateEducation(long id, String name){
         if(!educationRepository.existsById(id)) throw new IllegalStateException("Education does not exist (id: "+id+")");
         Education education = educationRepository.getById(id);

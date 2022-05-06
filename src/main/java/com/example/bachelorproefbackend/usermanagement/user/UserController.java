@@ -85,12 +85,12 @@ public class UserController {
     }
 
     @PostMapping(path="batch")
-    public ResponseEntity<ResponseMessage> addNewUserBatch(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<ResponseMessage> addNewUserBatch(@RequestParam("file") MultipartFile file, Authentication authentication){
         String message;
         try {
             storageService.save(file);
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            userService.addNewUserBatch(); // Creating users from the file
+            userService.addNewUserBatch(authentication); // Creating users from the file
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 
         } catch (Exception e) {
@@ -127,8 +127,8 @@ public class UserController {
     }
 
     @PostMapping(path="student/addTargetAudience")
-    public void addTargetAudience(@RequestParam long userId, long facultyId, long educationId, long campusId){
-        userService.addTargetAudience(userId, facultyId, educationId, campusId);
+    public void addTargetAudience(@RequestParam long userId, long facultyId, long educationId, long campusId, Authentication authentication){
+        userService.addTargetAudience(userId, facultyId, educationId, campusId, authentication);
     }
 
     @PutMapping(path="student/addFinalSubject")

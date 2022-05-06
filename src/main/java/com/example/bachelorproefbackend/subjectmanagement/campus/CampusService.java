@@ -30,10 +30,8 @@ public class CampusService {
         this.targetAudienceService = targetAudienceService;
     }
 
-    @GetMapping
     public List<Campus> getAllCampuses() {return campusRepository.findAll();}
 
-    @GetMapping
     public List<Campus> getAllCampusesByFaculties(Faculty [] faculties){
         List<Campus> result = new ArrayList<>();
         for (Faculty f : faculties){
@@ -45,7 +43,6 @@ public class CampusService {
         return result;
     }
 
-    @GetMapping
     public List<Campus> getAllCampusesByEducations(Education [] educations){
         List<Campus> result = new ArrayList<>();
         for (Education e : educations){
@@ -56,18 +53,15 @@ public class CampusService {
         }
         return result;
     }
-    
-    @PostMapping
+
     public void addNewCampus(Campus campus) {
         campusRepository.save(campus);
     }
 
-    @DeleteMapping
     public void deleteCampus(long id){
         campusRepository.deleteById(id);
     }
 
-    @PutMapping
     public void updateCampus(long id, String name, String address){
         if(!campusRepository.existsById(id)) throw new IllegalStateException("Campus does not exist (id: "+id+")");
         Campus campus = campusRepository.getById(id);

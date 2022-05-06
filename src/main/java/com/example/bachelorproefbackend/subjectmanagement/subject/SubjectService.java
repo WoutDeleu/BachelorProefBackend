@@ -48,23 +48,12 @@ public class SubjectService {
 
     public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllByApproved(false);}
 
+    public List<Subject> getAllApprovedSubjects() {return subjectRepository.findAllByApproved(true);}
+
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {
-        // TODO optimaliseerbaar?
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
-        List<Subject> subjects = subjectRepository.findAll();
-        List<Subject> toRemove = new ArrayList<>();
-        if(activeUser.getTargetAudience()==null){
-            throw new InputNotValidException("The user must have a targetAudience for this function.");
-        }
-        for (Subject s : subjects){
-            if(!s.getTargetAudiences().contains(activeUser.getTargetAudience()) || s.getTargetAudiences().isEmpty()){
-                toRemove.add(s);
-            }
-        }
-        for (Subject s : toRemove){
-            subjects.remove(s);
-        }
-        return subjects;
+        return subjectRepository.findAllByTargetAudiencesContains(activeUser.getTargetAudience());
+
     }
 
     public Subject getSubjectById(long subjectId) {
