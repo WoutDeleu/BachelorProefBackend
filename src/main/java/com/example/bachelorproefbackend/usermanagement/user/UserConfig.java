@@ -4,6 +4,7 @@ import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectService;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagRepository;
+import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyService;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +20,7 @@ public class UserConfig {
 
     //add some default users to experiment with
     @Bean
-    CommandLineRunner commandLineRunner(UserService userService, SubjectRepository subjectRepository, SubjectService subjectService, CompanyService companyService, TagRepository tagRepository) {
+    CommandLineRunner commandLineRunner(TagService tagService, UserService userService, SubjectRepository subjectRepository, SubjectService subjectService, CompanyService companyService, TagRepository tagRepository) {
         return args -> {
             UserEntity pieter = new UserEntity("Pieter", "Vermeiren", "p.vermeiren@hamann.be", "+32 456 30 81 62", "password");
             userService.addNewUser(pieter);
@@ -41,13 +42,18 @@ public class UserConfig {
 
             Tag tag1 = new Tag("Luchtvaart");
             Tag tag2 = new Tag("Software engineering");
-            tagRepository.saveAll(List.of(tag1, tag2));
+//            tagRepository.saveAll(List.of(tag1, tag2));
+            tagService.addNewTag(tag1);
+            tagService.addNewTag(tag2);
 
-
-            Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
-            Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
-            Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
-            subjectRepository.saveAll(List.of(subject1, subject2, subject3));
+//
+//            Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
+//            Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
+//            Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
+////            subjectRepository.saveAll(List.of(subject1, subject2, subject3));
+//            subjectService.addNewSubject(subject1);
+//            subjectService.addNewSubject(subject1);
+//            subjectService.addNewSubject(subject1);
 
 
 
