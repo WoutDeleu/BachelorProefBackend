@@ -234,9 +234,10 @@ public class SubjectService {
     }
 
     public void setApproved(long id, boolean approved){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         if(!subjectRepository.existsById(id)) throw new InputNotValidException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
         subject.setApproved(approved);
