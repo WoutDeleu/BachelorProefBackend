@@ -1,16 +1,20 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 @Data
 @Table
 @Entity
@@ -28,10 +32,8 @@ public class UserEntity {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles;
-    @ManyToMany
-    @JsonIgnore //No recursion between user en subject, showing data over and over again
-    @JoinTable(name="subject_preference")
-    private Collection<Subject> preferredSubjects = new ArrayList<>();;
+    @OneToMany(mappedBy = "student") //OneToThree
+    private Collection<SubjectPreference> preferredSubjects;
     @ManyToMany
     @JsonIgnore //No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_favourites")
@@ -57,13 +59,29 @@ public class UserEntity {
         this.password = password;
     }
 
-    public void addPreferredSubject(Subject subject, int index){
-        // TODO index
-        preferredSubjects.add(subject);
-    }
-
     public void addFavouriteSubject(Subject subject){
         favouriteSubjects.add(subject);
+    }
+
+//    @Transactional
+//    public void addSubjectPreference(Subject subject, int index){
+//        SubjectPreference subjectPreference = null;
+//        for(SubjectPreference sp : preferredSubjects){
+//            if(sp.getIndex()==index) subjectPreference=sp;
+//        }
+//
+//        if(subjectPreference==null){
+//            subjectPreference = new SubjectPreference(subject, this, index);
+//            preferredSubjects.add(subjectPreference);
+//            log.info("zou in array moeten zitten");
+//        }
+//        else{
+//            subjectPreference.setSubject(subject);
+//        }
+//    }
+
+    public void addSubjectPreference(SubjectPreference sp){
+        preferredSubjects.add(sp);
     }
 
     public void addRole(Role role) {
@@ -71,10 +89,9 @@ public class UserEntity {
         if(!roles.contains(role)) roles.add(role);
     }
 
-
     @Override
     public String toString() {
-        return "User_entity{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -83,7 +100,11 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 ", preferredSubjects=" + preferredSubjects +
+                ", favouriteSubjects=" + favouriteSubjects +
                 ", finalSubject=" + finalSubject +
+                ", targetAudience=" + targetAudience +
+                ", subjects=" + subjects +
+                ", company=" + company +
                 '}';
     }
 

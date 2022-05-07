@@ -2,6 +2,7 @@ package com.example.bachelorproefbackend.usermanagement.user;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectService;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.usermanagement.filestorage.ResponseMessage;
 import com.example.bachelorproefbackend.usermanagement.filestorage.StorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @GetMapping(path="{userId}/preferredSubjects")
-    public Collection<Subject> getPreferredSubjectsByUserById(@PathVariable("userId") long id, Authentication authentication) {
-        return userService.getPreferredSubjectsByUserId(id, authentication);
+    public Collection<SubjectPreference> getPreferredSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
+        return userService.getPreferredSubjectsByUserId(userId, authentication);
     }
 
     @GetMapping(path="{userId}/favouriteSubjects")
@@ -102,9 +103,9 @@ public class UserController {
     }
 
     @PostMapping(path="student/addPreferredSubject")
-    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, int index, Authentication authentication){
+    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, int keuze, Authentication authentication){
         Subject subject = subjectService.getSubjectById(subjectId);
-        userService.addNewPreferredSubject(userId, subject, index, authentication);
+        userService.addNewPreferredSubject(userId, subject, keuze, authentication);
     }
 
     @PostMapping(path="student/addFavouriteSubject")

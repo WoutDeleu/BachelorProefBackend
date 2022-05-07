@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
@@ -26,17 +27,19 @@ public class Subject {
     private int nrOfStudents;
     @ManyToOne
     private Company company;
-    @ManyToMany(mappedBy = "preferredSubjects")
-    private Collection<UserEntity> students;
+//    @ManyToMany(mappedBy = "preferredSubjects")
+//    private Collection<UserEntity> students;
     @OneToMany(mappedBy = "finalSubject")
     private Collection<UserEntity> finalStudents; //
     @ManyToMany
     private Collection<TargetAudience> targetAudiences;
+    @OneToMany(mappedBy = "subject") //OneToThree
+    private Collection<SubjectPreference> students;
     @ManyToMany
     private Collection<Tag> tags;
     @ManyToOne
     private UserEntity promotor;
-    private boolean approved; // Subjects from students or companies must be approved by coordinator or admin
+    private boolean approved; //Subjects from students or companies must be approved by coordinator or admin
     private boolean hasPdf;
 
 

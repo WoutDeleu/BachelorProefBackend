@@ -11,6 +11,7 @@ import com.example.bachelorproefbackend.subjectmanagement.education.EducationRep
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyRepository;
@@ -25,7 +26,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.io.FileReader;
@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId);
     }
 
-    public Collection<Subject> getPreferredSubjectsByUserId(long userId, Authentication authentication){
+    public Collection<SubjectPreference> getPreferredSubjectsByUserId(long userId, Authentication authentication){
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
@@ -257,7 +257,22 @@ public class UserService implements UserDetailsService {
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
             if(user.getRoles().contains(student)){
-                user.addPreferredSubject(subject, index);
+//                user.addSubjectPreference(subject, keuze);
+                SubjectPreference subjectPreference = null;
+                for(SubjectPreference sp : user.getPreferredSubjects()){
+                    if(sp.getIndex()==index) subjectPreference=sp;
+                }
+                if(subjectPreference==null){
+                    subjectPreference = new SubjectPreference(subject, user, index);
+                    user.addSubjectPreference(subjectPreference);
+                    log.info("zou in array moeten zitten");
+                }
+                else{
+                    subjectPreference.setSubject(subject);
+                }
+
+
+
                 log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
             }
             else{throw new RuntimeException("Can only add preferred subjects to student account");}

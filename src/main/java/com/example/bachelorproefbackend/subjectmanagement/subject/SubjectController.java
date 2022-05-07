@@ -133,8 +133,8 @@ public class SubjectController {
     }
 
     @PutMapping(path="{subjectId}/setApproved")
-    public void updateSubject(@PathVariable("subjectId") long id, @RequestParam boolean approved){
-        subjectService.setApproved(id, approved);
+    public void updateSubject(@PathVariable("subjectId") long subjectId, @RequestParam boolean approved){
+        subjectService.setApproved(subjectId, approved);
     }
 
     @PutMapping(path="{subjectId}/addCompany")

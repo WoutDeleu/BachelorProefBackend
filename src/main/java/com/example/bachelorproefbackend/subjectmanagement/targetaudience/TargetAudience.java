@@ -32,7 +32,6 @@ public class TargetAudience {
     private Collection<Subject> allSubjects;
 
 
-
     public TargetAudience(Campus campus, Faculty faculty, Education education) {
         this.campus = campus;
         this.faculty = faculty;
