@@ -31,7 +31,11 @@ public class UserEntity {
     @ManyToMany
     @JsonIgnore //No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_preference")
-    private Collection<Subject> preferredSubjects = new ArrayList<>();
+    private Collection<Subject> preferredSubjects = new ArrayList<>();;
+    @ManyToMany
+    @JsonIgnore //No recursion between user en subject, showing data over and over again
+    @JoinTable(name="subject_favourites")
+    private Collection<Subject> favouriteSubjects = new ArrayList<>();
     @ManyToOne //TwoToOne
     @JsonIgnore
     private Subject finalSubject; //For students
@@ -53,8 +57,13 @@ public class UserEntity {
         this.password = password;
     }
 
-    public void addPreferredSubject(Subject subject){
+    public void addPreferredSubject(Subject subject, int index){
+        // TODO index
         preferredSubjects.add(subject);
+    }
+
+    public void addFavouriteSubject(Subject subject){
+        favouriteSubjects.add(subject);
     }
 
     public void addRole(Role role) {

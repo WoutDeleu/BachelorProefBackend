@@ -87,6 +87,18 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).getPreferredSubjects();
     }
 
+    public Collection<Subject> getFavouriteSubjectsByUserId(long userId, Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(!activeUser.getRoles().contains(admin) && !activeUser.getRoles().contains(coordinator)){
+            if(activeUser.getId()!=userId){
+                throw new NotAllowedException("User can only access his own information");
+            }
+        }
+        return userRepository.findById(userId).getFavouriteSubjects();
+    }
+
     public UserEntity getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
@@ -114,12 +126,6 @@ public class UserService implements UserDetailsService {
     public List<UserEntity> getAllContacts() {
         long roleId = roleRepository.findByName("ROLE_CONTACT").getId();
         return userRepository.findUser_entityByRolesId(roleId);
-    }
-
-    public List<Subject> getPreferredSubjects(long id){
-        if(userRepository.existsById(id))
-            return new ArrayList<>(userRepository.findById(id).getPreferredSubjects());
-        else throw new RuntimeException("User not found");
     }
 
     public List<UserEntity> getUsers(String id, String type) {
@@ -240,20 +246,40 @@ public class UserService implements UserDetailsService {
         if(password != null && password.length()>0) user.setPassword(passwordEncoder.encode(password));
     }
 
-    public void addNewPreferredSubject(long uid, Subject subject, Authentication authentication){
-        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-        }
+    public void addNewPreferredSubject(long userId, Subject subject, int index, Authentication authentication){
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+//        }
         UserEntity activeUser = getUserByEmail(authentication.getName());
-        UserEntity user = userRepository.findById(uid);
+        UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
             if(user.getRoles().contains(student)){
-                user.getPreferredSubjects().add(subject);
+                user.addPreferredSubject(subject, index);
                 log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
             }
             else{throw new RuntimeException("Can only add preferred subjects to student account");}
+        }
+        else{throw new RuntimeException("Student can only access his own account");}
+    }
+
+    public void addNewFavouriteSubject(long userId, Subject subject, Authentication authentication){
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+//        }
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        UserEntity user = userRepository.findById(userId);
+        Role student = roleRepository.findByName(STUDENT);
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
+            if(user.getRoles().contains(student)){
+                user.addFavouriteSubject(subject);
+                log.info("Added favourite subject {} to user {}", subject.getName(), user.getFirstName());
+            }
+            else{throw new RuntimeException("Can only add favourite subjects to student account");}
         }
         else{throw new RuntimeException("Student can only access his own account");}
     }

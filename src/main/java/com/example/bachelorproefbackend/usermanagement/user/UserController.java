@@ -46,6 +46,11 @@ public class UserController {
         return userService.getPreferredSubjectsByUserId(id, authentication);
     }
 
+    @GetMapping(path="{userId}/favouriteSubjects")
+    public Collection<Subject> getFavouriteSubjectsByUserById(@PathVariable("userId") long id, Authentication authentication) {
+        return userService.getFavouriteSubjectsByUserId(id, authentication);
+    }
+
     @GetMapping(path="student")
     public List<UserEntity> getAllStudents() {
         return userService.getAllStudents();
@@ -70,9 +75,6 @@ public class UserController {
     public List<UserEntity> getAllContacts() {
         return userService.getAllContacts();
     }
-
-    @GetMapping(path="student/{userId}/preferredSubjects")
-    public List<Subject> getPreferredSubjects(@PathVariable("userId") long id) {return userService.getPreferredSubjects(id);}
 
     @GetMapping(path="stats")
     public UserData getUserData() {
@@ -100,9 +102,15 @@ public class UserController {
     }
 
     @PostMapping(path="student/addPreferredSubject")
-    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, Authentication authentication){
+    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, int index, Authentication authentication){
         Subject subject = subjectService.getSubjectById(subjectId);
-        userService.addNewPreferredSubject(userId, subject, authentication);
+        userService.addNewPreferredSubject(userId, subject, index, authentication);
+    }
+
+    @PostMapping(path="student/addFavouriteSubject")
+    public void addNewFavouriteSubject(@RequestParam long userId, long subjectId, Authentication authentication){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        userService.addNewFavouriteSubject(userId, subject, authentication);
     }
 
     @PostMapping(path="addRoleToUser")

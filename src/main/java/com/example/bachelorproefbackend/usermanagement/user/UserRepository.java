@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
    UserEntity findById(long id);
+
    UserEntity findByEmail(String email); //email act as username
 
    boolean existsByEmail(String email);
@@ -17,10 +18,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
    List<UserEntity> findUser_entityByRolesId(long roleId);
 
-
    int countUserEntitiesByRolesContaining(Role role);
+
    int countUserEntitiesByFinalSubjectIsNotNull();
-
-
 
 }

@@ -102,6 +102,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}").authenticated();
         http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/{userId}").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/{userId}").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/favouriteSubject").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/preferredSubject").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/student").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/administrator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/promotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
@@ -109,6 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/contact").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addTargetAudience").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addPreferredSubject").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addFavouriteSubject").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addFinalSubject").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addRoleToUser").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/batch").hasAuthority(ADMIN);
