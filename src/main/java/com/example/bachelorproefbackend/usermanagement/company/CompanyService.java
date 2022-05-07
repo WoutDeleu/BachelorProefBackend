@@ -41,7 +41,16 @@ public class CompanyService {
         this.subjectRepository = subjectRepository;
     }
 
-    public List<Company> getAllCompanies() {return companyRepository.findAll();}
+    public List<Company> getAllCompanies(Authentication authentication) {
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName(ADMIN);
+        if(activeUser.getRoles().contains(admin)){
+            return companyRepository.findAll();
+        }
+        else {
+            return companyRepository.findAllApproved();
+        }
+    }
 
     public List<Company> getAllNonApprovedCompanies() {return companyRepository.findAllNonApproved();}
 

@@ -25,7 +25,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getAllCompanies() {return companyService.getAllCompanies();}
+    public List<Company> getAllCompanies(Authentication authentication) {return companyService.getAllCompanies(authentication);}
 
     @GetMapping(path = "nonApproved")
     public List<Company> getAllNonApprovedCompanies() {return companyService.getAllNonApprovedCompanies();}

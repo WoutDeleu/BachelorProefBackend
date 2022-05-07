@@ -44,16 +44,24 @@ public class SubjectService {
         this.facultyRepository = facultyRepository;
     }
 
-    public List<Subject> getAllSubjects() {return subjectRepository.findAll();}
+    public List<Subject> getAllSubjects(Authentication authentication) {
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)){
+            return subjectRepository.findAll();
+        }
+        else {
+            return subjectRepository.findAllByApproved(true);
+        }
+    }
 
     public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllByApproved(false);}
 
-    public List<Subject> getAllApprovedSubjects() {return subjectRepository.findAllByApproved(true);}
 
     public List<Subject> getAllRelatedSubjects(Authentication authentication) {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         return subjectRepository.findAllByTargetAudiencesContains(activeUser.getTargetAudience());
-
     }
 
     public Subject getSubjectById(long subjectId) {

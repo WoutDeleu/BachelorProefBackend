@@ -54,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/timing").authenticated();
         http.authorizeRequests().antMatchers(PUT, "/timing").hasAuthority(ADMIN);
 
-        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/approved").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects").hasAnyAuthority(ADMIN, COORDINATOR);
+
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects").authenticated();
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/byTargetAudience").authenticated();
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects").authenticated();
@@ -117,8 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/batch").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/stats").hasAnyAuthority(ADMIN, COORDINATOR);
 
-        http.authorizeRequests().antMatchers(GET, "/userManagement/company/approved").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/userManagement/company").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(GET, "/userManagement/company").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/nonApproved").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/company").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}").authenticated();
