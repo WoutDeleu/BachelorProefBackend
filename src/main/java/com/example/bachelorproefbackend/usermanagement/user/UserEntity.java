@@ -63,23 +63,6 @@ public class UserEntity {
         favouriteSubjects.add(subject);
     }
 
-//    @Transactional
-//    public void addSubjectPreference(Subject subject, int index){
-//        SubjectPreference subjectPreference = null;
-//        for(SubjectPreference sp : preferredSubjects){
-//            if(sp.getIndex()==index) subjectPreference=sp;
-//        }
-//
-//        if(subjectPreference==null){
-//            subjectPreference = new SubjectPreference(subject, this, index);
-//            preferredSubjects.add(subjectPreference);
-//            log.info("zou in array moeten zitten");
-//        }
-//        else{
-//            subjectPreference.setSubject(subject);
-//        }
-//    }
-
     public void addSubjectPreference(SubjectPreference sp){
         preferredSubjects.add(sp);
     }

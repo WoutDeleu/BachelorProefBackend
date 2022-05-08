@@ -103,9 +103,9 @@ public class UserController {
     }
 
     @PostMapping(path="student/addPreferredSubject")
-    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, int keuze, Authentication authentication){
+    public void addNewPreferredSubject(@RequestParam long userId, long subjectId, int index, Authentication authentication){
         Subject subject = subjectService.getSubjectById(subjectId);
-        userService.addNewPreferredSubject(userId, subject, keuze, authentication);
+        userService.addNewPreferredSubject(userId, subject, index, authentication);
     }
 
     @PostMapping(path="student/addFavouriteSubject")

@@ -5,6 +5,7 @@ import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,13 +28,12 @@ public class Subject {
     private int nrOfStudents;
     @ManyToOne
     private Company company;
-//    @ManyToMany(mappedBy = "preferredSubjects")
-//    private Collection<UserEntity> students;
     @OneToMany(mappedBy = "finalSubject")
     private Collection<UserEntity> finalStudents; //
     @ManyToMany
     private Collection<TargetAudience> targetAudiences;
     @OneToMany(mappedBy = "subject") //OneToThree
+    @JsonIgnore
     private Collection<SubjectPreference> students;
     @ManyToMany
     private Collection<Tag> tags;

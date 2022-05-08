@@ -2,6 +2,7 @@ package com.example.bachelorproefbackend.subjectmanagement.subjectpreference;
 
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class SubjectPreference {
     @ManyToOne
     private Subject subject;
     @ManyToOne
+    @JsonIgnore
     private UserEntity student;
     private int index;
 

@@ -12,6 +12,7 @@ import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
 import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreferenceRepository;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
 import com.example.bachelorproefbackend.usermanagement.company.CompanyRepository;
@@ -41,6 +42,7 @@ public class UserService implements UserDetailsService {
     private final FacultyRepository facultyRepository;
     private final EducationRepository educationRepository;
     private final CampusRepository campusRepository;
+    private final SubjectPreferenceRepository subjectPreferenceRepository;
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
@@ -48,13 +50,14 @@ public class UserService implements UserDetailsService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.facultyRepository = facultyRepository;
         this.educationRepository = educationRepository;
         this.campusRepository = campusRepository;
         this.companyRepository = companyRepository;
+        this.subjectPreferenceRepository = subjectPreferenceRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
     }
@@ -257,22 +260,19 @@ public class UserService implements UserDetailsService {
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
             if(user.getRoles().contains(student)){
-//                user.addSubjectPreference(subject, keuze);
                 SubjectPreference subjectPreference = null;
                 for(SubjectPreference sp : user.getPreferredSubjects()){
                     if(sp.getIndex()==index) subjectPreference=sp;
                 }
                 if(subjectPreference==null){
+                    if(index<1 || index>3) throw new NotAllowedException("Only indices 1,2,3 are allowed.");
                     subjectPreference = new SubjectPreference(subject, user, index);
+                    subjectPreferenceRepository.save(subjectPreference);
                     user.addSubjectPreference(subjectPreference);
-                    log.info("zou in array moeten zitten");
                 }
                 else{
                     subjectPreference.setSubject(subject);
                 }
-
-
-
                 log.info("Added subject {} to user {}", subject.getName(), user.getFirstName());
             }
             else{throw new RuntimeException("Can only add preferred subjects to student account");}
