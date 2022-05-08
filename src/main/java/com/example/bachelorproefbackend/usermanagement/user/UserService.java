@@ -66,6 +66,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public Long getOwnId(Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        return activeUser.getId();
+    }
+
     public UserEntity getUserById(long userId, Authentication authentication) {
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");

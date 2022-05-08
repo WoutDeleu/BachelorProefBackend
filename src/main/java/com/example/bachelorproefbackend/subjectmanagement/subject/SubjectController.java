@@ -170,6 +170,4 @@ public class SubjectController {
         subjectService.addTargetAudience(subjectId, facultyIds, educationIds, campusIds, authentication);
     }
 
-
-
 }

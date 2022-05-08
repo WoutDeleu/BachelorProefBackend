@@ -37,6 +37,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path="ownId")
+    public Long getOwnId(Authentication authentication) {return userService.getOwnId(authentication);}
+
     @GetMapping(path="{userId}")
     public UserEntity getUserById(@PathVariable("userId") long id, Authentication authentication) {
         return userService.getUserById(id, authentication);
