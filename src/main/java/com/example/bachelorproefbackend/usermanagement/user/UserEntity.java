@@ -35,7 +35,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "student") //OneToThree
     private Collection<SubjectPreference> preferredSubjects;
     @ManyToMany
-    @JsonIgnore //No recursion between user en subject, showing data over and over again
+    //@JsonIgnore //No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_favourites")
     private Collection<Subject> favouriteSubjects = new ArrayList<>();
     @ManyToOne //TwoToOne
@@ -61,6 +61,10 @@ public class UserEntity {
 
     public void addFavouriteSubject(Subject subject){
         favouriteSubjects.add(subject);
+    }
+
+    public void removeFavouriteSubject(Subject subject){
+        favouriteSubjects.remove(subject);
     }
 
     public void addSubjectPreference(SubjectPreference sp){

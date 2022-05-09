@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.configuration.authentication;
 
+import com.example.bachelorproefbackend.usermanagement.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+
 
     public static final String ADMIN = "ROLE_ADMIN";
     public static final String COORDINATOR = "ROLE_COORDINATOR";
@@ -40,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter((authenticationManagerBean()));
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter((authenticationManagerBean()), userRepository);
         customAuthenticationFilter.setFilterProcessesUrl("/authentication/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
@@ -99,6 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(GET, "/userManagement/users").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/ownId").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}").authenticated();
         http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/{userId}").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/{userId}").hasAuthority(ADMIN);
@@ -112,6 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addTargetAudience").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addPreferredSubject").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addFavouriteSubject").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/student/favouriteSubject").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addFinalSubject").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addRoleToUser").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/batch").hasAuthority(ADMIN);

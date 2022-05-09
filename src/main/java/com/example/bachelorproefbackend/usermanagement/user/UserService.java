@@ -62,8 +62,15 @@ public class UserService implements UserDetailsService {
         this.targetAudienceService = targetAudienceService;
     }
 
+
+
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public String getId(Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        return String.valueOf(activeUser.getId());
     }
 
     public Long getOwnId(Authentication authentication){
@@ -298,6 +305,25 @@ public class UserService implements UserDetailsService {
             if(user.getRoles().contains(student)){
                 user.addFavouriteSubject(subject);
                 log.info("Added favourite subject {} to user {}", subject.getName(), user.getFirstName());
+            }
+            else{throw new RuntimeException("Can only add favourite subjects to student account");}
+        }
+        else{throw new RuntimeException("Student can only access his own account");}
+    }
+
+    public void removeFavouriteSubject(long userId, Subject subject, Authentication authentication){
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+//        }
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        UserEntity user = userRepository.findById(userId);
+        Role student = roleRepository.findByName(STUDENT);
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        if(activeUser.getRoles().contains(admin) || user.equals(activeUser)){
+            if(user.getRoles().contains(student)){
+                user.removeFavouriteSubject(subject);
+                log.info("Removed favourite subject {} from user {}", subject.getName(), user.getFirstName());
             }
             else{throw new RuntimeException("Can only add favourite subjects to student account");}
         }

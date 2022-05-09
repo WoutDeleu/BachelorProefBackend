@@ -117,6 +117,12 @@ public class UserController {
         userService.addNewFavouriteSubject(userId, subject, authentication);
     }
 
+    @DeleteMapping(path="student/favouriteSubject")
+    public void removeNewFavouriteSubject(@RequestParam long userId, long subjectId, Authentication authentication){
+        Subject subject = subjectService.getSubjectById(subjectId);
+        userService.removeFavouriteSubject(userId, subject, authentication);
+    }
+
     @PostMapping(path="addRoleToUser")
     public ResponseEntity<?> addRoleToUser(@RequestParam String email, String roleName){
         userService.addRoleToUser(email, roleName);
