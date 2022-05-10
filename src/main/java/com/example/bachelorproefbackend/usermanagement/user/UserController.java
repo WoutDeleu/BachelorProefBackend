@@ -98,8 +98,8 @@ public class UserController {
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             userService.addNewUserBatch(authentication); // Creating users from the file
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!" + e;
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }

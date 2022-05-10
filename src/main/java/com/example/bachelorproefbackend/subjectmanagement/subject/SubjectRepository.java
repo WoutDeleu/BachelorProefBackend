@@ -18,6 +18,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findAllByTargetAudiencesContains(TargetAudience targetAudience);
 
+    List<Subject> findAllByTargetAudiencesContainsAndAndApproved(TargetAudience targetAudience, boolean approved);
+
     int countSubjectsByApproved(boolean bool);
 
 //    @Query(value="SELECT s FROM Subject s WHERE s.approved = false")

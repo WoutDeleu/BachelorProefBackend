@@ -57,9 +57,6 @@ public class SubjectController {
     @GetMapping(path = "nonApproved")
     public List<Subject> getAllNonApprovedSubjects() {return subjectService.getAllNonApprovedSubjects();}
 
-    @GetMapping(path="byTargetAudience")
-    public List<Subject> getAllRelatedSubjects(Authentication authentication) {return subjectService.getAllRelatedSubjects(authentication);}
-
     @GetMapping(path="{subjectId}")
     public Subject getSubjectById(@PathVariable("subjectId") Long subjectId){
         return subjectService.getSubjectById(subjectId);

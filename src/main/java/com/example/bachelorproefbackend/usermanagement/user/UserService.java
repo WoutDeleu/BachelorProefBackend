@@ -63,14 +63,8 @@ public class UserService implements UserDetailsService {
     }
 
 
-
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    public String getId(Authentication authentication){
-        UserEntity activeUser = getUserByEmail(authentication.getName());
-        return String.valueOf(activeUser.getId());
     }
 
     public Long getOwnId(Authentication authentication){

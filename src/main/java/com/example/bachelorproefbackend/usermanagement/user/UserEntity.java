@@ -60,7 +60,7 @@ public class UserEntity {
     }
 
     public void addFavouriteSubject(Subject subject){
-        favouriteSubjects.add(subject);
+        if(!favouriteSubjects.contains(subject)) favouriteSubjects.add(subject);
     }
 
     public void removeFavouriteSubject(Subject subject){
