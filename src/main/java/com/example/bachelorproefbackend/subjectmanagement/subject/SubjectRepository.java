@@ -4,10 +4,9 @@ import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetA
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+
 import java.util.List;
 
 @Repository
@@ -28,10 +27,5 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     int countSubjectsByApproved(boolean bool);
 
-//    @Query(value="SELECT s FROM Subject s WHERE s.approved = false")
-//    List<Subject> findAllNonApproved();
-
-//    @Query(value="SELECT COUNT (s) FROM Subject s WHERE s.approved = false")
-//    int countAllNonApproved();
 
 }

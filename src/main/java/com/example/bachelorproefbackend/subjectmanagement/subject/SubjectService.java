@@ -62,21 +62,19 @@ public class SubjectService {
 
     public List<Subject> getMySubjects(Authentication authentication) {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
-        Role admin = roleRepository.findByName("ROLE_ADMIN");
-        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
-        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)){
-            return subjectRepository.findAll();
-        }
-        else if(activeUser.getRoles().contains(promotor)){
+        if(activeUser.getRoles().contains(promotor)){
             return subjectRepository.findAllByPromotor(activeUser);
         }
         else if(activeUser.getRoles().contains(contact)){
             return subjectRepository.findAllByCompany(activeUser.getCompany());
         }
-        return null;
+        else {
+            return subjectRepository.findAll();
+        }
     }
+
 
     public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllByApproved(false);}
 
