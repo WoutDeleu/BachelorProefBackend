@@ -117,27 +117,27 @@ public class UserService implements UserDetailsService {
 
     public List<UserEntity> getAllStudents(){
         long roleId = roleRepository.findByName(STUDENT).getId();
-        return userRepository.findUser_entityByRolesId(roleId);
+        return userRepository.findUserEntityByRolesId(roleId);
     }
 
     public List<UserEntity> getAllAdministrators() {
         long roleId = roleRepository.findByName("ROLE_ADMIN").getId();
-        return userRepository.findUser_entityByRolesId(roleId);
+        return userRepository.findUserEntityByRolesId(roleId);
     }
 
     public List<UserEntity> getAllPromotors() {
         long roleId = roleRepository.findByName("ROLE_PROMOTOR").getId();
-        return userRepository.findUser_entityByRolesId(roleId);
+        return userRepository.findUserEntityByRolesId(roleId);
     }
 
     public List<UserEntity> getAllCoordinators() {
         long roleId = roleRepository.findByName("ROLE_COORDINATOR").getId();
-        return userRepository.findUser_entityByRolesId(roleId);
+        return userRepository.findUserEntityByRolesId(roleId);
     }
 
     public List<UserEntity> getAllContacts() {
         long roleId = roleRepository.findByName("ROLE_CONTACT").getId();
-        return userRepository.findUser_entityByRolesId(roleId);
+        return userRepository.findUserEntityByRolesId(roleId);
     }
 
     public boolean isRole(String r, Authentication authentication){

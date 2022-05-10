@@ -16,10 +16,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
    List<UserEntity> findAll();
 
-   List<UserEntity> findUser_entityByRolesId(long roleId);
+   List<UserEntity> findUserEntityByRolesId(long roleId);
 
    int countUserEntitiesByRolesContaining(Role role);
 
    int countUserEntitiesByFinalSubjectIsNotNull();
+
+
 
 }
