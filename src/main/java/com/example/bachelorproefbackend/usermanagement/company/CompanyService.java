@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.usermanagement.company;
 
+import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,15 +32,17 @@ public class CompanyService {
     private final UserService userService;
     private final RoleRepository roleRepository;
     private final SubjectRepository subjectRepository;
+    private final EmailSenderService emailSenderService;
     private static final String ADMIN = "ROLE_ADMIN";
 
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
+    public CompanyService(CompanyRepository companyRepository, EmailSenderService emailSenderService, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
         this.companyRepository = companyRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.subjectRepository = subjectRepository;
+        this.emailSenderService = emailSenderService;
     }
 
     public List<Company> getAllCompanies(Authentication authentication) {
@@ -74,6 +78,18 @@ public class CompanyService {
             if(user.getRoles().contains(contact)){
                 log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
                 company.addContact(user);
+                if(company.isApproved()==false && company.getContacts().size()==1){
+                    String to = user.getEmail();
+                    String subject = "New company registered";
+                    String body = "Dear "+user.getFirstName()+", \n\n\n"+
+                            "Thank you for registering your company "+company.getName()+" to our university.\n"+
+                            "Your company information has been well received. We will take a look at it and approve you to use our mastertool asap.\n"+
+                            "Once this step is completed, you will be able to add subjects for our students all over the country.\n\n"+
+                            "For any questions you can contact admin@kuleuven.be.\n\n\n"+
+                            "Kind regards\n"+
+                            "The mastertool team";
+                    emailSenderService.sendEmail(to,subject,body);
+                }
             }
             else{
                 throw new InputNotValidException("Only users with contact role can be added.");
@@ -83,19 +99,6 @@ public class CompanyService {
             throw new NotAllowedException("Only contacts can add contacts to their own company");
         }
 
-    }
-
-    public void addNewSubject(long id, Subject subject, Authentication authentication){
-        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
-        Role admin = roleRepository.findByName(ADMIN);
-        Company company = companyRepository.getById(id);
-        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
-            log.info("Adding new subject {} to company {}", subject.getName(), company.getName());
-            company.addSubject(subject);
-        }
-        else {
-            throw new NotAllowedException("Only contacts can add subjects to their own company");
-        }
     }
 
     public void deleteCompany(long id, Authentication authentication) {
@@ -130,10 +133,21 @@ public class CompanyService {
     }
 
     public void setApproved(long id, boolean approved) {
-        if(!companyRepository.existsById(id)) throw new InputNotValidException("Company does not exist (id: " + id + ")");
+        if (!companyRepository.existsById(id))
+            throw new InputNotValidException("Company does not exist (id: " + id + ")");
         Company company = companyRepository.getById(id);
         company.setApproved(approved);
+        ArrayList<UserEntity> contact = new ArrayList<>(company.getContacts());
+        for (UserEntity user : contact) {
+            String to = user.getEmail();
+            String subject = "Company approved";
+            String body = "Dear " + user.getFirstName() + ", \n\n\n" +
+                    "Your company " + company.getName() + " has officially been approved.\n" +
+                    "Your can now create subjects in our mastertool.\n\n\n" +
+                    "Kind regards\n" +
+                    "The mastertool team";
+            emailSenderService.sendEmail(to, subject, body);
+        }
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
+import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
@@ -46,11 +47,12 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
+    private final EmailSenderService emailSenderService;
     private static final String STUDENT = "ROLE_STUDENT";
 
 
     @Autowired
-    public UserService(UserRepository userRepository, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, EmailSenderService emailSenderService, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.facultyRepository = facultyRepository;
@@ -60,6 +62,7 @@ public class UserService implements UserDetailsService {
         this.subjectPreferenceRepository = subjectPreferenceRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
+        this.emailSenderService = emailSenderService;
     }
 
 
@@ -137,19 +140,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findUser_entityByRolesId(roleId);
     }
 
-    public List<UserEntity> getUsers(String id, String type) {
-        if(id.equals("null") && type.equals("null")) return userRepository.findAll();
-        else if (type.equals("null") && !id.equals("null")) return userRepository.findAllById(Collections.singleton(Long.parseLong(id)));
-        else if (id.equals("null") && !type.equals("null")) {
-            if(type.equals("administrator")) return getAllCoordinators();
-            else if(type.equals("student")) return getAllStudents();
-            else if (type.equals("promotors")) return getAllPromotors();
-            else if (type.equals("coordinator")) return getAllCoordinators();
-            else return null;
-        }
-        else {return null;}
-    }
-
     public boolean isRole(String r, Authentication authentication){
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role role = roleRepository.findByName(r);
@@ -176,11 +166,13 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(long id) {
-        if(!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " +id+ ")");
+        if (!userRepository.existsById(id)) throw new IllegalStateException("User does not exist (id: " + id + ")");
         userRepository.deleteById(id);
     }
 
     public void addNewUser(UserEntity user) {
+        if(userRepository.existsByEmail(user.getEmail()))
+            throw new NotAllowedException("a user with this email address already exists.");
         log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

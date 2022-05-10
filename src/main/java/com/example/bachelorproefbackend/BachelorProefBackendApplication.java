@@ -1,16 +1,14 @@
 package com.example.bachelorproefbackend;
 
+import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
 import com.example.bachelorproefbackend.usermanagement.filestorage.FileStorageService;
-import org.apache.catalina.Context;
-import org.apache.catalina.connector.Connector;
-import org.apache.tomcat.util.descriptor.web.SecurityCollection;
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,12 +17,16 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import java.util.Properties;
 
 @SpringBootApplication
 @RestController
 @Configuration
 
 public class BachelorProefBackendApplication {
+
+	@Autowired
+	private EmailSenderService senderService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BachelorProefBackendApplication.class, args);
@@ -47,7 +49,6 @@ public class BachelorProefBackendApplication {
 						.allowedOrigins("http://localhost:3000", "http://localhost:19000");
 			}
 		};
-
 	}
 
 	// logging
@@ -70,6 +71,7 @@ public class BachelorProefBackendApplication {
 		storageService.deleteAll();
 		storageService.init();
 	}
+
 
 
 }
