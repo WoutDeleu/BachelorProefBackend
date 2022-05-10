@@ -60,6 +60,24 @@ public class SubjectService {
         }
     }
 
+    public List<Subject> getMySubjects(Authentication authentication) {
+        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)){
+            return subjectRepository.findAll();
+        }
+        else if(activeUser.getRoles().contains(promotor)){
+            return subjectRepository.findAllByPromotor(activeUser);
+        }
+        else if(activeUser.getRoles().contains(contact)){
+            return subjectRepository.findAllByCompany(activeUser.getCompany());
+        }
+        return null;
+    }
+
     public List<Subject> getAllNonApprovedSubjects() {return subjectRepository.findAllByApproved(false);}
 
     public Subject getSubjectById(long subjectId) {
@@ -185,7 +203,6 @@ public class SubjectService {
                 || activeUser.getSubjects().contains(subject) //promotor
                 || activeUser.getCompany().equals(subject.getCompany()) // contact
          ){
-            log.info("voorbij permission check");
             List<TargetAudience> targets = new ArrayList<>();
             if(facultyIds[0]==0) {
                 throw new InputNotValidException("Faculty id cannot be equal to 0");

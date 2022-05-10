@@ -48,12 +48,11 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
-    private final EmailService emailSenderService;
     private static final String STUDENT = "ROLE_STUDENT";
 
 
     @Autowired
-    public UserService(UserRepository userRepository, EmailService emailService, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.facultyRepository = facultyRepository;
@@ -63,7 +62,6 @@ public class UserService implements UserDetailsService {
         this.subjectPreferenceRepository = subjectPreferenceRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
-        this.emailSenderService = emailService;
     }
 
 
@@ -173,7 +171,7 @@ public class UserService implements UserDetailsService {
 
     public void addNewUser(UserEntity user) {
         if(userRepository.existsByEmail(user.getEmail()))
-            throw new NotAllowedException("a user with this email address already exists.");
+            throw new NotAllowedException("A user with this email address already exists.");
         log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

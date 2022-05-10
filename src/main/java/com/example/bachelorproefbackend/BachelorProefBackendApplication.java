@@ -68,6 +68,7 @@ public class BachelorProefBackendApplication {
 		storageService.init();
 	}
 
+	// email
 	@Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

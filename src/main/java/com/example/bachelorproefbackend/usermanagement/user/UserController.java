@@ -37,6 +37,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path="mySubjects")
+    public List<Subject> getMySubjects(Authentication authentication) {
+        return subjectService.getMySubjects(authentication);
+    }
+
     @GetMapping(path="ownId")
     public Long getOwnId(Authentication authentication) {return userService.getOwnId(authentication);}
 
