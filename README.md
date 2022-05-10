@@ -11,3 +11,4 @@ You can run the code as is, then you will connect to our online database hosted 
 If you run the code localy it is a better idea to install your own Postgre database. This tutorial will help you along: https://www.youtube.com/watch?v=Nf2_QWh-fik
 You can fill in the credentials in the file resources/application.properties. The localhost database is currently marked as a comment.
 
+If you simply want to use this backend as a service, you can access a deployed version through https://mastertoolbackend.herokuapp.com/
