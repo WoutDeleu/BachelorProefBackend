@@ -1,7 +1,7 @@
 # BachelorProefBackend
 
 This project was created as a bachelor thesis from three students industrial engineering, electronics - ICT.
-You can find the repository for the corresponding web application here:
+You can find the repository for the corresponding web application here: https://github.com/WannesVermeire/BachelorProefFrontend.git
 And the corresponding mobile application here: 
 
 This code contains a connection to a PostgreSQL database and implements URLs to implement most CRUD operations on the data conveniently.
