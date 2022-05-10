@@ -17,9 +17,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findAllByApproved(boolean bool);
 
-//    List<Subject> findAllByPromotor(UserEntity promotor);
-//
-//    List<Subject> findAllByCompany(Company company);
+    List<Subject> findAllByPromotor(UserEntity promotor);
+
+    List<Subject> findAllByCompany(Company company);
 
     List<Subject> findAllByTargetAudiencesContains(TargetAudience targetAudience);
 

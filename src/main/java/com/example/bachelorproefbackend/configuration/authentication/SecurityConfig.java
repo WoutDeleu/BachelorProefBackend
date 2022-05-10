@@ -62,14 +62,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/byTargetAudience").authenticated();
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/{id}").authenticated();
-        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}").hasAnyAuthority(ADMIN, COORDINATOR);
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addPromotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR, CONTACT);
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addTag").authenticated();
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addTargetAudience").authenticated();
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/addCompany").hasAnyAuthority(ADMIN, STUDENT);
-        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{id}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/{subjectId}").authenticated();
+        http.authorizeRequests().antMatchers(DELETE, "/subjectManagement/subjects/{subjectId}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}").hasAnyAuthority(ADMIN, COORDINATOR);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/addPromotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR, CONTACT);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/addTag").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/addTargetAudience").authenticated();
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/addCompany").hasAnyAuthority(ADMIN, STUDENT);
+        http.authorizeRequests().antMatchers(PUT, "/subjectManagement/subjects/{subjectId}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/stats").hasAnyAuthority(ADMIN, COORDINATOR);
 
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/campus").authenticated();
