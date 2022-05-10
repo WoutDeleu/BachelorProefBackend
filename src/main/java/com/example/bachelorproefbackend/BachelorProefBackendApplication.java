@@ -1,8 +1,7 @@
 package com.example.bachelorproefbackend;
 
-import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
+
 import com.example.bachelorproefbackend.usermanagement.filestorage.FileStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +23,6 @@ import java.util.Properties;
 @Configuration
 
 public class BachelorProefBackendApplication {
-
-	@Autowired
-	private EmailSenderService senderService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BachelorProefBackendApplication.class, args);
@@ -71,6 +67,24 @@ public class BachelorProefBackendApplication {
 		storageService.deleteAll();
 		storageService.init();
 	}
+
+	@Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("wannesvermeirenzele@gmail.com");
+        mailSender.setPassword("iuwxtytejneytvne");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        return mailSender;
+    }
 
 
 

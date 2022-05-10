@@ -1,6 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.company;
 
-import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
+
+import com.example.bachelorproefbackend.configuration.email.EmailService;
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
@@ -13,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -32,17 +30,17 @@ public class CompanyService {
     private final UserService userService;
     private final RoleRepository roleRepository;
     private final SubjectRepository subjectRepository;
-    private final EmailSenderService emailSenderService;
+    private final EmailService emailService;
     private static final String ADMIN = "ROLE_ADMIN";
 
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, EmailSenderService emailSenderService, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
+    public CompanyService(CompanyRepository companyRepository, EmailService emailService, UserService userService, RoleRepository roleRepository, SubjectRepository subjectRepository){
         this.companyRepository = companyRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.subjectRepository = subjectRepository;
-        this.emailSenderService = emailSenderService;
+        this.emailService = emailService;
     }
 
     public List<Company> getAllCompanies(Authentication authentication) {
@@ -88,7 +86,7 @@ public class CompanyService {
                             "For any questions you can contact admin@kuleuven.be.\n\n\n"+
                             "Kind regards\n"+
                             "The mastertool team";
-                    emailSenderService.sendEmail(to,subject,body);
+                    emailService.sendEmail(to,subject,body);
                 }
             }
             else{
@@ -146,7 +144,7 @@ public class CompanyService {
                     "Your can now create subjects in our mastertool.\n\n\n" +
                     "Kind regards\n" +
                     "The mastertool team";
-            emailSenderService.sendEmail(to, subject, body);
+            emailService.sendEmail(to, subject, body);
         }
     }
 

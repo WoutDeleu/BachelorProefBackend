@@ -1,6 +1,7 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
-import com.example.bachelorproefbackend.configuration.email.EmailSenderService;
+
+import com.example.bachelorproefbackend.configuration.email.EmailService;
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
@@ -47,12 +48,12 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
-    private final EmailSenderService emailSenderService;
+    private final EmailService emailSenderService;
     private static final String STUDENT = "ROLE_STUDENT";
 
 
     @Autowired
-    public UserService(UserRepository userRepository, EmailSenderService emailSenderService, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, EmailService emailService, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.facultyRepository = facultyRepository;
@@ -62,7 +63,7 @@ public class UserService implements UserDetailsService {
         this.subjectPreferenceRepository = subjectPreferenceRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
-        this.emailSenderService = emailSenderService;
+        this.emailSenderService = emailService;
     }
 
 
