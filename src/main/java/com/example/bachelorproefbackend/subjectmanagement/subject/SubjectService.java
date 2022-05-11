@@ -65,10 +65,10 @@ public class SubjectService {
         Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         if(activeUser.getRoles().contains(promotor)){
-            return subjectRepository.findAllByPromotor(activeUser);
+            return subjectRepository.findAll();
         }
         else if(activeUser.getRoles().contains(contact)){
-            return subjectRepository.findAllByCompany(activeUser.getCompany());
+            return subjectRepository.findAll();
         }
         else {
             return subjectRepository.findAll();
