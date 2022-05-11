@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -29,7 +30,7 @@ public class CampusController {
     public List<Campus> getAllCampuses() {return campusService.getAllCampuses();}
 
     @PostMapping(path="byFaculties")
-    public List<Campus> getAllCampusesByFaculties(@RequestParam long [] facultyIds){
+    public Set<Campus> getAllCampusesByFaculties(@RequestParam long [] facultyIds){
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){
             Faculty faculty = facultyRepository.getById(facultyIds[i]);
@@ -39,7 +40,7 @@ public class CampusController {
     }
 
     @PostMapping(path="byEducations")
-    public List<Campus> getAllCampusesByEducations(@RequestParam long [] educationIds){
+    public Set<Campus> getAllCampusesByEducations(@RequestParam long [] educationIds){
         Education [] educations = new Education[educationIds.length];
         for(int i = 0; i<educationIds.length; i++){
             Education education = educationRepository.getById(educationIds[i]);

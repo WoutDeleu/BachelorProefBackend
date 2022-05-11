@@ -110,9 +110,10 @@ public class SubjectService {
 
 
     public void updateSubject(long id, String name, String description, int nrOfStudents) {
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        //TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         if (!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
         if(name != null && name.length()>0 && !Objects.equals(subject.getName(), name)) subject.setName(name);
@@ -124,9 +125,10 @@ public class SubjectService {
 
 
     public void addCompany(long subjectId, Company company, Authentication authentication){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        //TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Subject subject = subjectRepository.findById(subjectId);
@@ -142,9 +144,10 @@ public class SubjectService {
     }
 
     public void addPromotor(long subjectId, UserEntity promotor, Authentication authentication){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        //TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role promotorROLE = roleRepository.findByName("ROLE_PROMOTOR");
@@ -167,9 +170,10 @@ public class SubjectService {
 
 
     public void addTag(long subjectId, Tag [] tags, UserEntity activeUser){
-        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-        }
+        //TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+//        }
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");

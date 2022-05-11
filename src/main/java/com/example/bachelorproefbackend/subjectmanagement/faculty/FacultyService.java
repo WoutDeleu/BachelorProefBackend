@@ -38,4 +38,6 @@ public class FacultyService {
         Faculty faculty = facultyRepository.getById(id);
         if(name != null && name.length()>0) faculty.setName(name);
     }
+
+
 }

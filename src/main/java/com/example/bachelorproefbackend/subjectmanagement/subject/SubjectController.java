@@ -162,8 +162,6 @@ public class SubjectController {
 
     @PostMapping(path="{subjectId}/addTargetAudience")
     public void addTargetAudience(@PathVariable("subjectId") long subjectId, @RequestParam int [] facultyIds,int [] educationIds, int [] campusIds, Authentication authentication){
-        log.info("The eagle has landed.");
-        log.info("lalal");
         subjectService.addTargetAudience(subjectId, facultyIds, educationIds, campusIds, authentication);
     }
 

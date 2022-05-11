@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -32,8 +34,8 @@ public class CampusService {
 
     public List<Campus> getAllCampuses() {return campusRepository.findAll();}
 
-    public List<Campus> getAllCampusesByFaculties(Faculty [] faculties){
-        List<Campus> result = new ArrayList<>();
+    public Set<Campus> getAllCampusesByFaculties(Faculty [] faculties){
+        Set<Campus> result = new HashSet<>();
         for (Faculty f : faculties){
             List<TargetAudience> targets = targetAudienceService.getAllByFaculty(f);
             for (TargetAudience t : targets) {
@@ -43,8 +45,8 @@ public class CampusService {
         return result;
     }
 
-    public List<Campus> getAllCampusesByEducations(Education [] educations){
-        List<Campus> result = new ArrayList<>();
+    public Set<Campus> getAllCampusesByEducations(Education [] educations){
+        Set<Campus> result = new HashSet<>();
         for (Education e : educations){
             List<TargetAudience> targets = targetAudienceService.getAllByEducation(e);
             for (TargetAudience t : targets) {

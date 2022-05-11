@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -26,7 +27,7 @@ public class EducationController {
     public List<Education> getAllEducations() {return educationService.getAllEducations();}
 
     @PostMapping(path="byFaculties")
-    public List<Education> getAllEducationsByFaculties(@RequestParam int [] facultyIds) {
+    public Set<Education> getAllEducationsByFaculties(@RequestParam int [] facultyIds) {
         Faculty [] faculties = new Faculty[facultyIds.length];
         for(int i = 0; i<facultyIds.length; i++){
             Faculty faculty = facultyRepository.getById((long) facultyIds[i]);
