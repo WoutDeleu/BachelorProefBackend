@@ -130,14 +130,20 @@ public class SubjectService {
 //            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
 //        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
+        Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
-        Subject subject = subjectRepository.findById(subjectId);
-        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser)){
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        // Only coordinator and admin can access all subjects, others only their own
+        if(activeUser.getRoles().contains(admin) // admin
+                || activeUser.getRoles().contains(coordinator) // coordinator
+                || activeUser.getFinalSubject().equals(subject) // student
+                || activeUser.getSubjects().contains(subject) //promotor
+                || activeUser.getCompany().equals(subject.getCompany()) // contact
+        ) {
             log.info("Adding company {} to subject {}", company.getName(), subject.getName());
-            if(subject.getCompany() != null){
-                throw new InputNotValidException("Subject already has a company: "+subject.getCompany().getName());
-            }
-            else{
+            if (subject.getCompany() != null) {
+                throw new InputNotValidException("Subject already has a company: " + subject.getCompany().getName());
+            } else {
                 subject.setCompany(company);
             }
         }
@@ -192,7 +198,6 @@ public class SubjectService {
 //        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
 //            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
 //        }
-        log.info("voorbij timing check");
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");

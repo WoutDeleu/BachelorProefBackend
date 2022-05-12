@@ -184,9 +184,6 @@ public class UserService implements UserDetailsService {
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         Role [] roles = {admin, coordinator, promotor, student, contact};
-        log.info("LALALALA");
-        log.info(roles[0].toString());
-        log.info(roles[1].toString());
         String line;
         String [] parts;
         Scanner sc = null;
