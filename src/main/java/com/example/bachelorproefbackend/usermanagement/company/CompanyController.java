@@ -42,18 +42,18 @@ public class CompanyController {
     public List<Subject> getCompanySubjectsById(@PathVariable("companyId") long id) {return companyService.getCompanySubjectsById(id);}
 
     @PostMapping
-    public void addNewCompany(@RequestParam String name, String address, String btwNr, String description){
-        companyService.addNewCompany(new Company(name, address, btwNr, description));
+    public long addNewCompany(@RequestParam String name, String address, String btwNr, String description){
+        return companyService.addNewCompany(new Company(name, address, btwNr, description));
     }
 
     @PostMapping(path="{companyId}/addContact")
-    public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam int userId, Authentication authentication){
-//        List<UserEntity> contacts = new ArrayList<>(userIds.length);
-//        for (int i = 0; i<userIds.length; i++){
-            UserEntity user = userRepository.findById(userId);
-//            contacts.add(user);
-//        }
-        companyService.addNewContact(companyId, user, authentication);
+    public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam int [] userIds, Authentication authentication){
+        UserEntity [] contacts = new UserEntity[userIds.length];
+        for (int i = 0; i<userIds.length; i++){
+            UserEntity user = userRepository.findById(userIds[i]);
+            contacts[i] = user;
+        }
+        companyService.addNewContact(companyId, contacts, authentication);
     }
 
     @DeleteMapping(path="{companyId}")

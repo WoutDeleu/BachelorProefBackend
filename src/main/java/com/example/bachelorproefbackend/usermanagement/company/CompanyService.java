@@ -62,35 +62,39 @@ public class CompanyService {
 
     public List<Subject> getCompanySubjectsById(long id) {return subjectRepository.findAllByCompany_Id(id);}
 
-    public void addNewCompany(Company company) {
+    public long addNewCompany(Company company) {
         log.info("Saving new company {} to the database", company.getName());
         companyRepository.save(company);
+        return company.getId();
     }
 
-    public void addNewContact(long id, UserEntity user, Authentication authentication){
+    public void addNewContact(long id, UserEntity [] contacts, Authentication authentication){
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName(ADMIN);
-        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        Role contactROLE = roleRepository.findByName("ROLE_CONTACT");
         Company company = companyRepository.getById(id);
-        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser) || company.getContacts().isEmpty()){
-            if(user.getRoles().contains(contact)){
-                log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
-                company.addContact(user);
-                if(company.isApproved()==false && company.getContacts().size()==1){
-                    String to = user.getEmail();
-                    String subject = "New company registered";
-                    String body = "Dear "+user.getFirstName()+", \n\n\n"+
-                            "Thank you for registering your company "+company.getName()+" to our university.\n"+
-                            "Your company information has been well received. We will take a look at it and approve you to use our mastertool asap.\n"+
-                            "Once this step is completed, you will be able to add subjects for our students all over the country.\n\n"+
-                            "For any questions you can contact admin@kuleuven.be.\n\n\n"+
-                            "Kind regards\n"+
-                            "The mastertool team";
-                    emailService.sendEmail(to,subject,body);
+        boolean newCompany = company.getContacts().isEmpty();
+        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser) || newCompany){
+            for (UserEntity user: contacts){
+                if(user.getRoles().contains(contactROLE)){
+                    log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
+                    company.addContact(user);
+                    if(company.isApproved()==false && newCompany){
+                        String to = user.getEmail();
+                        String subject = "New company registered";
+                        String body = "Dear "+user.getFirstName()+", \n\n\n"+
+                                "Thank you for registering your company "+company.getName()+" to our university.\n"+
+                                "Your company information has been well received. We will take a look at it and approve you to use our mastertool asap.\n"+
+                                "Once this step is completed, you will be able to add subjects for our students all over the country.\n\n"+
+                                "For any questions you can contact admin@kuleuven.be.\n\n\n"+
+                                "Kind regards\n"+
+                                "The mastertool team";
+                        emailService.sendEmail(to,subject,body);
+                    }
                 }
-            }
-            else{
-                throw new InputNotValidException("Only users with contact role can be added.");
+                else{
+                    throw new InputNotValidException("Only users with contact role can be added.");
+                }
             }
         }
         else {
