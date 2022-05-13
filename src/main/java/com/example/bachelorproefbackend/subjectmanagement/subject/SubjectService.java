@@ -72,16 +72,6 @@ public class SubjectService {
         return subjectPreferenceRepository.findBySubjectId(subjectId);
     }
 
-    public Collection<UserEntity> getStudents(long subjectId) {
-        Subject subject = subjectRepository.getById(subjectId);
-        Collection<SubjectPreference> preferences = subject.getStudents();
-        Collection<UserEntity> students = new ArrayList<>();
-        for (SubjectPreference sp : preferences){
-            students.add(sp.getStudent());
-        }
-        return students;
-    }
-
     public List<Subject> getMySubjects(Authentication authentication) {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role promotor = roleRepository.findByName("ROLE_PROMOTOR");

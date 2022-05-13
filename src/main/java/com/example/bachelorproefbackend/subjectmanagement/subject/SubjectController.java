@@ -69,11 +69,6 @@ public class SubjectController {
         return subjectService.getPreferredStudents(subjectId);
     }
 
-    @GetMapping(path="preferredStudents")
-    public Collection<UserEntity> getStudents(@RequestParam long subjectId){
-        return subjectService.getStudents(subjectId);
-    }
-
     @GetMapping(path = "stats")
     public SubjectData getSubjectData() {
         return subjectService.getSubjectData();

@@ -50,10 +50,10 @@ public class UserController {
         return userService.getUserById(id, authentication);
     }
 
-    @GetMapping(path="{userId}/preferredSubjects")
-    public Collection<SubjectPreference> getPreferredSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
-        return userService.getPreferredSubjects(userId, authentication);
-    }
+//    @GetMapping(path="{userId}/preferredSubjects")
+//    public Collection<SubjectPreference> getPreferredSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
+//        return userService.getPreferredSubjects(userId, authentication);
+//    }
 
     @GetMapping(path="{userId}/favouriteSubjects")
     public Collection<Subject> getFavouriteSubjectsByUserById(@PathVariable("userId") long id, Authentication authentication) {
