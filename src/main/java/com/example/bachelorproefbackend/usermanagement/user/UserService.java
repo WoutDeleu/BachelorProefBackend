@@ -1,7 +1,6 @@
 package com.example.bachelorproefbackend.usermanagement.user;
 
 
-import com.example.bachelorproefbackend.configuration.email.EmailService;
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
 import com.example.bachelorproefbackend.configuration.exceptions.ResourceNotFoundException;
@@ -13,6 +12,7 @@ import com.example.bachelorproefbackend.subjectmanagement.education.EducationRep
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subject.Subject;
+import com.example.bachelorproefbackend.subjectmanagement.subject.SubjectRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreferenceRepository;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
@@ -45,6 +45,7 @@ public class UserService implements UserDetailsService {
     private final EducationRepository educationRepository;
     private final CampusRepository campusRepository;
     private final SubjectPreferenceRepository subjectPreferenceRepository;
+    private final SubjectRepository subjectRepository;
     private final PasswordEncoder passwordEncoder;
     private final TargetAudienceService targetAudienceService;
     private final CompanyRepository companyRepository;
@@ -52,7 +53,7 @@ public class UserService implements UserDetailsService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, SubjectRepository subjectRepository, SubjectPreferenceRepository subjectPreferenceRepository, FacultyRepository facultyRepository, EducationRepository educationRepository, CampusRepository campusRepository, CompanyRepository companyRepository, TargetAudienceService targetAudienceService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.facultyRepository = facultyRepository;
@@ -60,6 +61,7 @@ public class UserService implements UserDetailsService {
         this.campusRepository = campusRepository;
         this.companyRepository = companyRepository;
         this.subjectPreferenceRepository = subjectPreferenceRepository;
+        this.subjectRepository = subjectRepository;
         this.passwordEncoder = passwordEncoder;
         this.targetAudienceService = targetAudienceService;
     }
@@ -177,17 +179,28 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void boost(long userId, boolean boost, Authentication authentication) {
+    public void addBoost(long userId, long subjectId, Authentication authentication) {
         // TODO enable
 //        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
 //            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
 //        }
         UserEntity user = userRepository.findById(userId);
+        Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         if(!user.getRoles().contains(student)){
             throw new NotAllowedException("Can only boost students.");
         }
-        user.setBoosted(boost);
+        user.addBoostedSubject(subject);
+    }
+
+    public void removeBoost(long userId, long subjectId, Authentication authentication) {
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+//        }
+        UserEntity user = userRepository.findById(userId);
+        Subject subject = subjectRepository.findById(subjectId);
+        user.removeBoostedSubject(subject);
     }
 
     public void addNewUserBatch(Authentication authentication){

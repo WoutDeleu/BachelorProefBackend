@@ -116,9 +116,14 @@ public class UserController {
         userService.addNewPreferredSubject(userId, subject, index, authentication);
     }
 
-    @PostMapping(path="student/boost")
-    public void boost(@RequestParam long userId, boolean boost, Authentication authentication){
-        userService.boost(userId, boost, authentication);
+    @PostMapping(path="student/addBoost")
+    public void addBoost(@RequestParam long userId, long subjectId, Authentication authentication){
+        userService.addBoost(userId, subjectId, authentication);
+    }
+
+    @PostMapping(path="student/removeBoost")
+    public void removeBoost(@RequestParam long userId, long subjectId, Authentication authentication){
+        userService.removeBoost(userId, subjectId, authentication);
     }
 
     @PostMapping(path="student/addFavouriteSubject")

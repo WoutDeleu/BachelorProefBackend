@@ -6,6 +6,7 @@ import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jdk.internal.loader.AbstractClassLoaderValue;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,12 @@ public class UserEntity {
     @OneToMany(mappedBy = "student") //OneToThree
     private Collection<SubjectPreference> preferredSubjects;
     @ManyToMany
-    //@JsonIgnore //No recursion between user en subject, showing data over and over again
     @JoinTable(name="subject_favourites")
     private Collection<Subject> favouriteSubjects = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name="subject_boosted")
+    @JsonIgnore
+    private Collection<Subject> boostedSubjects = new ArrayList<>();
     @ManyToOne //TwoToOne
     @JsonIgnore
     private Subject finalSubject; //For students
@@ -50,7 +54,6 @@ public class UserEntity {
     @JsonIgnore
     private Company company;
     private String companyName;
-    private boolean boosted;
 
 
     public UserEntity(String firstName, String lastName, String email, String telNr, String password) {
@@ -59,7 +62,6 @@ public class UserEntity {
         this.email = email;
         this.telNr = telNr;
         this.password = password;
-        this.boosted = false;
     }
 
     public void addFavouriteSubject(Subject subject){
@@ -69,9 +71,14 @@ public class UserEntity {
     public void removeFavouriteSubject(Subject subject){
         favouriteSubjects.remove(subject);
     }
-
     public void addSubjectPreference(SubjectPreference sp){
         preferredSubjects.add(sp);
+    }
+    public void addBoostedSubject(Subject subject) {
+        boostedSubjects.add(subject);
+    }
+    public void removeBoostedSubject(Subject subject) {
+        boostedSubjects.remove(subject);
     }
 
     public void addRole(Role role) {

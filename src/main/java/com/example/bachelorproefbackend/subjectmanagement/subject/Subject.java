@@ -35,6 +35,8 @@ public class Subject {
     @OneToMany(mappedBy = "subject") //OneToThree
     @JsonIgnore
     private Collection<SubjectPreference> students;
+    @ManyToMany(mappedBy = "boostedSubjects")
+    private Collection<UserEntity> boostedStudents;
     @ManyToMany
     private Collection<Tag> tags;
     @ManyToOne
