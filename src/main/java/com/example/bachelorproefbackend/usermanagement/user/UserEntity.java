@@ -5,8 +5,6 @@ import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetA
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jdk.internal.loader.AbstractClassLoaderValue;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
