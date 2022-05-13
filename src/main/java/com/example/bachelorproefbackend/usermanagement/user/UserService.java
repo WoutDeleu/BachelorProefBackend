@@ -177,6 +177,19 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void boost(long userId, boolean boost, Authentication authentication) {
+        // TODO enable
+//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+//        }
+        UserEntity user = userRepository.findById(userId);
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        if(!user.getRoles().contains(student)){
+            throw new NotAllowedException("Can only boost students.");
+        }
+        user.setBoosted(boost);
+    }
+
     public void addNewUserBatch(Authentication authentication){
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");

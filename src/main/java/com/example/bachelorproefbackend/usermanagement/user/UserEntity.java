@@ -49,6 +49,7 @@ public class UserEntity {
     @ManyToOne
     @JsonIgnore
     private Company company;
+    private boolean boosted;
 
 
     public UserEntity(String firstName, String lastName, String email, String telNr, String password) {
@@ -57,6 +58,7 @@ public class UserEntity {
         this.email = email;
         this.telNr = telNr;
         this.password = password;
+        this.boosted = false;
     }
 
     public void addFavouriteSubject(Subject subject){

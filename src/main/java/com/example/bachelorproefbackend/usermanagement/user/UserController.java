@@ -116,6 +116,11 @@ public class UserController {
         userService.addNewPreferredSubject(userId, subject, index, authentication);
     }
 
+    @PostMapping(path="student/boost")
+    public void boost(@RequestParam long userId, boolean boost, Authentication authentication){
+        userService.boost(userId, boost, authentication);
+    }
+
     @PostMapping(path="student/addFavouriteSubject")
     public void addNewFavouriteSubject(@RequestParam long userId, long subjectId, Authentication authentication){
         Subject subject = subjectService.getSubjectById(subjectId);
