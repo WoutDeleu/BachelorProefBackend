@@ -52,7 +52,7 @@ public class UserController {
 
     @GetMapping(path="{userId}/preferredSubjects")
     public Collection<SubjectPreference> getPreferredSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
-        return userService.getPreferredSubjectsByUserId(userId, authentication);
+        return userService.getPreferredSubjects(userId, authentication);
     }
 
     @GetMapping(path="{userId}/favouriteSubjects")

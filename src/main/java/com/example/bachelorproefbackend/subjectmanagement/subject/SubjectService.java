@@ -2,9 +2,12 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
+import com.example.bachelorproefbackend.subjectmanagement.education.Education;
+import com.example.bachelorproefbackend.subjectmanagement.education.EducationRepository;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
 import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreferenceRepository;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
@@ -32,16 +35,20 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final EducationRepository educationRepository;
+    private final SubjectPreferenceRepository subjectPreferenceRepository;
     private final TargetAudienceService targetAudienceService;
     private final FacultyRepository facultyRepository;
 
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, FacultyRepository facultyRepository, TargetAudienceService targetAudienceService, UserService userService, RoleRepository roleRepository) {
+    public SubjectService(SubjectRepository subjectRepository, SubjectPreferenceRepository subjectPreferenceRepository, EducationRepository educationRepository, FacultyRepository facultyRepository, TargetAudienceService targetAudienceService, UserService userService, RoleRepository roleRepository) {
         this.subjectRepository = subjectRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.targetAudienceService = targetAudienceService;
+        this.subjectPreferenceRepository = subjectPreferenceRepository;
+        this.educationRepository = educationRepository;
         this.facultyRepository = facultyRepository;
     }
 
@@ -59,6 +66,10 @@ public class SubjectService {
             else
                 return subjectRepository.findAllByApproved(true);
         }
+    }
+
+    public Collection<SubjectPreference> getPreferredStudents(long subjectId) {
+        return subjectPreferenceRepository.findBySubjectId(subjectId);
     }
 
     public Collection<UserEntity> getStudents(long subjectId) {
@@ -246,19 +257,28 @@ public class SubjectService {
                 }
             }
             else {
-                log.info("add all the targetAudiences related to the campus AND faculty");
-                // add all the targetAudiences related to the campus AND faculty
+                log.info("add all the targetAudiences related to the campus AND faculty AND education");
                 for (long cid : campusIds) {
                     targets = targetAudienceService.getAllByCampusId(cid);
                     ArrayList<Faculty> faculties = new ArrayList<>();
+                    ArrayList<Education> educations = new ArrayList<>();
+                    ArrayList<TargetAudience> toRemove = new ArrayList<>();
                     for (long fid : facultyIds) {
                         Faculty faculty = facultyRepository.getById(fid);
                         faculties.add(faculty);
                     }
+                    for (long eid : educationIds) {
+                        Education education = educationRepository.getById(eid);
+                        educations.add(education);
+                    }
+
                     for (TargetAudience t : targets) {
-                        if (!faculties.contains(t.getFaculty())) {
-                            targets.remove(t);
+                        if (!faculties.contains(t.getFaculty()) || !educations.contains(t.getEducation())) {
+                            toRemove.add(t);
                         }
+                    }
+                    for (TargetAudience t : toRemove) {
+                        targets.remove(t);
                     }
                 }
             }

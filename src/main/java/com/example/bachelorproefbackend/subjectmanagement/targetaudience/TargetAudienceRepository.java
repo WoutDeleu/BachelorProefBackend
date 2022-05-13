@@ -23,4 +23,5 @@ public interface TargetAudienceRepository extends JpaRepository<TargetAudience, 
 
 
 
+
 }

@@ -88,7 +88,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId);
     }
 
-    public Collection<SubjectPreference> getPreferredSubjectsByUserId(long userId, Authentication authentication){
+    public Collection<SubjectPreference> getPreferredSubjects(long userId, Authentication authentication){
         UserEntity activeUser = getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");

@@ -20,7 +20,6 @@ public class SubjectPreference {
     @ManyToOne
     private Subject subject;
     @ManyToOne
-    @JsonIgnore
     private UserEntity student;
     private int index;
 

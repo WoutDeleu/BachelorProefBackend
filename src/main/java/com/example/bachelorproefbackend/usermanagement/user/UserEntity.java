@@ -32,6 +32,7 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles;
     @OneToMany(mappedBy = "student") //OneToThree
+    @JsonIgnore
     private Collection<SubjectPreference> preferredSubjects;
     @ManyToMany
     @JoinTable(name="subject_favourites")

@@ -46,7 +46,8 @@ public class CompanyService {
     public List<Company> getAllCompanies(Authentication authentication) {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName(ADMIN);
-        if(activeUser.getRoles().contains(admin)){
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)){
             return companyRepository.findAll();
         }
         else {

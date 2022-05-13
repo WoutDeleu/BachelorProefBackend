@@ -1,6 +1,7 @@
 package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagRepository;
 import com.example.bachelorproefbackend.subjectmanagement.tag.TagService;
@@ -61,6 +62,11 @@ public class SubjectController {
     @GetMapping(path="{subjectId}")
     public Subject getSubjectById(@PathVariable("subjectId") Long subjectId){
         return subjectService.getSubjectById(subjectId);
+    }
+
+    @GetMapping(path="preferredStudents")
+    public Collection<SubjectPreference> getPreferredStudents(@RequestParam long subjectId){
+        return subjectService.getPreferredStudents(subjectId);
     }
 
     @GetMapping(path="preferredStudents")
