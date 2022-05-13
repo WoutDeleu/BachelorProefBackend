@@ -78,7 +78,8 @@ public class CompanyService {
             for (UserEntity user: contacts){
                 if(user.getRoles().contains(contactROLE)){
                     log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
-                    company.addContact(user);
+                    //company.addContact(user);
+                    user.setCompany(company);
                     if(company.isApproved()==false && newCompany){
                         String to = user.getEmail();
                         String subject = "New company registered";
@@ -89,7 +90,8 @@ public class CompanyService {
                                 "For any questions you can contact admin@kuleuven.be.\n\n\n"+
                                 "Kind regards\n"+
                                 "The mastertool team";
-                        emailService.sendEmail(to,subject,body);
+                        //TODO enable
+//                        emailService.sendEmail(to,subject,body);
                     }
                 }
                 else{

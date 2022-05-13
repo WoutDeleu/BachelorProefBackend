@@ -6,6 +6,7 @@ import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -19,7 +20,6 @@ public class Company {
     private String address;
     private String btwNr;
     @OneToMany(mappedBy = "company")
-    @JsonIgnore
     private Collection<UserEntity> contacts;
     //Contact is the user from the company who has access to our system
     //Each company must have at least one contact, and they are created at the same time.
@@ -37,6 +37,7 @@ public class Company {
         this.btwNr = btwNr;
         this.description = description;
         approved = false;
+        contacts=new ArrayList<>();
     }
 
     public long getId() {return id;}
@@ -81,7 +82,9 @@ public class Company {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
-    public void addContact(UserEntity contact){contacts.add(contact);}
+    public void addContact(UserEntity contact){
+        contacts.add(contact);
+    }
     public void addSubject(Subject subject){subjects.add(subject);}
 
     @Override

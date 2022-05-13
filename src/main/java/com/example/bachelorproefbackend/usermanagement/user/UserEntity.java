@@ -5,12 +5,12 @@ import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetA
 import com.example.bachelorproefbackend.usermanagement.company.Company;
 import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -47,7 +47,9 @@ public class UserEntity {
     @JsonIgnore
     private Collection<Subject> subjects; //For promotor
     @ManyToOne
+    @JsonIgnore
     private Company company;
+    private String companyName;
     private boolean boosted;
 
 
@@ -75,6 +77,11 @@ public class UserEntity {
     public void addRole(Role role) {
         if(roles==null) roles = new ArrayList<>(5);
         if(!roles.contains(role)) roles.add(role);
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+        this.companyName = company.getName();
     }
 
     @Override
