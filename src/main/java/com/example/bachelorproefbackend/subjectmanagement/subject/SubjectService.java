@@ -88,9 +88,12 @@ public class SubjectService {
         return result;
     }
 
-    public void deleteSubject(long id){
-        if(!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: "+id+")");
-        subjectRepository.deleteById(id);
+    public void deleteSubject(long subjectId){
+        if(!subjectRepository.existsById(subjectId)) throw new IllegalStateException("Subject does not exist (id: "+subjectId+")");
+        Subject subject = subjectRepository.findById(subjectId);
+        subject.setCompany(null);
+        subject.setPromotor(null);
+        subjectRepository.deleteById(subjectId);
     }
 
 
@@ -101,8 +104,12 @@ public class SubjectService {
 //        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
         if(activeUser.getRoles().contains(contact)){
             subject.setCompany(activeUser.getCompany());
+        }
+        if(activeUser.getRoles().contains(student)){
+            subject.addTargetAudience(activeUser.getTargetAudience());
         }
         subjectRepository.save(subject);
         return subject.getId();
@@ -244,9 +251,9 @@ public class SubjectService {
                     }
                 }
             }
+            subject.clearTargetAudience();
             for (TargetAudience t : targets) {
                 subject.addTargetAudience(t);
-                log.info("targets added");
             }
         }
         else {

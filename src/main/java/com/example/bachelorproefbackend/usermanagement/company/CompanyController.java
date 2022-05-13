@@ -7,8 +7,10 @@ import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -45,8 +47,12 @@ public class CompanyController {
     }
 
     @PostMapping(path="{companyId}/addContact")
-    public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam long userId, Authentication authentication){
-        UserEntity user = userRepository.findById(userId);
+    public void addNewContact(@PathVariable("companyId") long companyId, @RequestParam int userId, Authentication authentication){
+//        List<UserEntity> contacts = new ArrayList<>(userIds.length);
+//        for (int i = 0; i<userIds.length; i++){
+            UserEntity user = userRepository.findById(userId);
+//            contacts.add(user);
+//        }
         companyService.addNewContact(companyId, user, authentication);
     }
 

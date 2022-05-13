@@ -62,6 +62,7 @@ public class Subject {
 
     public void addTag (Tag tag) {tags.add(tag);}
     public void addTargetAudience (TargetAudience targetAudience) {targetAudiences.add(targetAudience);}
+    public void clearTargetAudience () {targetAudiences.clear();}
     public void addFinalStudent (UserEntity student) {finalStudents.add(student);}
 
     @Override

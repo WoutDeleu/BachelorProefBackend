@@ -130,7 +130,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}").authenticated();
         http.authorizeRequests().antMatchers(DELETE, "/userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/company/{companyId}").hasAnyAuthority(ADMIN, CONTACT);
-        http.authorizeRequests().antMatchers(PUT, "/userManagement/company/{companyId}/setApproved").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(PUT, "/userManagement/company/{companyId}/setApproved").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(POST, "/userManagement/company/{companyId}/addContact").hasAnyAuthority(ADMIN, CONTACT);
         http.authorizeRequests().antMatchers(GET, "/userManagement/company/{companyId}/subjects").authenticated();
 
