@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -60,6 +61,11 @@ public class SubjectController {
     @GetMapping(path="{subjectId}")
     public Subject getSubjectById(@PathVariable("subjectId") Long subjectId){
         return subjectService.getSubjectById(subjectId);
+    }
+
+    @GetMapping(path="preferredStudents")
+    public Collection<UserEntity> getStudents(@RequestParam long subjectId){
+        return subjectService.getStudents(subjectId);
     }
 
     @GetMapping(path = "stats")

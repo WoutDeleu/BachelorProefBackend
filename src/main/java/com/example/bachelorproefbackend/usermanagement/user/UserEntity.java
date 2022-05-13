@@ -47,7 +47,6 @@ public class UserEntity {
     @JsonIgnore
     private Collection<Subject> subjects; //For promotor
     @ManyToOne
-    @JsonIgnore
     private Company company;
     private boolean boosted;
 

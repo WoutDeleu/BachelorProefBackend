@@ -2,9 +2,9 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
-import com.example.bachelorproefbackend.configuration.timing.Timing;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.FacultyRepository;
+import com.example.bachelorproefbackend.subjectmanagement.subjectpreference.SubjectPreference;
 import com.example.bachelorproefbackend.subjectmanagement.tag.Tag;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudience;
 import com.example.bachelorproefbackend.subjectmanagement.targetaudience.TargetAudienceService;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,6 +59,16 @@ public class SubjectService {
             else
                 return subjectRepository.findAllByApproved(true);
         }
+    }
+
+    public Collection<UserEntity> getStudents(long subjectId) {
+        Subject subject = subjectRepository.getById(subjectId);
+        Collection<SubjectPreference> preferences = subject.getStudents();
+        Collection<UserEntity> students = new ArrayList<>();
+        for (SubjectPreference sp : preferences){
+            students.add(sp.getStudent());
+        }
+        return students;
     }
 
     public List<Subject> getMySubjects(Authentication authentication) {

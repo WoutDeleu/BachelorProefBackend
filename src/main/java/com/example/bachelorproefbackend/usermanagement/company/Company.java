@@ -19,6 +19,7 @@ public class Company {
     private String address;
     private String btwNr;
     @OneToMany(mappedBy = "company")
+    @JsonIgnore
     private Collection<UserEntity> contacts;
     //Contact is the user from the company who has access to our system
     //Each company must have at least one contact, and they are created at the same time.
