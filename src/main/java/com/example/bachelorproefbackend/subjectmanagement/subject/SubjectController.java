@@ -64,7 +64,7 @@ public class SubjectController {
         return subjectService.getSubjectById(subjectId);
     }
 
-    @GetMapping(path="preferredStudents")
+    @PostMapping(path="preferredStudents")
     public Collection<SubjectPreference> getPreferredStudents(@RequestParam long subjectId){
         return subjectService.getPreferredStudents(subjectId);
     }

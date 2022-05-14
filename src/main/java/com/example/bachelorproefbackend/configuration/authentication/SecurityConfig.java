@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/preferredStudents").authenticated();
+        http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects/preferredStudents").authenticated();
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/nonApproved").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(GET, "/subjectManagement/subjects/byTargetAudience").authenticated();
         http.authorizeRequests().antMatchers(POST, "/subjectManagement/subjects").authenticated();
