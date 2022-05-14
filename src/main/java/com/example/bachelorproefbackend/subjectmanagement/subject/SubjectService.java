@@ -2,6 +2,7 @@ package com.example.bachelorproefbackend.subjectmanagement.subject;
 
 import com.example.bachelorproefbackend.configuration.exceptions.InputNotValidException;
 import com.example.bachelorproefbackend.configuration.exceptions.NotAllowedException;
+import com.example.bachelorproefbackend.configuration.timing.Timing;
 import com.example.bachelorproefbackend.subjectmanagement.education.Education;
 import com.example.bachelorproefbackend.subjectmanagement.education.EducationRepository;
 import com.example.bachelorproefbackend.subjectmanagement.faculty.Faculty;
@@ -110,10 +111,9 @@ public class SubjectService {
 
 
     public long addNewSubject(Subject subject, Authentication authentication){
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         Role student = roleRepository.findByName("ROLE_STUDENT");
@@ -129,10 +129,9 @@ public class SubjectService {
 
 
     public void updateSubject(long id, String name, String description, int nrOfStudents) {
-        //TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         if (!subjectRepository.existsById(id)) throw new IllegalStateException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
         if(name != null && name.length()>0 && !Objects.equals(subject.getName(), name)) subject.setName(name);
@@ -144,10 +143,9 @@ public class SubjectService {
 
 
     public void addCompany(long subjectId, Company company, Authentication authentication){
-        //TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
@@ -169,10 +167,9 @@ public class SubjectService {
     }
 
     public void addPromotor(long subjectId, UserEntity promotor, Authentication authentication){
-        //TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role promotorROLE = roleRepository.findByName("ROLE_PROMOTOR");
@@ -195,10 +192,9 @@ public class SubjectService {
 
 
     public void addTag(long subjectId, Tag [] tags, UserEntity activeUser){
-        //TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
         Role contact = roleRepository.findByName("ROLE_CONTACT");
@@ -213,10 +209,9 @@ public class SubjectService {
     }
 
     public void addTargetAudience (long subjectId, int [] facultyIds, int [] educationIds, int [] campusIds, Authentication authentication){
-        //TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
@@ -283,10 +278,9 @@ public class SubjectService {
     }
 
     public void setApproved(long id, boolean approved){
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlineAddingSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndAddingSubjects());
+        }
         if(!subjectRepository.existsById(id)) throw new InputNotValidException("Subject does not exist (id: " + id + ")");
         Subject subject = subjectRepository.getById(id);
         subject.setApproved(approved);

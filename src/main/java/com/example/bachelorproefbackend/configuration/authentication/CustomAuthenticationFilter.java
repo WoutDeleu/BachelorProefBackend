@@ -13,11 +13,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +48,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password = request.getParameter("password");
         log.info("Username is: {}", username);
         log.info("Password is: {}", password);
+        try {password = decrypt(password);} //encryption done in frontend, passwords encrypted differently in database
+        catch (Exception e) {e.printStackTrace();}
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -70,6 +76,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("id", String.valueOf(userRepository.findByEmail(user.getUsername()).getId()));
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+    }
+
+    public static String decrypt(String encryptedPassword) throws Exception {
+        SecretKey secretKey = getKey("a5asQRTq5aBVirtKlNyim542xXrTykpb");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+        return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedPassword)));
+    }
+
+    public static SecretKey getKey(String secretKey) throws Exception {
+        byte[] decodeSecretKey = Base64.getDecoder().decode(secretKey);
+        return new SecretKeySpec(decodeSecretKey, 0, decodeSecretKey.length, "AES");
     }
 
 }
