@@ -107,8 +107,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}").authenticated();
         http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/{userId}").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(PUT, "/userManagement/users/{userId}").hasAuthority(ADMIN);
-        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/favouriteSubject").authenticated();
-        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/preferredSubject").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/favouriteSubjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/preferredSubjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/boostedSubjects").authenticated();
+        http.authorizeRequests().antMatchers(GET, "/userManagement/users/{userId}/finalSubject").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/student").authenticated();
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/administrator").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/promotor").hasAnyAuthority(ADMIN, COORDINATOR, PROMOTOR);

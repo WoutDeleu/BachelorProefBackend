@@ -56,8 +56,18 @@ public class UserController {
     }
 
     @GetMapping(path="{userId}/favouriteSubjects")
-    public Collection<Subject> getFavouriteSubjectsByUserById(@PathVariable("userId") long id, Authentication authentication) {
-        return userService.getFavouriteSubjectsByUserId(id, authentication);
+    public Collection<Subject> getFavouriteSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
+        return userService.getFavouriteSubjectsByUserId(userId, authentication);
+    }
+
+    @GetMapping(path="{userId}/boostedSubjects")
+    public Collection<Subject> getBoostedSubjectsByUserById(@PathVariable("userId") long userId, Authentication authentication) {
+        return userService.getBoostedSubjectsByUserId(userId, authentication);
+    }
+
+    @GetMapping(path="{userId}/finalSubject")
+    public Subject getFinalSubjectByUserById(@PathVariable("userId") long userId, Authentication authentication) {
+        return userService.getFinalSubjectByUserId(userId, authentication);
     }
 
     @GetMapping(path="student")

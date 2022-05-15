@@ -112,6 +112,30 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).getFavouriteSubjects();
     }
 
+    public Collection<Subject> getBoostedSubjectsByUserId(long userId, Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(!activeUser.getRoles().contains(admin) && !activeUser.getRoles().contains(coordinator)){
+            if(activeUser.getId()!=userId){
+                throw new NotAllowedException("User can only access his own information");
+            }
+        }
+        return userRepository.findById(userId).getBoostedSubjects();
+    }
+
+    public Subject getFinalSubjectByUserId(long userId, Authentication authentication){
+        UserEntity activeUser = getUserByEmail(authentication.getName());
+        Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
+        if(!activeUser.getRoles().contains(admin) && !activeUser.getRoles().contains(coordinator)){
+            if(activeUser.getId()!=userId){
+                throw new NotAllowedException("User can only access his own information");
+            }
+        }
+        return userRepository.findById(userId).getFinalSubject();
+    }
+
     public UserEntity getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }

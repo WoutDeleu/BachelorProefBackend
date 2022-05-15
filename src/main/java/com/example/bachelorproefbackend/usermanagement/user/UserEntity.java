@@ -28,6 +28,7 @@ public class UserEntity {
     private String lastName;
     private String email;
     private String telNr;
+    @JsonIgnore
     private String password;
     @ManyToMany(fetch = FetchType.EAGER) //load all roles every time we load a user
     private Collection<Role> roles;
@@ -35,6 +36,7 @@ public class UserEntity {
     @JsonIgnore
     private Collection<SubjectPreference> preferredSubjects;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name="subject_favourites")
     private Collection<Subject> favouriteSubjects = new ArrayList<>();
     @ManyToMany
