@@ -36,17 +36,34 @@ public class Timing {
     }
 
     public boolean isBeforeDeadlineAddingSubjects(){
-        if(endAddingSubjects ==null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        if(endAddingSubjects == null) return true;
         return LocalDate.now().isBefore(endAddingSubjects);
     }
 
     public boolean isBeforeDeadlinePreferredSubjects(){
-        if(endPreferredSubjects ==null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        if(endPreferredSubjects == null) return true;
         return LocalDate.now().isBefore(endPreferredSubjects);
     }
 
     public boolean isBeforeDeadlineFinalAllocation(){
-        if(endFinalAllocation ==null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        if(endFinalAllocation == null) return true;
         return LocalDate.now().isBefore(endFinalAllocation);
     }
+
+    /* PRODUCTION CODE
+    public boolean isBeforeDeadlineAddingSubjects(){
+        if(endAddingSubjects == null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        return LocalDate.now().isBefore(endAddingSubjects);
+    }
+
+    public boolean isBeforeDeadlinePreferredSubjects(){
+        if(endPreferredSubjects == null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        return LocalDate.now().isBefore(endPreferredSubjects);
+    }
+
+    public boolean isBeforeDeadlineFinalAllocation(){
+        if(endFinalAllocation == null) throw new ResourceNotFoundException("The deadlines must be set before checking if this function is allowed.");
+        return LocalDate.now().isBefore(endFinalAllocation);
+    }
+     */
 }

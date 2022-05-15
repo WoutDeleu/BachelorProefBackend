@@ -76,7 +76,7 @@ public class UserEntity {
         preferredSubjects.add(sp);
     }
     public void addBoostedSubject(Subject subject) {
-        boostedSubjects.add(subject);
+        if(!boostedSubjects.contains(subject)) boostedSubjects.add(subject);
     }
     public void removeBoostedSubject(Subject subject) {
         boostedSubjects.remove(subject);

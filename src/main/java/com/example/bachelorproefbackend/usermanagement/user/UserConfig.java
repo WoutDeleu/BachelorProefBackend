@@ -41,17 +41,24 @@ public class UserConfig {
 
             Tag tag1 = new Tag("Luchtvaart");
             Tag tag2 = new Tag("Software engineering");
+            Tag tag3 = new Tag("Machine learning");
             tagService.addNewTag(tag1);
             tagService.addNewTag(tag2);
+            tagService.addNewTag(tag3);
 
             Subject subject1 = new Subject("Vliegtuigen", "Hoe blijven ze in de lucht?", 1);
             Subject subject2 = new Subject("Software project failure", "Hoe zorgen we dat dit project in goede banen loopt?", 1);
-            Subject subject3 = new Subject("Nalu studie", "Hoeveel nalu's is te veel voor Toon", 2);
+            Subject subject3 = new Subject("Atletiek 800m", "Wat is de optimale split voor alle 800m tijden?", 2);
+            Subject subject4 = new Subject("Kernfusie", "Zal kernfusie ooit rendabel worden?", 1);
+            Subject subject5 = new Subject("Datatransmissie", "Optimaliseer de communicatie tussen wagens en de cloud.", 3);
             subjectRepository.save(subject1);
             subjectRepository.save(subject2);
             subjectRepository.save(subject3);
+            subjectRepository.save(subject4);
+            subjectRepository.save(subject5);
 
             companyService.addNewCompany(new Company("Hamann","Vantegemstraat 3, 9230 Wetteren", "BE 0873.604.566", "Transportcompany"));
+            companyService.addNewCompany(new Company("TomTom", "Gaston Crommenlaan 4, 9050 Ledeberg", "BE 0436.193.459", "Traffic control Software"));
             companyService.addNewCompany(new Company("Coolblue", "Borsbeeksebrug 28, 2600 Berchem", "BE 0867.686.774", "Elektronicaverkoop"));
 
         };

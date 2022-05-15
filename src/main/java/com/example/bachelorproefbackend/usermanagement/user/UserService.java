@@ -204,10 +204,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void addBoost(long userId, long subjectId, Authentication authentication) {
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity user = userRepository.findById(userId);
         Subject subject = subjectRepository.findById(subjectId);
         Role student = roleRepository.findByName("ROLE_STUDENT");
@@ -218,10 +217,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void removeBoost(long userId, long subjectId, Authentication authentication) {
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity user = userRepository.findById(userId);
         Subject subject = subjectRepository.findById(subjectId);
         user.removeBoostedSubject(subject);
@@ -294,10 +292,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void addNewPreferredSubject(long userId, Subject subject, int index, Authentication authentication){
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity activeUser = getUserByEmail(authentication.getName());
         UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);
@@ -325,10 +322,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void addNewFavouriteSubject(long userId, Subject subject, Authentication authentication){
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity activeUser = getUserByEmail(authentication.getName());
         UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);
@@ -344,10 +340,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void removeFavouriteSubject(long userId, Subject subject, Authentication authentication){
-        // TODO enable
-//        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
-//            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
-//        }
+        if(!Timing.getInstance().isBeforeDeadlinePreferredSubjects()){
+            throw new NotAllowedException("Too late for the deadline of "+Timing.getInstance().getEndPreferredSubjects());
+        }
         UserEntity activeUser = getUserByEmail(authentication.getName());
         UserEntity user = userRepository.findById(userId);
         Role student = roleRepository.findByName(STUDENT);
