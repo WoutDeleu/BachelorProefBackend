@@ -120,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addPreferredSubject").hasAnyAuthority(ADMIN, STUDENT);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addFavouriteSubject").hasAuthority(STUDENT);
         http.authorizeRequests().antMatchers(DELETE, "/userManagement/users/student/favouriteSubject").hasAnyAuthority(ADMIN, STUDENT);
-        http.authorizeRequests().antMatchers(PUT, "/userManagement/users/student/addFinalSubject").hasAuthority(ADMIN);
+        http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addFinalSubject").hasAnyAuthority(ADMIN, COORDINATOR);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/addRoleToUser").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(POST, "/userManagement/users/student/batch").hasAuthority(ADMIN);
         http.authorizeRequests().antMatchers(GET, "/userManagement/users/stats").hasAnyAuthority(ADMIN, COORDINATOR);

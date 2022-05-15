@@ -174,7 +174,7 @@ public class UserController {
         userService.addTargetAudience(userId, facultyId, educationId, campusId, authentication);
     }
 
-    @PutMapping(path="student/addFinalSubject")
+    @PostMapping(path="student/addFinalSubject")
     public void addFinalSubject(@RequestParam long userId, long subjectId){
         Subject subject = subjectService.getSubjectById(subjectId);
         userService.addFinalSubject(userId, subject);
