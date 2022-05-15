@@ -113,7 +113,6 @@ public class SubjectController {
             if(subject != null){
                 storageService.savePdf(file, subjectId); // allows only pdf
                 message = "Uploaded the pdf successfully: " + file.getOriginalFilename();
-                subject.setHasPdf(true);
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
             }
             else{
