@@ -35,16 +35,11 @@ public class TimingService {
                               LocalDate endPreferredSubjects,
                               LocalDate endFinalAllocation,
                               Authentication authentication){
-        UserEntity activeUser = userService.getUserByEmail(authentication.getName());
-        Role admin = roleRepository.findByName("ROLE_ADMIN");
-        if(!activeUser.getRoles().contains(admin)){
-            throw new NotAllowedException("Only admin can set the timing deadlines.");
-        }
         Timing timing = Timing.getInstance();
         if(endAddingSubjects==null) endAddingSubjects=timing.getEndAddingSubjects();
         if(endPreferredSubjects==null) endAddingSubjects=timing.getEndPreferredSubjects();
         if(endFinalAllocation==null) endFinalAllocation=timing.getEndFinalAllocation();
-        if(endAddingSubjects.isAfter(endPreferredSubjects) || !endPreferredSubjects.isAfter(endFinalAllocation)){
+        if(endAddingSubjects.isAfter(endPreferredSubjects) || endPreferredSubjects.isAfter(endFinalAllocation)){
             throw new NotAllowedException("The order of the dates is not correct.");
         }
         timing.setEndAddingSubjects(endAddingSubjects);
