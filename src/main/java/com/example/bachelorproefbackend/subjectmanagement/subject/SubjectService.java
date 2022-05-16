@@ -183,9 +183,14 @@ public class SubjectService {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName("ROLE_ADMIN");
         Role promotorROLE = roleRepository.findByName("ROLE_PROMOTOR");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         Subject subject = subjectRepository.findById(subjectId);
-        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator) || activeUser.getFinalSubject().equals(subject) || activeUser.equals(promotor)){
+        boolean studentOK = false;
+        if(activeUser.getRoles().contains(student) && activeUser.getFinalSubject() != null){
+            if(activeUser.getFinalSubject().equals(subject)) studentOK = true;
+        }
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator) || studentOK || activeUser.equals(promotor)){
             if(promotor.getRoles().contains(promotorROLE)){
                 if(subject.getPromotor() != null){
                     throw new InputNotValidException("Subject already has a promotor: "+subject.getPromotor().getFirstName());
