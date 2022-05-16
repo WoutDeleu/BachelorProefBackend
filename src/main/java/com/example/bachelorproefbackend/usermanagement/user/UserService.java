@@ -198,6 +198,8 @@ public class UserService implements UserDetailsService {
     public void addNewUser(UserEntity user) {
         if(userRepository.existsByEmail(user.getEmail()))
             throw new NotAllowedException("A user with this email address already exists.");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
+        user.addRole(contact);
         log.info("Saving new user {} to the database", user.getFirstName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

@@ -75,4 +75,5 @@ public class CompanyController {
     public void approveCompany(@PathVariable("companyId") long id, @RequestParam boolean approved) {
         companyService.setApproved(id, approved);
     }
+
 }

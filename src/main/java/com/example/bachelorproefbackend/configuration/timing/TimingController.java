@@ -21,7 +21,7 @@ public class TimingController {
         return timingService.getTimingData();
     }
 
-    @PutMapping
+    @PostMapping
     public void setTimingData(@RequestParam(required = false) LocalDate endAddingSubjects,
                               @RequestParam(required = false) LocalDate endPreferredSubjects,
                               @RequestParam(required = false) LocalDate endFinalAllocation,
