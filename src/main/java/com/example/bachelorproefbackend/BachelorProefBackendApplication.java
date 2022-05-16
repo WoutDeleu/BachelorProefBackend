@@ -42,7 +42,7 @@ public class BachelorProefBackendApplication {
 				registry.addMapping("/**")
 						.allowedMethods("GET", "POST", "PUT", "DELETE")
 						.allowedHeaders("*")
-						.allowedOrigins("http://localhost:3000", "http://localhost:19000");
+						.allowedOrigins("http://localhost:3000", "http://localhost:19000", "https://mastertoolfrontend.herokuapp.com");
 			}
 		};
 	}

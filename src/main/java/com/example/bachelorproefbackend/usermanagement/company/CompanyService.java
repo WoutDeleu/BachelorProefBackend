@@ -85,7 +85,7 @@ public class CompanyService {
                         String subject = "New company registered";
                         String body = "Dear "+user.getFirstName()+", \n\n\n"+
                                 "Thank you for registering your company "+company.getName()+" to our university.\n"+
-                                "Your company information has been well received. We will take a look at it and approve you to use our mastertool asap.\n"+
+                                "Your company information has been well received. We will check it and approve you to use our mastertool asap.\n"+
                                 "Once this step is completed, you will be able to add subjects for our students all over the country.\n\n"+
                                 "For any questions you can contact admin@kuleuven.be.\n\n\n"+
                                 "Kind regards\n"+

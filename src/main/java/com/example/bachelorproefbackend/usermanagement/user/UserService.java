@@ -255,7 +255,7 @@ public class UserService implements UserDetailsService {
                     UserEntity user;
                     if(!userRepository.existsByEmail(parts[2])) {
                         user = new UserEntity(parts[0], parts[1], parts[2], parts[3], parts[4]);
-                        addNewUser(user);
+                        addNewUserConfig(user);
                     }
                     else {
                         user = getUserByEmail(parts[2]);

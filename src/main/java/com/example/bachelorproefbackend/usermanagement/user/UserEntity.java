@@ -73,6 +73,7 @@ public class UserEntity {
         favouriteSubjects.remove(subject);
     }
     public void addSubjectPreference(SubjectPreference sp){
+
         preferredSubjects.add(sp);
     }
     public void addBoostedSubject(Subject subject) {
