@@ -221,12 +221,16 @@ public class SubjectService {
         Role contact = roleRepository.findByName("ROLE_CONTACT");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         // Only coordinator and admin can access all subjects, others only their own
-        if(activeUser.getRoles().contains(admin) // admin
-                || activeUser.getRoles().contains(coordinator) // coordinator
-                || (activeUser.getRoles().contains(student) && activeUser.getFinalSubject().equals(subject)) // student
-                || (activeUser.getRoles().contains(promotor) &&  activeUser.getSubjects().contains(subject)) //promotor
-                || (activeUser.getRoles().contains(contact) && activeUser.getCompany().equals(subject.getCompany())) // contact
-         ){
+        boolean access = false;
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)) access = true;// admin
+        if(activeUser.getRoles().contains(student) && subject.equals(activeUser.getFinalSubject())) access = true;
+        if(activeUser.getRoles().contains(promotor) && activeUser.getSubjects() != null){
+            if(activeUser.getSubjects().contains(subject)) access = true;
+        }
+        if(activeUser.getRoles().contains(contact) && activeUser.getCompany() != null && subject.getCompany() != null){
+            if(activeUser.getCompany().equals(subject.getCompany())) access = true;
+        }
+        if(access){
             List<TargetAudience> targets = new ArrayList<>();
             if(facultyIds[0]==0) {
                 throw new InputNotValidException("Faculty id cannot be equal to 0");
