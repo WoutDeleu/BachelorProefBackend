@@ -10,6 +10,7 @@ import com.example.bachelorproefbackend.usermanagement.role.Role;
 import com.example.bachelorproefbackend.usermanagement.role.RoleRepository;
 import com.example.bachelorproefbackend.usermanagement.user.UserService;
 import com.example.bachelorproefbackend.usermanagement.user.UserEntity;
+import com.sun.xml.bind.v2.runtime.Coordinator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -72,10 +73,11 @@ public class CompanyService {
     public void addNewContact(long id, UserEntity [] contacts, Authentication authentication){
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Role admin = roleRepository.findByName(ADMIN);
+        Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         Role contactROLE = roleRepository.findByName("ROLE_CONTACT");
         Company company = companyRepository.getById(id);
         boolean newCompany = company.getContacts().isEmpty();
-        if(activeUser.getRoles().contains(admin) || company.getContacts().contains(activeUser) || newCompany){
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator) || company.getContacts().contains(activeUser) || newCompany){
             for (UserEntity user: contacts){
                 if(user.getRoles().contains(contactROLE)){
                     log.info("Adding new contact {} to company {}", user.getFirstName(), company.getName());
@@ -101,7 +103,6 @@ public class CompanyService {
         else {
             throw new NotAllowedException("Only contacts can add contacts to their own company");
         }
-
     }
 
     public void deleteCompany(long id, Authentication authentication) {

@@ -81,6 +81,7 @@ public class SubjectService {
             return subjectRepository.findAllByPromotor(activeUser);
         }
         else if(activeUser.getRoles().contains(contact)){
+            if (activeUser.getCompany() == null) return null;
             return subjectRepository.findAllByCompany(activeUser.getCompany());
         }
         else {

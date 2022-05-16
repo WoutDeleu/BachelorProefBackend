@@ -37,7 +37,6 @@ public class Company {
         this.btwNr = btwNr;
         this.description = description;
         approved = false;
-        contacts=new ArrayList<>();
     }
 
     public long getId() {return id;}
