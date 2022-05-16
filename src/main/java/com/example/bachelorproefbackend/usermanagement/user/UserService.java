@@ -195,6 +195,14 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    public void addNewUserConfig(UserEntity user) {
+        if(userRepository.existsByEmail(user.getEmail()))
+            throw new NotAllowedException("A user with this email address already exists.");
+        log.info("Saving new user {} to the database", user.getFirstName());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
     public void addNewUser(UserEntity user) {
         if(userRepository.existsByEmail(user.getEmail()))
             throw new NotAllowedException("A user with this email address already exists.");

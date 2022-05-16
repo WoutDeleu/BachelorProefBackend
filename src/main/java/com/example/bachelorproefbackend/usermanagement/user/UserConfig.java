@@ -22,13 +22,13 @@ public class UserConfig {
     CommandLineRunner commandLineRunner(TagService tagService, UserService userService, SubjectRepository subjectRepository, SubjectService subjectService, CompanyService companyService, TagRepository tagRepository) {
         return args -> {
             UserEntity pieter = new UserEntity("Pieter", "Vermeiren", "p.vermeiren@hamann.be", "+32 456 30 81 62", "password");
-            userService.addNewUser(pieter);
-            userService.addNewUser(new UserEntity("Toon", "Eeraerts", "toon.eeraerts@student.kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new UserEntity("Wout", "Deleu", "wout.deleu@student.kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new UserEntity("Wannes", "Vermeiren", "wannes.vermeiren@student.kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new UserEntity("Tony", "Wauters", "tony.wauters@kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new UserEntity("Liesbet", "Van der Perre", "liesbet.vanderperre@kuleuven.be", "+32 456 30 81 62", "password"));
-            userService.addNewUser(new UserEntity("Admin", " ", "admin@kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(pieter);
+            userService.addNewUserConfig(new UserEntity("Toon", "Eeraerts", "toon.eeraerts@student.kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Wout", "Deleu", "wout.deleu@student.kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Wannes", "Vermeiren", "wannes.vermeiren@student.kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Tony", "Wauters", "tony.wauters@kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Liesbet", "Van der Perre", "liesbet.vanderperre@kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Admin", " ", "admin@kuleuven.be", "+32 456 30 81 62", "password"));
 
             userService.addRoleToUser("wout.deleu@student.kuleuven.be", "ROLE_STUDENT");
             userService.addRoleToUser("wannes.vermeiren@student.kuleuven.be", "ROLE_STUDENT");
