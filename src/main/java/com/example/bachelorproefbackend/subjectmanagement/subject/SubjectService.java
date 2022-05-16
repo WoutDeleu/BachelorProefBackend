@@ -223,7 +223,9 @@ public class SubjectService {
         // Only coordinator and admin can access all subjects, others only their own
         boolean access = false;
         if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)) access = true;// admin
-        if(activeUser.getRoles().contains(student) && subject.equals(activeUser.getFinalSubject())) access = true;
+        if(activeUser.getRoles().contains(student) && activeUser.getFinalSubject() != null){
+            if (activeUser.getFinalSubject().equals(subject)) access = true;
+        }
         if(activeUser.getRoles().contains(promotor) && activeUser.getSubjects() != null){
             if(activeUser.getSubjects().contains(subject)) access = true;
         }
