@@ -47,7 +47,4 @@ public class TimingService {
         timing.setEndFinalAllocation(endFinalAllocation);
     }
 
-
-
-
 }
