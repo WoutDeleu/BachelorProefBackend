@@ -29,6 +29,7 @@ public class UserConfig {
             userService.addNewUserConfig(new UserEntity("Tony", "Wauters", "tony.wauters@kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUserConfig(new UserEntity("Liesbet", "Van der Perre", "liesbet.vanderperre@kuleuven.be", "+32 456 30 81 62", "password"));
             userService.addNewUserConfig(new UserEntity("Admin", " ", "admin@kuleuven.be", "+32 456 30 81 62", "password"));
+            userService.addNewUserConfig(new UserEntity("Annemie", "Vorstermans", "annemie.vorstermans@kuleuven.be", "+32 456 30 81 62", "password"));
 
             userService.addRoleToUser("wout.deleu@student.kuleuven.be", "ROLE_STUDENT");
             userService.addRoleToUser("wannes.vermeiren@student.kuleuven.be", "ROLE_STUDENT");
@@ -36,6 +37,8 @@ public class UserConfig {
             userService.addRoleToUser("tony.wauters@kuleuven.be", "ROLE_COORDINATOR");
             userService.addRoleToUser("liesbet.vanderperre@kuleuven.be", "ROLE_COORDINATOR");
             userService.addRoleToUser("tony.wauters@kuleuven.be", "ROLE_PROMOTOR");
+            userService.addRoleToUser("annemie.vorstermans@kuleuven.be", "ROLE_PROMOTOR");
+
             userService.addRoleToUser("admin@kuleuven.be", "ROLE_ADMIN");
             userService.addRoleToUser("p.vermeiren@hamann.be", "ROLE_CONTACT");
 
