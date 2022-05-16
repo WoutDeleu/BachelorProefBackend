@@ -216,13 +216,16 @@ public class SubjectService {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         // Only coordinator and admin can access all subjects, others only their own
         if(activeUser.getRoles().contains(admin) // admin
                 || activeUser.getRoles().contains(coordinator) // coordinator
-                || activeUser.getFinalSubject().equals(subject) // student
-                || activeUser.getSubjects().contains(subject) //promotor
-                || activeUser.getCompany().equals(subject.getCompany()) // contact
+                || (activeUser.getRoles().contains(student) && activeUser.getFinalSubject().equals(subject)) // student
+                || (activeUser.getRoles().contains(promotor) &&  activeUser.getSubjects().contains(subject)) //promotor
+                || (activeUser.getRoles().contains(contact) && activeUser.getCompany().equals(subject.getCompany())) // contact
          ){
             List<TargetAudience> targets = new ArrayList<>();
             if(facultyIds[0]==0) {
