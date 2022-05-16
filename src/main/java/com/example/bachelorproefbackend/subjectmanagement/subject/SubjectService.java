@@ -150,14 +150,23 @@ public class SubjectService {
         UserEntity activeUser = userService.getUserByEmail(authentication.getName());
         Subject subject = subjectRepository.getById(subjectId);
         Role admin = roleRepository.findByName("ROLE_ADMIN");
+        Role student = roleRepository.findByName("ROLE_STUDENT");
+        Role promotor = roleRepository.findByName("ROLE_PROMOTOR");
+        Role contact = roleRepository.findByName("ROLE_CONTACT");
         Role coordinator = roleRepository.findByName("ROLE_COORDINATOR");
         // Only coordinator and admin can access all subjects, others only their own
-        if(activeUser.getRoles().contains(admin) // admin
-                || activeUser.getRoles().contains(coordinator) // coordinator
-                || activeUser.getFinalSubject().equals(subject) // student
-                || activeUser.getSubjects().contains(subject) //promotor
-                || activeUser.getCompany().equals(subject.getCompany()) // contact
-        ) {
+        boolean access = false;
+        if(activeUser.getRoles().contains(admin) || activeUser.getRoles().contains(coordinator)) access = true;// admin
+        if(activeUser.getRoles().contains(student) && activeUser.getFinalSubject() != null){
+            if (activeUser.getFinalSubject().equals(subject)) access = true;
+        }
+        if(activeUser.getRoles().contains(promotor) && activeUser.getSubjects() != null){
+            if(activeUser.getSubjects().contains(subject)) access = true;
+        }
+        if(activeUser.getRoles().contains(contact) && activeUser.getCompany() != null && subject.getCompany() != null){
+            if(activeUser.getCompany().equals(subject.getCompany())) access = true;
+        }
+        if(access){
             log.info("Adding company {} to subject {}", company.getName(), subject.getName());
             if (subject.getCompany() != null) {
                 throw new InputNotValidException("Subject already has a company: " + subject.getCompany().getName());
